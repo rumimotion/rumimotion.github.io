@@ -103,18 +103,22 @@ function openProjectPage(p,ci){
       vidCon.innerHTML=`<div class="${gc}"><div class="vid-empty">No videos yet. Open the editor (pencil button) to add Vimeo IDs and thumbnails.</div></div>`;
     } else {
       vidCon.innerHTML=`<div class="${gc}">${vids.map((v,vi)=>{
-        const can=!!v.vimeoId;
+        const can=!!(v.vimeoId||v.youtubeId);
+        const platform=v.vimeoId?'vimeo':'youtube';
+        const playId=v.vimeoId||v.youtubeId||'';
         const orient=layout==='mixed'?(v.orientation||'horizontal'):layout;
         const isV=orient==='vertical';
-        const tH=v.thumb?`<img src="${v.thumb}" alt="${v.name||''}" loading="lazy"/>`:`<div class="vid-thumb-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`;
-        return `<div class="vid-tile${can?' playable':''}"${can?` data-id="${v.vimeoId}" data-orient="${orient}" data-name="${(v.name||'').replace(/"/g,'&quot;')}" data-role="${(v.role||'').replace(/"/g,'&quot;')}"`:''}>
+        // Use YouTube auto-thumbnail if no thumb set and YouTube ID exists
+        const autoThumb=(!v.thumb&&v.youtubeId)?`https://img.youtube.com/vi/${v.youtubeId}/hqdefault.jpg`:'';
+        const tH=(v.thumb||autoThumb)?`<img src="${v.thumb||autoThumb}" alt="${v.name||''}" loading="lazy"/>`:`<div class="vid-thumb-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`;
+        return `<div class="vid-tile${can?' playable':''}"${can?` data-id="${playId}" data-platform="${platform}" data-orient="${orient}" data-name="${(v.name||'').replace(/"/g,'&quot;')}" data-role="${(v.role||'').replace(/"/g,'&quot;')}"`:''}>
           <div class="vid-thumb ${isV?'r916':'r169'}">${tH}${can?`<div class="vid-play-ov"><div class="vid-play-btn">${PLAY}</div></div>`:''}</div>
           <div class="vid-info"><div class="vid-name">${v.name||''}</div><div class="vid-role">${v.role||''}</div></div>
         </div>`;
       }).join('')}</div>`;
     }
     vidCon.querySelectorAll('.vid-tile.playable').forEach(t=>{
-      t.addEventListener('click',()=>openLightbox(t.dataset.id,t.dataset.name,t.dataset.role,t.dataset.orient));
+      t.addEventListener('click',()=>openLightbox(t.dataset.id,t.dataset.name,t.dataset.role,t.dataset.orient,t.dataset.platform));
     });
   }
 
@@ -135,11 +139,16 @@ document.getElementById('pp-back-btn')?.addEventListener('click',closeProjectPag
 const modal=document.getElementById('lightbox');
 const mFrame=document.getElementById('lb-frame');
 
-function openLightbox(id,name,role,orient){
+function openLightbox(id,name,role,orient,platform){
   const isV=orient==='vertical';
   document.getElementById('lb-wrap').className='lb-wrap'+(isV?' lb-v':'');
   document.getElementById('lb-ratio').className='lb-ratio '+(isV?'r916':'r169');
-  mFrame.src=`https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0`;
+  // Support both Vimeo and YouTube
+  if(platform==='youtube'){
+    mFrame.src=`https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+  } else {
+    mFrame.src=`https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0`;
+  }
   const t=document.getElementById('lb-title'); if(t)t.textContent=name||'';
   const r=document.getElementById('lb-role'); if(r)r.textContent=role||'';
   modal.classList.add('open');

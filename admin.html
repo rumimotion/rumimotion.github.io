@@ -869,13 +869,23 @@ function vidHTML(i,vi,v){
       </div>
     </div>
     <div class="field-row">
-      <div class="field"><label>Vimeo ID</label><small>Number only from vimeo.com/XXXXXXX</small><input id="vi-${i}-${vi}" value="${esc(v.vimeoId)}" oninput="markUnsaved()"/></div>
       <div class="field">
-        <label>Thumbnail URL</label>
-        <div class="img-field" style="margin-top:4px">
-          <img id="vtp-${i}-${vi}" class="img-thumb" src="${esc(v.thumb)}" alt="" onerror="this.style.display='none'" onload="this.style.display='block'" style="${v.thumb?'':'display:none'}"/>
-          <div class="img-input-wrap"><div class="field"><input id="vt-${i}-${vi}" value="${esc(v.thumb)}" oninput="syncImg(this,'vtp-${i}-${vi}');markUnsaved()"/></div></div>
-        </div>
+        <label>Vimeo ID</label>
+        <small>Number from vimeo.com/<strong>1234567</strong></small>
+        <input id="vi-${i}-${vi}" value="${esc(v.vimeoId||'')}" oninput="markUnsaved()" placeholder="e.g. 1146513897"/>
+      </div>
+      <div class="field">
+        <label>YouTube ID</label>
+        <small>From youtube.com/watch?v=<strong>XXXXXXXXXXX</strong></small>
+        <input id="vy-${i}-${vi}" value="${esc(v.youtubeId||'')}" oninput="markUnsaved()" placeholder="e.g. dQw4w9WgXcQ"/>
+      </div>
+    </div>
+    <div class="field">
+      <label>Thumbnail Image</label>
+      <small>Option A: Cloudinary URL &nbsp;|&nbsp; Option B: <code>assets/uploads/name.jpg</code> &nbsp;|&nbsp; Option C: any image URL</small>
+      <div class="img-field" style="margin-top:4px">
+        <img id="vtp-${i}-${vi}" class="img-thumb" src="${esc(v.thumb||'')}" alt="" onerror="this.style.display='none'" onload="this.style.display='block'" style="${v.thumb?'':'display:none'}"/>
+        <div class="img-input-wrap"><div class="field"><input id="vt-${i}-${vi}" value="${esc(v.thumb||'')}" oninput="syncImg(this,'vtp-${i}-${vi}');markUnsaved()" placeholder="Paste URL or path"/></div></div>
       </div>
     </div>
   </div>`;
@@ -993,6 +1003,7 @@ function readAll(){
       v.name=gv(`vn-${i}-${vi}`);
       v.role=gv(`vr-${i}-${vi}`);
       v.vimeoId=gv(`vi-${i}-${vi}`);
+      v.youtubeId=gv(`vy-${i}-${vi}`);
       v.thumb=gv(`vt-${i}-${vi}`);
     });
   });
@@ -1135,7 +1146,7 @@ function setOrient(i,vi,val){
   markUnsaved();
 }
 function addVideo(i){
-  (D.projects[i].videos=D.projects[i].videos||[]).push({name:'New Video',role:'',orientation:'horizontal',vimeoId:'',thumb:''});
+  (D.projects[i].videos=D.projects[i].videos||[]).push({name:'New Video',role:'',orientation:'horizontal',vimeoId:'',youtubeId:'',thumb:''});
   buildProjects();
   const acc=$(`acc-proj-${i}`);if(acc)acc.classList.add('on');
   markUnsaved();

@@ -49,15 +49,17 @@ function renderAll(d) {
 function renderHero(h) {
   if (!h) return;
   setText('hero-name', h.name);
-  setText('hero-title-text', h.title);
-  setHTML('hero-body', h.body);
-  if (h.cta1Text && h.cta1Href) {
-    const b = document.getElementById('hero-cta1');
-    if (b) { b.textContent = h.cta1Text; b.href = h.cta1Href; }
+  // subtitle may have \n line breaks — render as HTML <br>
+  const subtitleEl = document.getElementById('hero-subtitle');
+  if (subtitleEl && h.subtitle) {
+    subtitleEl.innerHTML = h.subtitle.replace(/\n/g, '<br>');
   }
-  if (h.cta2Text && h.cta2Href) {
-    const b = document.getElementById('hero-cta2');
-    if (b) { b.textContent = h.cta2Text; b.href = h.cta2Href; }
+  setHTML('hero-body', h.body);
+  setText('hero-tagline', h.tagline);
+  const cta = document.getElementById('hero-cta');
+  if (cta) {
+    if (h.ctaText) cta.textContent = h.ctaText;
+    if (h.ctaHref) cta.href = h.ctaHref;
   }
 }
 

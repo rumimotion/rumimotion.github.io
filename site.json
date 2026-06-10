@@ -1,12 +1,11 @@
 {
   "hero": {
     "name": "RUMI",
-    "title": "Motion Designer & Video Editor.",
-    "body": "I'm <a href='https://www.linkedin.com/in/malkhaztchubabria/' target='_blank'>Malkhaz Tchubabria</a> (aka <strong>RUMI</strong>), a Motion Graphics Designer, Video Editor, and Visual Storyteller based in Tbilisi, Georgia. Over the last decade I've worked across sports media, digital content, documentaries, government communications, and branded campaigns — helping organizations transform ideas into engaging visual stories.<br><br>As part of the creative team at <a href='https://www.chess.com' target='_blank'><strong>Chess.com</strong></a>, I create educational content, broadcast graphics, YouTube productions, and social media videos for a global audience. I'm also available for freelance collaborations.",
-    "cta1Text": "View Work",
-    "cta1Href": "#projects",
-    "cta2Text": "Vimeo Reel ↗",
-    "cta2Href": "https://vimeo.com/rumimotion"
+    "subtitle": "Motion Graphics Designer,\nVideo Editor & Creative Problem Solver",
+    "body": "I'm <a href='https://www.linkedin.com/in/malkhaztchubabria/' target='_blank'>Malkhaz Tchubabria</a> (aka <strong>RUMI</strong>), a Motion Graphics Designer, Video Editor, and Visual Storyteller based in Tbilisi, Georgia. Over the last decade, I've worked across sports media, digital content, documentaries, government communications, and branded campaigns, helping organizations transform ideas into engaging visual stories. As part of the creative team at <a href='https://www.chess.com' target='_blank'><strong>Chess.com</strong></a>, I create educational content, broadcast graphics, YouTube productions, and social media videos for a global audience. Beyond editing and animation, I focus on storytelling, creative problem-solving, and building projects from the ground up — from concept development and scripting to motion graphics and final delivery.",
+    "tagline": "I don't just animate graphics, I build visual experiences that help audiences understand, remember, and connect with a story.",
+    "ctaText": "Get in Touch",
+    "ctaHref": "#contact"
   },
 
   "projects": [

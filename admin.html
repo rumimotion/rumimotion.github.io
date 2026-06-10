@@ -387,7 +387,7 @@ img{display:block;max-width:100%}
     <button class="login-btn" id="pw-btn">Sign In</button>
     <div class="login-err" id="pw-err"></div>
     <div class="login-hint">
-      Default password: <strong style="color:var(--text)">rumi2024</strong><br>
+      Default password: NewPortfolio@123</strong><br>
       Change it in Settings after login.<br>
       Token stored securely in your browser only.
     </div>
@@ -704,7 +704,7 @@ function toast(msg,type='success'){
 }
 
 /* -- LOGIN -- */
-const DEFAULT_PW='rumi2024';
+const DEFAULT_PW='NewPortfolio@123';
 function getPassword(){return localStorage.getItem('rumi_admin_pw')||DEFAULT_PW;}
 
 $('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});

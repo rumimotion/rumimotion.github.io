@@ -9,14 +9,14 @@
 /* ── TOKENS ──────────────────────────────────────────────── */
 :root {
   --bg:         #ffffff;
-  --bg-soft:    #f7f7f7;
-  --bg-card:    #f2f2f2;
-  --border:     #e8e8e8;
-  --border-mid: #d0d0d0;
-  --text:       #0a0a0a;
+  --bg-soft:    #fafafa;
+  --bg-card:    #f5f5f5;
+  --border:     #eeeeee;
+  --border-mid: #dddddd;
+  --text:       #111111;
   --text-mid:   #555555;
   --text-dim:   #999999;
-  --accent:     #0a0a0a;        /* primary accent = black */
+  --accent:     #111111;        /* primary accent = black */
   --gold:       #c9a84c;        /* subtle gold used sparingly */
   --font:       'General Sans', system-ui, -apple-system, sans-serif;
   --max:        1140px;

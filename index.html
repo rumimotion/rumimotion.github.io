@@ -266,6 +266,12 @@
      ===================================================== -->
 <script id="D" type="application/json">
 {
+  "github": {
+    "token": "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",
+    "repo": "rumimotion/rumimotion.github.io",
+    "branch": "main",
+    "path": "index.html"
+  },
   "font": "General Sans",
   "colors": {
     "bg": "#0A0A0A",
@@ -500,7 +506,7 @@
   <div class="ep-body" id="ed-body"></div>
   <div class="ep-foot">
     <button class="ep-apply" id="ed-apply">Apply Changes</button>
-    <button class="ep-export" id="ed-export">Export HTML</button>
+    <button class="ep-export" id="ed-export">Save to GitHub</button>
   </div>
 </div>
 <div class="ep-toast" id="ed-toast"></div>
@@ -920,18 +926,64 @@ $('ed-apply').addEventListener('click',()=>{
   showToast('Changes applied!');
 });
 
-$('ed-export').addEventListener('click',()=>{
+$('ed-export').addEventListener('click', async ()=>{
   readCurrentTab();
-  const html=document.documentElement.outerHTML;
-  const updated=html.replace(
+  const gh = D.github;
+  if(!gh||!gh.token){ showToast('No GitHub token found!'); return; }
+
+  // Build updated HTML with new D block
+  const html = document.documentElement.outerHTML;
+  const updated = html.replace(
     /(<script id="D" type="application\/json">)([\s\S]*?)(<\/script>)/,
     `$1\n${JSON.stringify(D,null,2)}\n$3`
   );
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([updated],{type:'text/html'}));
-  a.download='index.html'; a.click();
-  URL.revokeObjectURL(a.href);
-  showToast('index.html downloaded!');
+
+  showToast('Saving to GitHub...');
+  $('ed-export').disabled = true;
+  $('ed-export').textContent = 'Saving...';
+
+  try {
+    // Get current file SHA (required for update)
+    const getRes = await fetch(
+      `https://api.github.com/repos/${gh.repo}/contents/${gh.path}?ref=${gh.branch}`,
+      { headers: { 'Authorization': `token ${gh.token}`, 'Accept': 'application/vnd.github.v3+json' } }
+    );
+    const getJson = await getRes.json();
+    const sha = getJson.sha;
+
+    // Push updated file
+    const pushRes = await fetch(
+      `https://api.github.com/repos/${gh.repo}/contents/${gh.path}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${gh.token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: 'Update site content via editor',
+          content: btoa(unescape(encodeURIComponent(updated))),
+          sha: sha,
+          branch: gh.branch
+        })
+      }
+    );
+
+    if(pushRes.ok){
+      showToast('Saved to GitHub! Live in ~30 sec');
+    } else {
+      const err = await pushRes.json();
+      console.error(err);
+      showToast('Error: ' + (err.message||'check console'));
+    }
+  } catch(e){
+    console.error(e);
+    showToast('Network error — check console');
+  }
+
+  $('ed-export').disabled = false;
+  $('ed-export').textContent = 'Save to GitHub';
 });
 
 /* expose globals for onclick */

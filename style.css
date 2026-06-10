@@ -1,44 +1,36 @@
-/* ============================================================
-   RUMI PORTFOLIO â€” style.css
-   Brand: #0A0A0A bg Â· #F5F5F5 text Â· #4ADE80 gold accent
-   Matches rumi.framer.media dark aesthetic exactly
-   ============================================================ */
+/* RUMI PORTFOLIO - style.css
+   Colors: #0A0A0A bg / #F5F5F5 text / #4ADE80 green accent
+   ---------------------------------------------------------- */
 
 @import url('https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700&display=swap');
 
-/* â”€â”€ TOKENS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* TOKENS */
 :root {
-  --bg:          #0A0A0A;   /* RUMI Black â€” main bg */
-  --surface:     #1A1A1A;   /* Dark Gray â€” cards, panels */
-  --surface2:    #222222;   /* hover state */
-  --border:      #2a2a2a;   /* subtle borders */
-  --border-mid:  #383838;   /* stronger borders */
-  --text:        #F5F5F5;   /* RUMI White â€” titles, main text */
-  --text-mid:    #8A8A8A;   /* Light Gray â€” secondary, metadata */
-  --text-dim:    #555555;   /* dimmer labels */
-  --gold:        #4ADE80;   /* RUMI Green â€” accent, logo dot, links, buttons */
-  --gold-dim:    rgba(74,222,128,.14);
-  --blue:        #3B82F6;   /* Electric Blue â€” tech/AI callouts */
-  --amber:       #F59E0B;   /* Amber â€” warnings, highlights */
-  --font:        'General Sans', system-ui, -apple-system, sans-serif;
-  --max:         1140px;
-  --gutter:      clamp(20px, 5vw, 64px);
-  --radius:      12px;
-  --radius-sm:   8px;
-  --ease:        cubic-bezier(0.25, 0, 0, 1);
-}
-/* â”€â”€ TEXT SELECTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-::selection {
-  background: #4ADE80;
-  color: #0A0A0A;
-}
-::-moz-selection {
-  background: #4ADE80;
-  color: #0A0A0A;
+  --bg:         #0A0A0A;
+  --surface:    #1A1A1A;
+  --surface2:   #222222;
+  --border:     #2a2a2a;
+  --border-mid: #383838;
+  --text:       #F5F5F5;
+  --text-mid:   #8A8A8A;
+  --text-dim:   #555555;
+  --green:      #4ADE80;
+  --green-dim:  rgba(74,222,128,.14);
+  --blue:       #3B82F6;
+  --amber:      #F59E0B;
+  --font:       'General Sans', system-ui, -apple-system, sans-serif;
+  --max:        1140px;
+  --gutter:     clamp(20px, 5vw, 64px);
+  --radius:     12px;
+  --radius-sm:  8px;
+  --ease:       cubic-bezier(0.25, 0, 0, 1);
 }
 
+/* TEXT SELECTION */
+::selection      { background: #4ADE80; color: #0A0A0A; }
+::-moz-selection { background: #4ADE80; color: #0A0A0A; }
 
-/* â”€â”€ RESET â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* RESET */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
@@ -54,11 +46,11 @@ a { color: inherit; text-decoration: none; }
 ul, ol { list-style: none; }
 button { cursor: pointer; border: none; background: none; font: inherit; color: inherit; }
 
-/* â”€â”€ LAYOUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* LAYOUT */
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 
 /* ============================================================
-   NAVIGATION  â€” matches Framer screenshot exactly
+   NAVIGATION
    ============================================================ */
 #nav {
   position: sticky;
@@ -75,7 +67,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   justify-content: space-between;
   height: 60px;
 }
-/* Logo: RUMI Â· (dot in gold, like Framer site) */
 .nav-logo {
   font-size: 1rem;
   font-weight: 700;
@@ -90,7 +81,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--gold);
+  background: var(--green);
   margin-left: 2px;
   flex-shrink: 0;
 }
@@ -118,10 +109,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   transition: all 0.15s;
 }
 .nav-contact-btn:hover {
-  border-color: var(--gold);
-  color: var(--gold);
+  border-color: var(--green);
+  color: var(--green);
 }
-/* burger */
 .nav-burger {
   display: none;
   flex-direction: column;
@@ -130,7 +120,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 }
 .nav-burger span {
   display: block;
-  width: 22px; height: 2px;
+  width: 22px;
+  height: 2px;
   background: var(--text);
   border-radius: 2px;
   transition: all 0.2s;
@@ -146,7 +137,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     align-items: flex-start;
     gap: 0;
     position: absolute;
-    top: 60px; left: 0; right: 0;
+    top: 60px;
+    left: 0;
+    right: 0;
     background: var(--bg);
     border-bottom: 1px solid var(--border);
     padding: 16px var(--gutter) 20px;
@@ -163,7 +156,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 }
 
 /* ============================================================
-   HERO  â€” large name, subtitle, then body text (no stats)
+   HERO
    ============================================================ */
 #hero {
   padding: 80px 0 72px;
@@ -183,8 +176,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 .hero-eyebrow::before {
   content: '';
   display: block;
-  width: 22px; height: 1.5px;
-  background: var(--gold);
+  width: 22px;
+  height: 1.5px;
+  background: var(--green);
 }
 .hero-name {
   font-size: clamp(2.8rem, 6vw, 5.6rem);
@@ -211,13 +205,13 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   margin-bottom: 32px;
 }
 .hero-body a {
-  color: var(--gold);
+  color: var(--green);
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-color: rgba(74,222,128,.35);
   transition: text-decoration-color 0.15s;
 }
-.hero-body a:hover { text-decoration-color: var(--gold); }
+.hero-body a:hover { text-decoration-color: var(--green); }
 .hero-tagline {
   font-size: 0.92rem;
   font-style: italic;
@@ -226,9 +220,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   margin-bottom: 36px;
   line-height: 1.65;
   padding-left: 14px;
-  border-left: 2px solid var(--gold);
+  border-left: 2px solid var(--green);
 }
-/* single CTA: Contact only */
 .hero-actions {
   display: flex;
   gap: 12px;
@@ -248,16 +241,16 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   transition: all 0.15s;
   white-space: nowrap;
 }
-.btn-gold {
-  background: var(--gold);
+.btn-green {
+  background: var(--green);
   color: #0A0A0A;
 }
-.btn-gold:hover { background: #e0bc3e; }
+.btn-green:hover { background: #3dcc6e; }
 .btn-outline {
   border: 1.5px solid var(--border-mid);
   color: var(--text-mid);
 }
-.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+.btn-outline:hover { border-color: var(--green); color: var(--green); }
 
 /* ============================================================
    SECTION SHELL
@@ -279,7 +272,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--green);
   margin-bottom: 8px;
 }
 .section-title {
@@ -291,16 +284,17 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 }
 
 /* ============================================================
-   PROJECTS GRID  â€” 2-column, matches Framer screenshot
+   PROJECTS GRID
    ============================================================ */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
 }
-@media (max-width: 640px) { .projects-grid { grid-template-columns: 1fr; gap: 12px; } }
+@media (max-width: 640px) {
+  .projects-grid { grid-template-columns: 1fr; gap: 12px; }
+}
 
-/* â”€â”€ PROJECT CARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .project-card {
   background: var(--surface);
   border-radius: var(--radius);
@@ -316,7 +310,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   transform: translateY(-3px);
   box-shadow: 0 12px 40px rgba(0,0,0,.5);
 }
-/* thumbnail */
 .card-thumb {
   position: relative;
   aspect-ratio: 16/9;
@@ -324,20 +317,21 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   background: #111;
 }
 .card-thumb img {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   transition: transform 0.5s var(--ease);
 }
 .project-card:hover .card-thumb img { transform: scale(1.05); }
 .card-thumb-ph {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--surface);
   color: var(--text-dim);
 }
-/* hover overlay */
 .card-view-overlay {
   position: absolute;
   inset: 0;
@@ -355,13 +349,12 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   border-radius: 100px;
   background: rgba(10,10,10,.82);
   border: 1px solid rgba(74,222,128,.4);
-  color: var(--gold);
+  color: var(--green);
   opacity: 0;
   transform: translateY(5px) scale(0.95);
   transition: opacity 0.18s, transform 0.18s;
 }
 .project-card:hover .card-view-pill { opacity: 1; transform: none; }
-/* meta */
 .card-meta {
   padding: 14px 16px 16px;
   display: flex;
@@ -436,16 +429,15 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   color: var(--text-mid);
   transition: color 0.15s;
 }
-.pp-back:hover { color: var(--gold); }
+.pp-back:hover { color: var(--green); }
 .pp-back svg { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .pp-bar-right {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--green);
 }
-/* hero banner */
 .pp-hero {
   position: relative;
   width: 100%;
@@ -456,7 +448,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 @media (max-width: 640px) { .pp-hero { aspect-ratio: 16/7; } }
 .pp-hero img { width: 100%; height: 100%; object-fit: cover; }
 .pp-hero-ph {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -466,14 +459,18 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 .pp-hero::after {
   content: '';
   position: absolute;
-  bottom: 0; left: 0; right: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 65%;
   background: linear-gradient(to bottom, transparent, var(--bg));
   pointer-events: none;
 }
 .pp-hero-text {
   position: absolute;
-  bottom: 0; left: 0; right: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: clamp(20px,4vw,52px) var(--gutter) clamp(22px,4vw,40px);
   z-index: 2;
 }
@@ -482,7 +479,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--green);
   margin-bottom: 8px;
   display: flex;
   align-items: center;
@@ -491,8 +488,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 .pp-eyebrow::before {
   content: '';
   display: block;
-  width: 18px; height: 1.5px;
-  background: var(--gold);
+  width: 18px;
+  height: 1.5px;
+  background: var(--green);
 }
 .pp-title {
   font-size: clamp(2rem, 4.5vw, 3.8rem);
@@ -502,7 +500,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   color: var(--text);
   max-width: 20ch;
 }
-/* content */
 .pp-content { max-width: var(--max); margin: 0 auto; padding: 40px var(--gutter) 80px; }
 .pp-meta-row {
   display: flex;
@@ -526,18 +523,15 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--green);
   margin-bottom: 18px;
 }
-
-/* video grids */
 .vid-grid-h { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; }
 .vid-grid-v { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
 .vid-grid-m { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; align-items: start; }
 @media (max-width: 640px) { .vid-grid-h { grid-template-columns: 1fr; } }
 @media (max-width: 740px) { .vid-grid-v, .vid-grid-m { grid-template-columns: repeat(2,1fr); } }
 @media (max-width: 460px) { .vid-grid-v, .vid-grid-m { grid-template-columns: 1fr; } }
-
 .vid-tile {
   background: var(--surface);
   border-radius: var(--radius-sm);
@@ -553,7 +547,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 .vid-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s var(--ease); }
 .vid-tile:hover .vid-thumb img { transform: scale(1.05); }
 .vid-thumb-ph {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -571,7 +566,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 }
 .vid-tile:hover .vid-play-ov { background: rgba(0,0,0,.38); }
 .vid-play-btn {
-  width: 50px; height: 50px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: rgba(10,10,10,.75);
   border: 1.5px solid rgba(74,222,128,.5);
@@ -583,7 +579,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   transition: opacity 0.18s, transform 0.18s;
 }
 .vid-tile:hover .vid-play-btn { opacity: 1; transform: scale(1); }
-.vid-play-btn svg { fill: var(--gold); width: 15px; height: 15px; margin-left: 2px; }
+.vid-play-btn svg { fill: var(--green); width: 15px; height: 15px; margin-left: 2px; }
 .vid-info { padding: 11px 13px 13px; }
 .vid-name { font-size: 0.85rem; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 3px; }
 .vid-role { font-size: 0.72rem; color: var(--text-mid); }
@@ -627,7 +623,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--green);
   margin-top: 3px;
 }
 .lb-close {
@@ -645,7 +641,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   flex-shrink: 0;
   transition: all 0.15s;
 }
-.lb-close:hover { color: var(--gold); border-color: var(--gold); }
+.lb-close:hover { color: var(--green); border-color: var(--green); }
 .lb-ratio {
   position: relative;
   width: 100%;
@@ -677,9 +673,10 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 }
 .service-card:hover { border-color: var(--border-mid); transform: translateY(-2px); }
 .service-icon {
-  width: 44px; height: 44px;
+  width: 44px;
+  height: 44px;
   border-radius: 10px;
-  background: var(--gold-dim);
+  background: var(--green-dim);
   border: 1px solid rgba(74,222,128,.2);
   display: flex;
   align-items: center;
@@ -703,7 +700,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 }
 .exp-row:first-child { border-top: 1px solid var(--border); }
 .exp-logo {
-  width: 44px; height: 44px;
+  width: 44px;
+  height: 44px;
   border-radius: 10px;
   overflow: hidden;
   background: var(--surface);
@@ -729,7 +727,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   gap: 60px;
   align-items: start;
 }
-@media (max-width: 760px) { #about .section-inner { grid-template-columns: 1fr; gap: 28px; } }
+@media (max-width: 760px) {
+  #about .section-inner { grid-template-columns: 1fr; gap: 28px; }
+}
 .about-photo-wrap { display: flex; flex-direction: column; gap: 10px; }
 .about-photo {
   width: 100%;
@@ -772,7 +772,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   color: var(--text-mid);
   transition: all 0.15s;
 }
-.skill-tag:hover { border-color: var(--gold); color: var(--gold); }
+.skill-tag:hover { border-color: var(--green); color: var(--green); }
 
 /* ============================================================
    CONTACT
@@ -783,7 +783,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   gap: 60px;
   align-items: start;
 }
-@media (max-width: 760px) { #contact .contact-grid { grid-template-columns: 1fr; gap: 36px; } }
+@media (max-width: 760px) {
+  #contact .contact-grid { grid-template-columns: 1fr; gap: 36px; }
+}
 .contact-left h2 {
   font-size: clamp(1.4rem, 2.5vw, 2rem);
   font-weight: 700;
@@ -820,7 +822,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 }
 .contact-link-val { font-size: 0.86rem; color: var(--text-mid); }
 .contact-link-arrow { color: var(--text-dim); font-size: 1rem; transition: transform 0.15s, color 0.15s; }
-.contact-link-row:hover .contact-link-arrow { transform: translateX(4px); color: var(--gold); }
+.contact-link-row:hover .contact-link-arrow { transform: translateX(4px); color: var(--green); }
 
 /* ============================================================
    FOOTER
@@ -843,7 +845,7 @@ footer { padding: 26px 0; }
   color: var(--text-dim);
   transition: color 0.15s;
 }
-.footer-links a:hover { color: var(--gold); }
+.footer-links a:hover { color: var(--green); }
 
 /* ============================================================
    SCROLL REVEAL

@@ -1,0 +1,151 @@
+backend:
+  name: github
+  repo: YOUR-USERNAME/YOUR-REPO-NAME        # ← CHANGE THIS to your GitHub username/repo
+  branch: main
+  base_url: https://api.netlify.com         # remove this line if using GitHub Pages OAuth directly
+  auth_endpoint: auth                       # remove this line if using GitHub Pages OAuth directly
+
+# Uncomment the two lines below if using Netlify Identity instead:
+# backend:
+#   name: git-gateway
+
+media_folder: "assets/uploads"
+public_folder: "assets/uploads"
+
+site_url: https://YOUR-USERNAME.github.io   # ← CHANGE THIS
+
+collections:
+
+  # ── SITE SETTINGS (single file) ──────────────────────────
+  - name: "settings"
+    label: "⚙ Site Settings"
+    files:
+      - name: "site"
+        label: "All Content"
+        file: "_data/site.json"
+        format: json
+        fields:
+
+          # HERO
+          - label: "Hero"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Your Name (large display)", name: "name", widget: "string", default: "RUMI" }
+              - { label: "Sub-title", name: "title", widget: "string", default: "Motion Designer & Video Editor." }
+              - { label: "Body text (HTML allowed)", name: "body", widget: "text" }
+              - { label: "Button 1 Text", name: "cta1Text", widget: "string", default: "View Work" }
+              - { label: "Button 1 Link", name: "cta1Href", widget: "string", default: "#projects" }
+              - { label: "Button 2 Text", name: "cta2Text", widget: "string", default: "Vimeo Reel ↗" }
+              - { label: "Button 2 Link", name: "cta2Href", widget: "string", default: "https://vimeo.com/rumimotion" }
+
+          # PROJECTS
+          - label: "Projects"
+            name: "projects"
+            widget: "list"
+            label_singular: "Project"
+            fields:
+              - { label: "Client Name", name: "client", widget: "string" }
+              - { label: "Project Title", name: "title", widget: "string" }
+              - { label: "Primary Role (shown on card)", name: "primaryRole", widget: "string" }
+              - label: "Skill Tags"
+                name: "tags"
+                widget: "list"
+                field: { label: "Tag", name: "tag", widget: "string" }
+              - label: "Cover Image"
+                name: "cover"
+                widget: "image"
+                required: false
+                hint: "Recommended: 1200×675px JPG. Shown as card thumbnail and project page hero."
+              - label: "Video Gallery Layout"
+                name: "layout"
+                widget: "select"
+                options:
+                  - { label: "Horizontal — 2 columns, 16:9 each", value: "horizontal" }
+                  - { label: "Vertical — 3 columns, 9:16 each (Reels/Stories)", value: "vertical" }
+                  - { label: "Mixed — per-video orientation", value: "mixed" }
+                default: "horizontal"
+                hint: "Controls how videos are arranged on the project detail page."
+              - label: "Videos"
+                name: "videos"
+                widget: "list"
+                label_singular: "Video"
+                fields:
+                  - { label: "Video Name / Title", name: "name", widget: "string" }
+                  - { label: "Your Role on this video", name: "role", widget: "string", hint: "e.g. Motion Designer, Video Editor" }
+                  - label: "Video Orientation"
+                    name: "orientation"
+                    widget: "select"
+                    options:
+                      - { label: "Horizontal 16:9 (landscape)", value: "horizontal" }
+                      - { label: "Vertical 9:16 (portrait / Reels)", value: "vertical" }
+                    default: "horizontal"
+                    hint: "Only used in Mixed layout mode. Also affects the lightbox player size."
+                  - label: "Vimeo ID"
+                    name: "vimeoId"
+                    widget: "string"
+                    required: false
+                    hint: "The NUMBER from vimeo.com/XXXXXXX. Leave empty to disable playback."
+                  - label: "Thumbnail Image"
+                    name: "thumb"
+                    widget: "image"
+                    required: false
+                    hint: "Horizontal: 800×450px. Vertical: 450×800px."
+
+          # SERVICES
+          - label: "Creative Services"
+            name: "services"
+            widget: "list"
+            label_singular: "Service"
+            fields:
+              - { label: "Icon (emoji)", name: "icon", widget: "string", hint: "e.g. ✂️  ⬡  ◎  ⚽" }
+              - { label: "Service Name", name: "name", widget: "string" }
+              - { label: "Description", name: "desc", widget: "text" }
+
+          # EXPERIENCE
+          - label: "Experience"
+            name: "experience"
+            widget: "list"
+            label_singular: "Job"
+            fields:
+              - { label: "Job Title / Role", name: "role", widget: "string" }
+              - { label: "Company", name: "company", widget: "string" }
+              - { label: "Period", name: "period", widget: "string", hint: "e.g. 2022 – Present" }
+              - label: "Company Logo"
+                name: "logo"
+                widget: "image"
+                required: false
+                hint: "Square image, 100×100px minimum."
+
+          # ABOUT
+          - label: "About"
+            name: "about"
+            widget: "object"
+            fields:
+              - label: "Portrait Photo"
+                name: "photo"
+                widget: "image"
+                required: false
+                hint: "Recommended: 600×800px portrait JPG."
+              - { label: "Your Name (photo caption)", name: "name", widget: "string" }
+              - { label: "About Section Heading", name: "heading", widget: "string" }
+              - label: "Bio Text"
+                name: "bio"
+                widget: "text"
+                hint: "Separate paragraphs with a blank line."
+              - label: "Skills"
+                name: "skills"
+                widget: "list"
+                field: { label: "Skill", name: "skill", widget: "string" }
+
+          # CONTACT
+          - label: "Contact"
+            name: "contact"
+            widget: "object"
+            fields:
+              - { label: "Section Heading", name: "heading", widget: "string" }
+              - { label: "Sub-text", name: "sub", widget: "text" }
+              - { label: "Email Address", name: "email", widget: "string" }
+              - { label: "LinkedIn URL", name: "linkedin", widget: "string" }
+              - { label: "Vimeo URL", name: "vimeo", widget: "string" }
+              - { label: "Behance URL", name: "behance", widget: "string" }

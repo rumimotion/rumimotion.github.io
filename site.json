@@ -1,0 +1,225 @@
+{
+  "hero": {
+    "name": "RUMI",
+    "title": "Motion Designer & Video Editor.",
+    "body": "I'm <a href='https://www.linkedin.com/in/malkhaztchubabria/' target='_blank'>Malkhaz Tchubabria</a> (aka <strong>RUMI</strong>), a Motion Graphics Designer, Video Editor, and Visual Storyteller based in Tbilisi, Georgia. Over the last decade I've worked across sports media, digital content, documentaries, government communications, and branded campaigns — helping organizations transform ideas into engaging visual stories.<br><br>As part of the creative team at <a href='https://www.chess.com' target='_blank'><strong>Chess.com</strong></a>, I create educational content, broadcast graphics, YouTube productions, and social media videos for a global audience. I'm also available for freelance collaborations.",
+    "cta1Text": "View Work",
+    "cta1Href": "#projects",
+    "cta2Text": "Vimeo Reel ↗",
+    "cta2Href": "https://vimeo.com/rumimotion"
+  },
+
+  "projects": [
+    {
+      "client": "Chess.com",
+      "title": "Chess.com — Video Production",
+      "primaryRole": "Motion Designer & Video Editor",
+      "tags": ["Motion Design", "Video Editing", "Broadcast"],
+      "cover": "assets/uploads/cover-chess.jpg",
+      "layout": "mixed",
+      "videos": [
+        {
+          "name": "Chess.com — Showreel",
+          "role": "Motion Designer & Video Editor",
+          "orientation": "horizontal",
+          "vimeoId": "1146513897",
+          "thumb": "assets/uploads/thumb-chess-showreel.jpg"
+        },
+        {
+          "name": "Checkmate with Two Bishops",
+          "role": "Motion Designer",
+          "orientation": "horizontal",
+          "vimeoId": "",
+          "thumb": "assets/uploads/thumb-chess-bishops.jpg"
+        },
+        {
+          "name": "World Cup 2026 — Chess Edition",
+          "role": "Creative Director & Motion Designer",
+          "orientation": "horizontal",
+          "vimeoId": "",
+          "thumb": "assets/uploads/thumb-chess-wc2026.jpg"
+        }
+      ]
+    },
+    {
+      "client": "90 Otkhmocdaati",
+      "title": "90 — Personal Football Project",
+      "primaryRole": "Video Editor & Creative Director",
+      "tags": ["Sports Media", "Video Editing", "Creative Direction"],
+      "cover": "assets/uploads/cover-90.jpg",
+      "layout": "horizontal",
+      "videos": [
+        {
+          "name": "90 — Season Opener",
+          "role": "Video Editor & Creative Director",
+          "orientation": "horizontal",
+          "vimeoId": "",
+          "thumb": "assets/uploads/thumb-90-opener.jpg"
+        },
+        {
+          "name": "Match Highlights Reel",
+          "role": "Video Editor",
+          "orientation": "horizontal",
+          "vimeoId": "",
+          "thumb": "assets/uploads/thumb-90-highlights.jpg"
+        }
+      ]
+    },
+    {
+      "client": "McDonald's Georgia",
+      "title": "McDonald's — Brand & Motion",
+      "primaryRole": "Motion Graphics Designer",
+      "tags": ["Brand Content", "Motion Graphics"],
+      "cover": "assets/uploads/cover-mcdonalds.jpg",
+      "layout": "vertical",
+      "videos": [
+        {
+          "name": "Campaign Launch Film",
+          "role": "Motion Graphics Designer",
+          "orientation": "vertical",
+          "vimeoId": "",
+          "thumb": "assets/uploads/thumb-mcd-campaign.jpg"
+        },
+        {
+          "name": "Social Media Pack",
+          "role": "Motion Designer",
+          "orientation": "vertical",
+          "vimeoId": "",
+          "thumb": "assets/uploads/thumb-mcd-social.jpg"
+        },
+        {
+          "name": "Stories Pack",
+          "role": "Motion Designer",
+          "orientation": "vertical",
+          "vimeoId": "",
+          "thumb": "assets/uploads/thumb-mcd-stories.jpg"
+        }
+      ]
+    },
+    {
+      "client": "Zephyr (UK)",
+      "title": "Zephyr — Brand Film",
+      "primaryRole": "Video Editor",
+      "tags": ["Video Editing", "Colour Grade"],
+      "cover": "assets/uploads/cover-zephyr.jpg",
+      "layout": "horizontal",
+      "videos": [
+        {
+          "name": "Zephyr — Brand Film",
+          "role": "Video Editor",
+          "orientation": "horizontal",
+          "vimeoId": "",
+          "thumb": "assets/uploads/thumb-zephyr.jpg"
+        }
+      ]
+    },
+    {
+      "client": "Gov. of Georgia",
+      "title": "Government of Georgia — Communications",
+      "primaryRole": "Motion Graphics Designer",
+      "tags": ["Motion Graphics", "Broadcast Graphics"],
+      "cover": "assets/uploads/cover-gov.jpg",
+      "layout": "horizontal",
+      "videos": [
+        {
+          "name": "Government Communications Film",
+          "role": "Motion Graphics Designer",
+          "orientation": "horizontal",
+          "vimeoId": "",
+          "thumb": "assets/uploads/thumb-gov-comms.jpg"
+        },
+        {
+          "name": "Broadcast Graphics Package",
+          "role": "Motion Graphics Designer",
+          "orientation": "horizontal",
+          "vimeoId": "",
+          "thumb": "assets/uploads/thumb-gov-broadcast.jpg"
+        }
+      ]
+    },
+    {
+      "client": "Rumi Lab",
+      "title": "Rumi Lab — Personal Laboratory",
+      "primaryRole": "Creative Director",
+      "tags": ["Creative Direction", "Motion Design"],
+      "cover": "assets/uploads/cover-rumilab.jpg",
+      "layout": "horizontal",
+      "videos": [
+        {
+          "name": "Studio Reel",
+          "role": "Creative Director",
+          "orientation": "horizontal",
+          "vimeoId": "",
+          "thumb": "assets/uploads/thumb-rumilab.jpg"
+        }
+      ]
+    }
+  ],
+
+  "services": [
+    {
+      "icon": "✂️",
+      "name": "Video Editing",
+      "desc": "Long-form, short-form, branded and documentary editing for broadcast and digital."
+    },
+    {
+      "icon": "⬡",
+      "name": "Motion Design",
+      "desc": "Broadcast graphics, social animations, UI motion and After Effects systems."
+    },
+    {
+      "icon": "◎",
+      "name": "Creative Direction",
+      "desc": "Concept development, pacing, visual storytelling from brief to final delivery."
+    },
+    {
+      "icon": "⚽",
+      "name": "Sports Storytelling",
+      "desc": "Football, chess and emotionally driven sports content for global audiences."
+    }
+  ],
+
+  "experience": [
+    {
+      "logo": "https://framerusercontent.com/images/ae3vkS5Hf13BQjReNKliLLX6lus.png",
+      "role": "Video Editor",
+      "company": "Chess.com",
+      "period": "2022 – Present"
+    },
+    {
+      "logo": "https://framerusercontent.com/images/UZTYrMlXlc2U9GshSt8lyjBvIM0.png",
+      "role": "Motion Graphics Designer",
+      "company": "Government of Georgia",
+      "period": "2014 – 2020"
+    },
+    {
+      "logo": "https://framerusercontent.com/images/ZZO1P4O9Oi0QtP7NZpenoQt8PfU.png",
+      "role": "Freelance Video Editor",
+      "company": "Zephyr",
+      "period": "2018 – 2020"
+    },
+    {
+      "logo": "https://framerusercontent.com/images/XUd20EhFpAmQq0xzSujX4wZ3OL8.png",
+      "role": "Motion Graphics Designer",
+      "company": "McDonald's Georgia",
+      "period": "2022 – 2025"
+    }
+  ],
+
+  "about": {
+    "photo": "https://framerusercontent.com/images/zZ0xcBymMa8x4ZSEpuDlAS59bc.png",
+    "name": "Malkhaz Tchubabria (Rumi)",
+    "heading": "Freelance motion designer & video editor, 10+ years.",
+    "bio": "Freelance motion designer and video editor with 10+ years of experience across sports media, broadcast production, branded content, documentaries, and digital storytelling.\n\nCurrently collaborating with Chess.com on long-form productions, social media content, and broadcast visuals, combining cinematic editing with motion graphics and visual systems.\n\nExperienced in motion graphics, UI/UX thinking, social media production, camera operation, and TV broadcast environments — from creative direction and pacing to live-event coverage and post-production workflows.\n\nAlongside international client work, I also developed independent football and sports media projects focused on audience engagement, storytelling, and modern editorial presentation.",
+    "skills": ["After Effects", "Premiere Pro", "Blender", "DaVinci Resolve", "Motion Graphics", "Broadcast Graphics", "Sports Media", "AI Workflows"]
+  },
+
+  "contact": {
+    "heading": "Available for freelance projects and creative collaborations.",
+    "sub": "Open to sports media, branded content, documentaries, and motion design projects worldwide.",
+    "email": "malkhaztchubabria@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/malkhaztchubabria/",
+    "vimeo": "https://vimeo.com/rumimotion",
+    "behance": "https://www.behance.net/rumimotion"
+  }
+}

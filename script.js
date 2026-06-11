@@ -50,7 +50,6 @@ function renderProjects(projects){
       <div class="card-thumb">
         ${th}
         <div class="card-view-overlay"><span class="card-view-pill">View Project</span></div>
-        ${vc>0?`<span style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);padding:2px 8px;border-radius:100px;font-size:.6rem;font-weight:600;color:#8a8a8a">${vc} video${vc>1?'s':''}</span>`:''}
       </div>
       <div class="card-meta">
         <div class="card-client">${p.client||''}</div>
@@ -91,7 +90,7 @@ function openProjectPage(p,ci){
 
   const vids=p.videos||[];
   const vidLabel=document.getElementById('pp-vid-label');
-  if(vidLabel) vidLabel.textContent=vids.length?`${vids.length} Video${vids.length>1?'s':''}`:'' ;
+  if(vidLabel) vidLabel.textContent='';
 
   const vidCon=document.getElementById('pp-vid-container');
   if(vidCon){
@@ -122,6 +121,9 @@ function openProjectPage(p,ci){
     });
   }
 
+  // Hide hero banner - not needed
+  const ppHero=document.getElementById('pp-hero');
+  if(ppHero) ppHero.style.display='none';
   _prevScroll=window.scrollY;
   document.body.style.overflow='hidden';
   projPage.classList.add('open');

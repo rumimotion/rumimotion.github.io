@@ -159,7 +159,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
    HERO
    ============================================================ */
 #hero {
-  padding: 80px 0 72px;
+  padding: 52px 0 56px;
   border-bottom: 1px solid var(--border);
 }
 .hero-eyebrow {
@@ -256,14 +256,14 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
    SECTION SHELL
    ============================================================ */
 .section {
-  padding: 72px 0;
+  padding: 56px 0;
   border-bottom: 1px solid var(--border);
 }
 .section-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 44px;
+  margin-bottom: 32px;
   gap: 16px;
   flex-wrap: wrap;
 }

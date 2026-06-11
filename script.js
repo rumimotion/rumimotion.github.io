@@ -82,10 +82,10 @@ function openProjectPage(p,ci){
   const roles=[...new Set((p.videos||[]).map(v=>v.role).filter(Boolean))];
   const metaEl=document.getElementById('pp-meta');
   if(metaEl) metaEl.innerHTML=[
-    {l:'Client',v:p.client||''},
-    {l:'My Role',v:roles.join('  ')||''},
+    {l:'Client',  v:p.client||''},
+    {l:'My Role', v:p.primaryRole||roles[0]||''},
     {l:'Services',v:(p.tags||[]).join(', ')||''},
-  ].map(m=>`<div><div class="pp-meta-label">${m.l}</div><div class="pp-meta-val">${m.v}</div></div>`).join('');
+  ].filter(m=>m.v).map(m=>`<div><div class="pp-meta-label">${m.l}</div><div class="pp-meta-val">${m.v}</div></div>`).join('');
 
   // Project description
   const descEl=document.getElementById('pp-description');
@@ -131,18 +131,22 @@ function openProjectPage(p,ci){
     });
   }
 
-  // Hide hero banner - not needed
+  // Hide hero banner
   const ppHero=document.getElementById('pp-hero');
   if(ppHero) ppHero.style.display='none';
   _prevScroll=window.scrollY;
   document.body.style.overflow='hidden';
   projPage.classList.add('open');
   projPage.scrollTop=0;
+  // Update URL for shareability
+  const slug=p.client.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+  history.pushState({project:ci},'',`#project/${slug}`);
 }
 
 function closeProjectPage(){
   projPage.classList.remove('open');
   document.body.style.overflow='';
+  history.pushState({},'','/');
   window.scrollTo(0,_prevScroll);
 }
 document.getElementById('pp-back-btn')?.addEventListener('click',closeProjectPage);
@@ -284,3 +288,26 @@ function initScrollReveal(){
   },{threshold:.1});
   document.querySelectorAll('.reveal:not(.visible)').forEach(el=>revIO.observe(el));
 }
+
+// Handle browser back button
+window.addEventListener('popstate', ()=>{
+  if(document.getElementById('project-page').classList.contains('open')){
+    closeProjectPage();
+  }
+});
+// Open project from URL on page load
+window.addEventListener('load', ()=>{
+  const hash = window.location.hash;
+  if(hash.startsWith('#project/')){
+    const slug = hash.replace('#project/','');
+    const D_el = document.getElementById('D');
+    if(!D_el) return;
+    try {
+      const D = JSON.parse(D_el.textContent);
+      const idx = (D.projects||[]).findIndex(p=>
+        p.client.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')=== slug
+      );
+      if(idx>=0) setTimeout(()=>openProjectPage(D.projects[idx],idx),400);
+    } catch(e){}
+  }
+});

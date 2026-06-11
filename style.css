@@ -2,7 +2,8 @@
    Colors: #0A0A0A bg / #F5F5F5 text / #4ADE80 green accent
    ---------------------------------------------------------- */
 
-@import url('https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700&display=swap');
+/* General Sans - loaded async to avoid render blocking */
+@import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap');
 
 /* TOKENS */
 :root {
@@ -66,6 +67,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   align-items: center;
   justify-content: space-between;
   height: 60px;
+  min-height: 60px; /* Prevent CLS */
 }
 .nav-logo {
   font-size: 1rem;
@@ -187,6 +189,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   letter-spacing: -0.03em;
   color: var(--text);
   margin-bottom: 14px;
+  /* Prevent CLS from font swap */
+  min-height: clamp(2.8rem, 6vw, 5.6rem);
+  font-display: swap;
 }
 .hero-subtitle {
   font-size: clamp(1rem, 2vw, 1.35rem);
@@ -302,6 +307,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   cursor: pointer;
   border: 1px solid transparent;
   transition: border-color 0.2s, transform 0.22s var(--ease), box-shadow 0.22s;
+  will-change: transform;
   display: flex;
   flex-direction: column;
 }
@@ -315,6 +321,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   aspect-ratio: 16/9;
   overflow: hidden;
   background: #111;
+  /* Explicit dimensions prevent CLS */
+  width: 100%;
 }
 .card-thumb img {
   width: 100%;
@@ -853,3 +861,17 @@ footer { padding: 26px 0; }
 .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.52s ease, transform 0.52s ease; }
 .reveal.visible { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+/* Performance: lazy render off-screen sections */
+#services, #experience, #about, #contact {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+/* Prevent CLS on images */
+img { width: 100%; height: auto; aspect-ratio: attr(width) / attr(height); }
+.card-thumb img, .vid-thumb img, .about-photo img, .exp-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

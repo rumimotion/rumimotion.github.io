@@ -2,7 +2,7 @@
 'use strict';
 
 /*  render everything from data object  */
-function renderSite(D){
+function renderSite(D){ window._D=D; window._D = D;
   renderHero(D.hero);
   renderProjects(D.projects);
   renderServices(D.services);
@@ -28,7 +28,29 @@ function renderHero(h){
   if(cta){ if(h.ctaText)cta.textContent=h.ctaText; if(h.ctaHref)cta.href=h.ctaHref; }
   const logo=document.getElementById('s-logo');
   if(logo) logo.innerHTML=(h.name||'RUMI')+' <span class="nav-logo-dot"></span>';
+  renderHeroReel(h);
 }
+
+function renderHeroReel(h){
+  const frame=document.getElementById('hero-reel'); if(!frame)return;
+  const ph=document.getElementById('hero-reel-ph');
+  const vid=h.reelVimeoId||''; const yt=h.reelYoutubeId||''; const thumb=h.reelThumb||'';
+  if(!vid&&!yt){ if(ph)ph.style.display='flex'; return; }
+  if(ph)ph.style.display='none';
+  const autoThumb=(!thumb&&yt)?'https://img.youtube.com/vi/'+yt+'/maxresdefault.jpg':thumb;
+  const tHTML=autoThumb?'<img src="'+autoThumb+'" alt="Showreel" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0"/>':'';
+  frame.innerHTML=tHTML+'<div class="hero-reel-play-btn" onclick="openHeroReel()"><div class="hero-reel-play-circle"><svg viewBox="0 0 18 18"><polygon points="4,2 4,16 16,9" fill="currentColor"/></svg></div></div>';
+  if(vid&&!thumb&&!yt){
+    fetchVimeoThumb(vid,null).then(url=>{
+      if(url){const img=document.createElement('img');img.src=url;img.alt='Showreel';img.style.cssText='width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0';frame.insertBefore(img,frame.firstChild);}
+    });
+  }
+}
+window.openHeroReel=function(){
+  const h=window._D&&window._D.hero?window._D.hero:null; if(!h)return;
+  const id=h.reelVimeoId||h.reelYoutubeId;
+  if(id)openLightbox(id,'Showreel','Motion Designer & Video Editor','horizontal',h.reelVimeoId?'vimeo':'youtube');
+};
 
 /* PROJECT GRID */
 
@@ -38,12 +60,16 @@ async function fetchVimeoThumb(id, elemId){
     const res = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}`);
     const data = await res.json();
     if(data.thumbnail_url){
-      const img = document.getElementById(elemId);
-      const ph  = document.getElementById(elemId+'-ph');
-      if(img){ img.src=data.thumbnail_url; img.style.display='block'; }
-      if(ph)  { ph.style.display='none'; }
+      if(elemId){
+        const img = document.getElementById(elemId);
+        const ph  = document.getElementById(elemId+'-ph');
+        if(img){ img.src=data.thumbnail_url; img.style.display='block'; }
+        if(ph)  { ph.style.display='none'; }
+      }
+      return data.thumbnail_url;
     }
   } catch(e){ /* silently fail */ }
+  return null;
 }
 
 const COVER_SHADES=['#0d1117','#16181d','#111418','#0e1015','#131618','#111315'];

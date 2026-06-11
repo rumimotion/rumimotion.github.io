@@ -27,6 +27,114 @@
   <link id="font-link" rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap"/>
 <link rel="stylesheet" href="style.css"/>
 <style>
+
+/* HERO GRID - text left, reel right */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+  padding-top: 8px;
+}
+@media (max-width: 860px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+  .hero-right { order: -1; }
+}
+.hero-left {}
+.hero-right {}
+.hero-reel-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.hero-reel-frame:hover { border-color: #3a3a3a; }
+.hero-reel-ph {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.hero-reel-frame iframe {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+.hero-reel-play-btn {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0); transition: background .2s; cursor: pointer;
+}
+.hero-reel-frame:hover .hero-reel-play-btn { background: rgba(0,0,0,.3); }
+.hero-reel-play-circle {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(10,10,10,.8);
+  border: 2px solid rgba(74,222,128,.5);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .15s, border-color .15s;
+}
+.hero-reel-frame:hover .hero-reel-play-circle {
+  transform: scale(1.08);
+  border-color: var(--green);
+}
+.hero-reel-play-circle svg { fill: var(--green); width: 22px; height: 22px; margin-left: 4px; }
+
+
+/* HERO GRID */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 56px;
+  align-items: start;
+  padding-top: 8px;
+}
+@media (max-width: 1000px) { .hero-grid { grid-template-columns: 1fr 340px; gap: 40px; } }
+@media (max-width: 760px)  { .hero-grid { grid-template-columns: 1fr; gap: 32px; } .hero-right { order: -1; } }
+
+.hero-reel-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.hero-reel-frame:hover { border-color: #333; }
+.hero-reel-ph {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 0;
+}
+.hero-reel-frame img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  position: absolute; inset: 0;
+}
+.hero-reel-play-btn {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0); transition: background .2s;
+  cursor: pointer; border: none; width: 100%;
+}
+.hero-reel-frame:hover .hero-reel-play-btn { background: rgba(0,0,0,.3); }
+.hero-reel-play-circle {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(10,10,10,.8);
+  border: 2px solid rgba(74,222,128,.4);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .15s, border-color .15s;
+}
+.hero-reel-frame:hover .hero-reel-play-circle { transform: scale(1.1); border-color: var(--green); }
+.hero-reel-play-circle svg { fill: var(--green); width: 20px; height: 20px; margin-left: 3px; }
+
 /* =====================================================
    BUILT-IN EDITOR  -  matches RUMI brand
    ===================================================== */
@@ -305,247 +413,45 @@
     "body": "I'm <a href='https://www.linkedin.com/in/malkhaztchubabria/' target='_blank'>Malkhaz Tchubabria</a> (aka <strong>RUMI</strong>), a Motion Graphics Designer, Video Editor, and Visual Storyteller based in Tbilisi, Georgia. Over the last decade, I've worked across sports media, digital content, documentaries, government communications, and branded campaigns, helping organizations transform ideas into engaging visual stories. As part of the creative team at <a href='https://www.chess.com' target='_blank'><strong>Chess.com</strong></a>, I create educational content, broadcast graphics, YouTube productions, and social media videos for a global audience.",
     "tagline": "I don't just animate graphics, I build visual experiences that help audiences understand, remember, and connect with a story.",
     "ctaText": "Get in Touch",
-    "ctaHref": "#contact"
+    "ctaHref": "#contact",
+    "reelVimeoId": "",
+    "reelYoutubeId": "",
+    "reelThumb": ""
   },
   "projects": [
-    {
-      "client": "Chess.com",
-      "title": "Chess.com",
-      "primaryRole": "Motion Designer & Video Editor",
-      "tags": [
-        "Motion Design",
-        "Video Editing",
-        "Broadcast"
-      ],
-      "cover": "",
-      "layout": "mixed",
-      "videos": [
-        {
-          "name": "Chess.com Showreel",
-          "role": "Motion Designer & Video Editor",
-          "orientation": "horizontal",
-          "vimeoId": "1146513897",
-          "thumb": "",
-          "youtubeId": ""
-        },
-        {
-          "name": "Checkmate with Two Bishops",
-          "role": "Motion Designer",
-          "orientation": "horizontal",
-          "vimeoId": "",
-          "thumb": "",
-          "youtubeId": ""
-        },
-        {
-          "name": "World Cup 2026 Chess Edition",
-          "role": "Creative Director",
-          "orientation": "horizontal",
-          "vimeoId": "",
-          "thumb": "",
-          "youtubeId": ""
-        }
-      ],
-      "description": ""
-    },
-    {
-      "client": "90 Otkhmocdaati",
-      "title": "90 Personal Project",
-      "primaryRole": "Video Editor & Creative Director",
-      "tags": [
-        "Sports Media",
-        "Video Editing",
-        "Creative Direction"
-      ],
-      "cover": "",
-      "layout": "horizontal",
-      "videos": [
-        {
-          "name": "90 Season Opener",
-          "role": "Video Editor",
-          "orientation": "horizontal",
-          "vimeoId": "",
-          "thumb": "",
-          "youtubeId": ""
-        },
-        {
-          "name": "Match Highlights",
-          "role": "Video Editor",
-          "orientation": "horizontal",
-          "vimeoId": "",
-          "thumb": "",
-          "youtubeId": ""
-        }
-      ],
-      "description": ""
-    },
-    {
-      "client": "McDonald's",
-      "title": "McDonald's Georgia",
-      "primaryRole": "Motion Graphics Designer",
-      "tags": [
-        "Brand Content",
-        "Motion Graphics"
-      ],
-      "cover": "",
-      "layout": "vertical",
-      "videos": [
-        {
-          "name": "test ",
-          "role": "Motion Graphics Designer",
-          "orientation": "vertical",
-          "vimeoId": "1198491710",
-          "thumb": "",
-          "youtubeId": ""
-        },
-        {
-          "name": "Social Media Pack",
-          "role": "Motion Designer",
-          "orientation": "vertical",
-          "vimeoId": "",
-          "thumb": "",
-          "youtubeId": ""
-        }
-      ],
-      "description": ""
-    },
-    {
-      "client": "Zephyr (UK)",
-      "title": "Zephyr UK",
-      "primaryRole": "Video Editor",
-      "tags": [
-        "Video Editing",
-        "Colour Grade"
-      ],
-      "cover": "",
-      "layout": "horizontal",
-      "videos": [
-        {
-          "name": "Zephyr Brand Film",
-          "role": "Video Editor",
-          "orientation": "horizontal",
-          "vimeoId": "",
-          "thumb": "",
-          "youtubeId": ""
-        }
-      ],
-      "description": ""
-    },
-    {
-      "client": "Government of Georgia",
-      "title": "Government of Georgia",
-      "primaryRole": "Motion Graphics Designer",
-      "tags": [
-        "Motion Graphics",
-        "Broadcast"
-      ],
-      "cover": "",
-      "layout": "horizontal",
-      "videos": [
-        {
-          "name": "Communications Film",
-          "role": "Motion Graphics Designer",
-          "orientation": "horizontal",
-          "vimeoId": "",
-          "thumb": "",
-          "youtubeId": ""
-        }
-      ],
-      "description": ""
-    },
-    {
-      "client": "Rumi Lab",
-      "title": "Rumi Lab",
-      "primaryRole": "Creative Director",
-      "tags": [
-        "Creative Direction",
-        "Motion Design"
-      ],
-      "cover": "",
-      "layout": "horizontal",
-      "videos": [
-        {
-          "name": "Studio Reel",
-          "role": "Creative Director",
-          "orientation": "horizontal",
-          "vimeoId": "",
-          "thumb": "",
-          "youtubeId": ""
-        }
-      ],
-      "description": ""
-    }
+    {"client":"Chess.com","title":"Chess.com","primaryRole":"Motion Designer & Video Editor","tags":["Motion Design","Video Editing","Broadcast"],"cover":"","layout":"mixed","videos":[{"name":"Chess.com Showreel","role":"Motion Designer & Video Editor","orientation":"horizontal","vimeoId":"1146513897","thumb":""},{"name":"Checkmate with Two Bishops","role":"Motion Designer","orientation":"horizontal","vimeoId":"","thumb":""},{"name":"World Cup 2026 Chess Edition","role":"Creative Director","orientation":"horizontal","vimeoId":"","thumb":""}]},
+    {"client":"90 Otkhmocdaati","title":"90 Personal Project","primaryRole":"Video Editor & Creative Director","tags":["Sports Media","Video Editing","Creative Direction"],"cover":"","layout":"horizontal","videos":[{"name":"90 Season Opener","role":"Video Editor","orientation":"horizontal","vimeoId":"","thumb":""},{"name":"Match Highlights","role":"Video Editor","orientation":"horizontal","vimeoId":"","thumb":""}]},
+    {"client":"McDonald's","title":"McDonald's Georgia","primaryRole":"Motion Graphics Designer","tags":["Brand Content","Motion Graphics"],"cover":"","layout":"vertical","videos":[{"name":"Campaign Launch Film","role":"Motion Graphics Designer","orientation":"vertical","vimeoId":"","thumb":""},{"name":"Social Media Pack","role":"Motion Designer","orientation":"vertical","vimeoId":"","thumb":""}]},
+    {"client":"Zephyr (UK)","title":"Zephyr UK","primaryRole":"Video Editor","tags":["Video Editing","Colour Grade"],"cover":"","layout":"horizontal","videos":[{"name":"Zephyr Brand Film","role":"Video Editor","orientation":"horizontal","vimeoId":"","thumb":""}]},
+    {"client":"Government of Georgia","title":"Government of Georgia","primaryRole":"Motion Graphics Designer","tags":["Motion Graphics","Broadcast"],"cover":"","layout":"horizontal","videos":[{"name":"Communications Film","role":"Motion Graphics Designer","orientation":"horizontal","vimeoId":"","thumb":""}]},
+    {"client":"Rumi Lab","title":"Rumi Lab","primaryRole":"Creative Director","tags":["Creative Direction","Motion Design"],"cover":"","layout":"horizontal","videos":[{"name":"Studio Reel","role":"Creative Director","orientation":"horizontal","vimeoId":"","thumb":""}]}
   ],
   "services": [
-    {
-      "icon": "✂️",
-      "name": "Video Editing",
-      "desc": "Long-form, short-form, branded and documentary editing."
-    },
-    {
-      "icon": "⬡",
-      "name": "Motion Design",
-      "desc": "Broadcast graphics, social animations, UI motion."
-    },
-    {
-      "icon": "◎",
-      "name": "Creative Direction",
-      "desc": "Concept development, pacing, visual storytelling."
-    },
-    {
-      "icon": "⚽",
-      "name": "Sports Storytelling",
-      "desc": "Football, chess and emotionally driven sports content."
-    }
+    {"icon":"✂️","name":"Video Editing","desc":"Long-form, short-form, branded and documentary editing."},
+    {"icon":"⬡","name":"Motion Design","desc":"Broadcast graphics, social animations, UI motion."},
+    {"icon":"◎","name":"Creative Direction","desc":"Concept development, pacing, visual storytelling."},
+    {"icon":"⚽","name":"Sports Storytelling","desc":"Football, chess and emotionally driven sports content."}
   ],
   "experience": [
-    {
-      "logo": "https://framerusercontent.com/images/ae3vkS5Hf13BQjReNKliLLX6lus.png",
-      "role": "Video Editor",
-      "company": "Chess.com",
-      "period": "2022  Present"
-    },
-    {
-      "logo": "https://framerusercontent.com/images/UZTYrMlXlc2U9GshSt8lyjBvIM0.png",
-      "role": "Motion Graphics Designer",
-      "company": "Government of Georgia",
-      "period": "2014  2020"
-    },
-    {
-      "logo": "https://framerusercontent.com/images/ZZO1P4O9Oi0QtP7NZpenoQt8PfU.png",
-      "role": "Freelance Video Editor",
-      "company": "Zephyr",
-      "period": "2018  2020"
-    },
-    {
-      "logo": "https://framerusercontent.com/images/XUd20EhFpAmQq0xzSujX4wZ3OL8.png",
-      "role": "Motion Graphics Designer",
-      "company": "McDonald's Georgia",
-      "period": "2022  2025"
-    }
+    {"logo":"https://framerusercontent.com/images/ae3vkS5Hf13BQjReNKliLLX6lus.png","role":"Video Editor","company":"Chess.com","period":"2022  Present"},
+    {"logo":"https://framerusercontent.com/images/UZTYrMlXlc2U9GshSt8lyjBvIM0.png","role":"Motion Graphics Designer","company":"Government of Georgia","period":"2014  2020"},
+    {"logo":"https://framerusercontent.com/images/ZZO1P4O9Oi0QtP7NZpenoQt8PfU.png","role":"Freelance Video Editor","company":"Zephyr","period":"2018  2020"},
+    {"logo":"https://framerusercontent.com/images/XUd20EhFpAmQq0xzSujX4wZ3OL8.png","role":"Motion Graphics Designer","company":"McDonald's Georgia","period":"2022  2025"}
   ],
   "about": {
-    "photo": "https://framerusercontent.com/images/zZ0xcBymMa8x4ZSEpuDlAS59bc.png",
-    "name": "Malkhaz Tchubabria (Rumi)",
-    "heading": "Freelance motion designer & video editor, 10+ years.",
-    "bio": "Freelance motion designer and video editor with 10+ years of experience across sports media, broadcast production, branded content, documentaries, and digital storytelling.\n\nCurrently collaborating with Chess.com on long-form productions, social media content, and broadcast visuals, combining cinematic editing with motion graphics and visual systems.\n\nExperienced in motion graphics, UI/UX thinking, social media production, camera operation, and TV broadcast environments.",
-    "skills": [
-      "After Effects",
-      "Premiere Pro",
-      "Blender",
-      "DaVinci Resolve",
-      "Motion Graphics",
-      "Broadcast Graphics",
-      "Sports Media",
-      "AI Workflows"
-    ]
+    "photo":"https://framerusercontent.com/images/zZ0xcBymMa8x4ZSEpuDlAS59bc.png",
+    "name":"Malkhaz Tchubabria (Rumi)",
+    "heading":"Freelance motion designer & video editor, 10+ years.",
+    "bio":"Freelance motion designer and video editor with 10+ years of experience across sports media, broadcast production, branded content, documentaries, and digital storytelling.\n\nCurrently collaborating with Chess.com on long-form productions, social media content, and broadcast visuals, combining cinematic editing with motion graphics and visual systems.\n\nExperienced in motion graphics, UI/UX thinking, social media production, camera operation, and TV broadcast environments.",
+    "skills":["After Effects","Premiere Pro","Blender","DaVinci Resolve","Motion Graphics","Broadcast Graphics","Sports Media","AI Workflows"]
   },
   "contact": {
-    "heading": "Available for freelance projects and creative collaborations.",
-    "sub": "Open to sports media, branded content, documentaries, and motion design projects worldwide.",
-    "email": "malkhaztchubabria@gmail.com",
-    "linkedin": "https://www.linkedin.com/in/malkhaztchubabria/",
-    "vimeo": "https://vimeo.com/rumimotion",
-    "behance": "https://www.behance.net/rumimotion"
+    "heading":"Available for freelance projects and creative collaborations.",
+    "sub":"Open to sports media, branded content, documentaries, and motion design projects worldwide.",
+    "email":"malkhaztchubabria@gmail.com",
+    "linkedin":"https://www.linkedin.com/in/malkhaztchubabria/",
+    "vimeo":"https://vimeo.com/rumimotion",
+    "behance":"https://www.behance.net/rumimotion"
   }
 }
 </script>
@@ -574,13 +480,32 @@
 <!-- HERO -->
 <section id="hero">
   <div class="wrap">
-    <div class="hero-eyebrow">Motion Designer &amp; Video Editor  Tbilisi, Georgia</div>
-    <h1 class="hero-name reveal" id="s-name" style="min-height:clamp(2.8rem,6vw,5.6rem)">RUMI</h1>
-    <p class="hero-subtitle reveal" id="s-subtitle">Motion Graphics Designer,<br>Video Editor &amp; Creative Problem Solver</p>
-    <div class="hero-body reveal" id="s-body">I'm <a href="https://www.linkedin.com/in/malkhaztchubabria/" target="_blank">Malkhaz Tchubabria</a> (aka <strong>RUMI</strong>), a Motion Graphics Designer, Video Editor, and Visual Storyteller based in Tbilisi, Georgia.</div>
-    <p class="hero-tagline reveal" id="s-tagline">I don't just animate graphics, I build visual experiences that help audiences understand, remember, and connect with a story.</p>
-    <div class="hero-actions reveal">
-      <a class="btn btn-green" id="s-cta" href="#contact">Get in Touch</a>
+    <div class="hero-eyebrow">Motion Designer &amp; Video Editor · Tbilisi, Georgia</div>
+    <div class="hero-grid">
+      <div class="hero-left">
+        <h1 class="hero-name reveal" id="s-name">RUMI</h1>
+        <p class="hero-subtitle reveal" id="s-subtitle">Motion Graphics Designer,<br>Video Editor &amp; Creative Problem Solver</p>
+        <div class="hero-body reveal" id="s-body">I'm <a href="https://www.linkedin.com/in/malkhaztchubabria/" target="_blank">Malkhaz Tchubabria</a> (aka <strong>RUMI</strong>), a Motion Graphics Designer, Video Editor, and Visual Storyteller based in Tbilisi, Georgia. Over the last decade, I've worked across sports media, digital content, documentaries, government communications, and branded campaigns, helping organizations transform ideas into engaging visual stories. As part of the creative team at <a href="https://www.chess.com" target="_blank"><strong>Chess.com</strong></a>, I create educational content, broadcast graphics, YouTube productions, and social media videos for a global audience.</div>
+        <p class="hero-tagline reveal" id="s-tagline">I don't just animate graphics, I build visual experiences that help audiences understand, remember, and connect with a story.</p>
+        <div class="hero-actions reveal">
+          <a class="btn btn-green" id="s-cta" href="#contact">Get in Touch</a>
+        </div>
+      </div>
+      <div class="hero-right reveal">
+        <div class="hero-reel-frame" id="hero-reel">
+          <!-- Showreel placeholder - add Vimeo/YouTube ID in editor -->
+          <div class="hero-reel-ph" id="hero-reel-ph">
+            <svg width="48" height="48" viewBox="0 0 52 52" fill="none" style="color:#333">
+              <rect x="4" y="10" width="44" height="32" rx="3" stroke="currentColor" stroke-width="1.5"/>
+              <polygon points="20,18 20,34 36,26" fill="currentColor"/>
+            </svg>
+            <span style="font-size:.72rem;color:#444;margin-top:10px;letter-spacing:.06em;text-transform:uppercase">Add Showreel</span>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:10px;font-size:.68rem;color:#444;letter-spacing:.04em">
+          Showreel · Add in ✏️ Editor → Hero
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -917,6 +842,9 @@ function readHeroTab(){
   D.hero.tagline=gv('h-tag');
   D.hero.ctaText=gv('h-ctat');
   D.hero.ctaHref=gv('h-ctah');
+  D.hero.reelVimeoId=gv('h-rvimeo');
+  D.hero.reelYoutubeId=gv('h-ryt');
+  D.hero.reelThumb=gv('h-rthumb');
 }
 
 /* 

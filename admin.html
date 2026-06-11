@@ -814,6 +814,11 @@ function buildProjects(){
           <div class="field"><label>Project Title</label><input id="pt-${i}" value="${esc(p.title)}" oninput="markUnsaved()"/></div>
         </div>
         <div class="field"><label>Primary Role (shown on card)</label><input id="pr-${i}" value="${esc(p.primaryRole)}" oninput="markUnsaved()"/></div>
+        <div class="field">
+          <label>Project Description</label>
+          <small>Shown on project page below meta info. What was the project and what did you do?</small>
+          <textarea class="ta" id="pdesc-${i}" style="min-height:90px" oninput="markUnsaved()">${esc(p.description||'')}</textarea>
+        </div>
         <div class="field"><label>Tags (comma separated)</label><input id="ptags-${i}" value="${esc((p.tags||[]).join(', '))}" oninput="markUnsaved()"/></div>
         <div class="field">
           <label>Cover Image URL</label>
@@ -990,6 +995,7 @@ function readAll(){
     p.client=gv(`pc-${i}`);
     p.title=gv(`pt-${i}`);
     p.primaryRole=gv(`pr-${i}`);
+    p.description=gv(`pdesc-${i}`);
     p.tags=gv(`ptags-${i}`).split(',').map(s=>s.trim()).filter(Boolean);
     p.cover=gv(`pcover-${i}`);
     (p.videos||[]).forEach((v,vi)=>{
@@ -1151,7 +1157,7 @@ function removeVideo(i,vi){
   markUnsaved();
 }
 function addProject(){
-  (D.projects=D.projects||[]).push({client:'New Client',title:'New Project',primaryRole:'',tags:[],cover:'',layout:'horizontal',videos:[]});
+  (D.projects=D.projects||[]).push({client:'New Client',title:'New Project',primaryRole:'',description:'',tags:[],cover:'',layout:'horizontal',videos:[]});
   buildProjects();
   buildDashboard();
   markUnsaved();

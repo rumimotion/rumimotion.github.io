@@ -84,9 +84,19 @@ function openProjectPage(p,ci){
   if(metaEl) metaEl.innerHTML=[
     {l:'Client',v:p.client||''},
     {l:'My Role',v:roles.join('  ')||''},
-    {l:'Videos',v:(p.videos||[]).length+''},
     {l:'Services',v:(p.tags||[]).join(', ')||''},
   ].map(m=>`<div><div class="pp-meta-label">${m.l}</div><div class="pp-meta-val">${m.v}</div></div>`).join('');
+
+  // Project description
+  const descEl=document.getElementById('pp-description');
+  if(descEl){
+    if(p.description){
+      descEl.style.display='block';
+      descEl.innerHTML=p.description;
+    } else {
+      descEl.style.display='none';
+    }
+  }
 
   const vids=p.videos||[];
   const vidLabel=document.getElementById('pp-vid-label');

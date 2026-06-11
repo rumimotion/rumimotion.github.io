@@ -160,11 +160,12 @@ function openProjectPage(p,ci){
         const isV=orient==='vertical';
         // Use YouTube auto-thumbnail if no thumb set and YouTube ID exists
         // Auto thumbnail: YouTube = instant, Vimeo = fetched via oEmbed
-        const ytThumb = (!v.thumb && v.youtubeId) ? `https://img.youtube.com/vi/${v.youtubeId}/hqdefault.jpg` : '';
+        // YouTube: try maxresdefault first (1280x720), fallback to hqdefault (480x360)
+        const ytThumb = (!v.thumb && v.youtubeId) ? `https://img.youtube.com/vi/${v.youtubeId}/maxresdefault.jpg` : '';
         const vimeoThumbId = `vt-auto-${ci}-${vi}`;
         const thumbSrc = v.thumb || ytThumb;
         const tH = thumbSrc
-          ? `<img src="${thumbSrc}" alt="${v.name||''}" loading="lazy"/>`
+          ? `<img src="${thumbSrc}" alt="${v.name||''}" loading="lazy" onerror="if(this.src.includes('maxresdefault')){this.src=this.src.replace('maxresdefault','hqdefault')}else{this.style.display='none'}"/>`
           : v.vimeoId
             ? `<img id="${vimeoThumbId}" src="" alt="${v.name||''}" loading="lazy" style="display:none"/><div class="vid-thumb-ph" id="${vimeoThumbId}-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`
             : `<div class="vid-thumb-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`;

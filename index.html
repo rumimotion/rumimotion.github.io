@@ -28,28 +28,23 @@
 <link rel="stylesheet" href="style.css"/>
 <style>
 
-/* HERO GRID */
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 420px;
-  gap: 56px;
-  align-items: start;
-  padding-top: 8px;
+/* HERO REEL - between subtitle and body text */
+.hero-reel-wrap {
+  margin: 24px 0;
+  max-width: 720px;
 }
-@media (max-width: 1000px) { .hero-grid { grid-template-columns: 1fr 340px; gap: 40px; } }
-@media (max-width: 760px)  { .hero-grid { grid-template-columns: 1fr; gap: 32px; } .hero-right { order: -1; } }
-
 .hero-reel-frame {
   position: relative;
   width: 100%;
   aspect-ratio: 16/9;
-  background: #111;
-  border: 1px solid #222;
-  border-radius: 12px;
+  background: #0f0f0f;
+  border: 1px solid #1e1e1e;
+  border-radius: 10px;
   overflow: hidden;
+  cursor: pointer;
   transition: border-color .2s;
 }
-.hero-reel-frame:hover { border-color: #333; }
+.hero-reel-frame:hover { border-color: #2a2a2a; }
 .hero-reel-ph {
   width: 100%; height: 100%;
   display: flex; flex-direction: column;
@@ -60,18 +55,19 @@
   width: 100%; height: 100%;
   object-fit: cover;
   position: absolute; inset: 0;
+  display: block;
 }
 .hero-reel-play-btn {
-  position: absolute; inset: 0;
+  position: absolute; inset: 0; z-index: 2;
   display: flex; align-items: center; justify-content: center;
   background: rgba(0,0,0,0); transition: background .2s;
   cursor: pointer; border: none; width: 100%;
 }
-.hero-reel-frame:hover .hero-reel-play-btn { background: rgba(0,0,0,.3); }
+.hero-reel-frame:hover .hero-reel-play-btn { background: rgba(0,0,0,.35); }
 .hero-reel-play-circle {
   width: 64px; height: 64px; border-radius: 50%;
-  background: rgba(10,10,10,.8);
-  border: 2px solid rgba(74,222,128,.4);
+  background: rgba(10,10,10,.85);
+  border: 2px solid rgba(74,222,128,.45);
   display: flex; align-items: center; justify-content: center;
   transition: transform .15s, border-color .15s;
 }
@@ -376,10 +372,10 @@
     {"icon":"⚽","name":"Sports Storytelling","desc":"Football, chess and emotionally driven sports content."}
   ],
   "experience": [
-    {"logo":"https://framerusercontent.com/images/ae3vkS5Hf13BQjReNKliLLX6lus.png","role":"Video Editor","company":"Chess.com","period":"2022  Present"},
-    {"logo":"https://framerusercontent.com/images/UZTYrMlXlc2U9GshSt8lyjBvIM0.png","role":"Motion Graphics Designer","company":"Government of Georgia","period":"2014  2020"},
-    {"logo":"https://framerusercontent.com/images/ZZO1P4O9Oi0QtP7NZpenoQt8PfU.png","role":"Freelance Video Editor","company":"Zephyr","period":"2018  2020"},
-    {"logo":"https://framerusercontent.com/images/XUd20EhFpAmQq0xzSujX4wZ3OL8.png","role":"Motion Graphics Designer","company":"McDonald's Georgia","period":"2022  2025"}
+    {"logo":"https://framerusercontent.com/images/ae3vkS5Hf13BQjReNKliLLX6lus.png","role":"Video Editor","company":"Chess.com","period":"2022 – Present"},
+    {"logo":"https://framerusercontent.com/images/UZTYrMlXlc2U9GshSt8lyjBvIM0.png","role":"Motion Graphics Designer","company":"Government of Georgia","period":"2014 – 2020"},
+    {"logo":"https://framerusercontent.com/images/ZZO1P4O9Oi0QtP7NZpenoQt8PfU.png","role":"Freelance Video Editor","company":"Zephyr","period":"2018 – 2020"},
+    {"logo":"https://framerusercontent.com/images/XUd20EhFpAmQq0xzSujX4wZ3OL8.png","role":"Motion Graphics Designer","company":"McDonald's Georgia","period":"2022 – 2025"}
   ],
   "about": {
     "photo":"https://framerusercontent.com/images/zZ0xcBymMa8x4ZSEpuDlAS59bc.png",
@@ -423,32 +419,32 @@
 <!-- HERO -->
 <section id="hero">
   <div class="wrap">
-    <div class="hero-eyebrow">Motion Designer &amp; Video Editor · Tbilisi, Georgia</div>
-    <div class="hero-grid">
-      <div class="hero-left">
-        <h1 class="hero-name reveal" id="s-name">RUMI</h1>
-        <p class="hero-subtitle reveal" id="s-subtitle">Motion Graphics Designer,<br>Video Editor &amp; Creative Problem Solver</p>
-        <div class="hero-body reveal" id="s-body">I'm <a href="https://www.linkedin.com/in/malkhaztchubabria/" target="_blank">Malkhaz Tchubabria</a> (aka <strong>RUMI</strong>), a Motion Graphics Designer, Video Editor, and Visual Storyteller based in Tbilisi, Georgia. Over the last decade, I've worked across sports media, digital content, documentaries, government communications, and branded campaigns, helping organizations transform ideas into engaging visual stories. As part of the creative team at <a href="https://www.chess.com" target="_blank"><strong>Chess.com</strong></a>, I create educational content, broadcast graphics, YouTube productions, and social media videos for a global audience.</div>
-        <p class="hero-tagline reveal" id="s-tagline">I don't just animate graphics, I build visual experiences that help audiences understand, remember, and connect with a story.</p>
-        <div class="hero-actions reveal">
-          <a class="btn btn-green" id="s-cta" href="#contact">Get in Touch</a>
+    <div class="hero-eyebrow">Motion Designer &amp; Video Editor &middot; Tbilisi, Georgia</div>
+    <h1 class="hero-name reveal" id="s-name">RUMI</h1>
+    <p class="hero-subtitle reveal" id="s-subtitle">Motion Graphics Designer,<br>Video Editor &amp; Creative Problem Solver</p>
+
+    <!-- SHOWREEL FRAME — sits between subtitle and body text, full width -->
+    <div class="hero-reel-wrap reveal">
+      <div class="hero-reel-frame" id="hero-reel">
+        <div class="hero-reel-ph" id="hero-reel-ph">
+          <svg width="44" height="44" viewBox="0 0 52 52" fill="none" style="color:#2a2a2a">
+            <rect x="4" y="10" width="44" height="32" rx="3" stroke="currentColor" stroke-width="1.5"/>
+            <polygon points="20,18 20,34 36,26" fill="currentColor"/>
+            <rect x="4" y="6" width="5" height="4" rx="1" fill="currentColor"/>
+            <rect x="43" y="6" width="5" height="4" rx="1" fill="currentColor"/>
+            <rect x="4" y="42" width="5" height="4" rx="1" fill="currentColor"/>
+            <rect x="43" y="42" width="5" height="4" rx="1" fill="currentColor"/>
+          </svg>
+          <span style="font-size:.7rem;color:#333;margin-top:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:600">Showreel</span>
+          <span style="font-size:.62rem;color:#2a2a2a;margin-top:3px">Add Vimeo/YouTube ID in ✏️ Editor</span>
         </div>
       </div>
-      <div class="hero-right reveal">
-        <div class="hero-reel-frame" id="hero-reel">
-          <!-- Showreel placeholder - add Vimeo/YouTube ID in editor -->
-          <div class="hero-reel-ph" id="hero-reel-ph">
-            <svg width="48" height="48" viewBox="0 0 52 52" fill="none" style="color:#333">
-              <rect x="4" y="10" width="44" height="32" rx="3" stroke="currentColor" stroke-width="1.5"/>
-              <polygon points="20,18 20,34 36,26" fill="currentColor"/>
-            </svg>
-            <span style="font-size:.72rem;color:#444;margin-top:10px;letter-spacing:.06em;text-transform:uppercase">Add Showreel</span>
-          </div>
-        </div>
-        <div style="text-align:center;margin-top:10px;font-size:.68rem;color:#444;letter-spacing:.04em">
-          Showreel · Add in ✏️ Editor → Hero
-        </div>
-      </div>
+    </div>
+
+    <div class="hero-body reveal" id="s-body">I'm <a href="https://www.linkedin.com/in/malkhaztchubabria/" target="_blank" rel="noopener">Malkhaz Tchubabria</a> (aka <strong>RUMI</strong>), a Motion Graphics Designer, Video Editor, and Visual Storyteller based in Tbilisi, Georgia. Over the last decade, I've worked across sports media, digital content, documentaries, government communications, and branded campaigns, helping organizations transform ideas into engaging visual stories. As part of the creative team at <a href="https://www.chess.com" target="_blank" rel="noopener"><strong>Chess.com</strong></a>, I create educational content, broadcast graphics, YouTube productions, and social media videos for a global audience.</div>
+    <p class="hero-tagline reveal" id="s-tagline">I don't just animate graphics, I build visual experiences that help audiences understand, remember, and connect with a story.</p>
+    <div class="hero-actions reveal">
+      <a class="btn btn-green" id="s-cta" href="#contact">Get in Touch</a>
     </div>
   </div>
 </section>

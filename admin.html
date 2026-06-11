@@ -81,8 +81,6 @@ img{display:block;max-width:100%}
 .login-btn:hover{background:#3dcc6e}
 .login-err{font-size:.78rem;color:var(--red);margin-top:10px;min-height:18px}
 
-.login-hint a{color:var(--green)}
-
 /* ================================================
    APP SHELL
    ================================================ */
@@ -375,11 +373,11 @@ img{display:block;max-width:100%}
 </head>
 <body>
 
-<!-- ── LOGIN ─────────────────────────────────── -->
+<!--  LOGIN  -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">RUMI<span>.</span></div>
-    <div class="login-sub">Admin Panel — enter your password</div>
+    <div class="login-sub">Admin Panel  enter your password</div>
     <div class="login-field">
       <label>Password</label>
       <input type="password" id="pw-input" placeholder="Enter password" autocomplete="current-password"/>
@@ -389,7 +387,7 @@ img{display:block;max-width:100%}
   </div>
 </div>
 
-<!-- ── APP ───────────────────────────────────── -->
+<!--  APP  -->
 <div id="app">
 
   <!-- mobile toggle -->
@@ -406,15 +404,15 @@ img{display:block;max-width:100%}
       RUMI Admin
     </div>
     <div class="sb-label">Content</div>
-    <div class="sb-item on" data-page="dashboard"><span class="sb-item-icon">◈</span> Dashboard</div>
+    <div class="sb-item on" data-page="dashboard"><span class="sb-item-icon"></span> Dashboard</div>
     <div class="sb-item" data-page="hero"><span class="sb-item-icon">✦</span> Hero</div>
-    <div class="sb-item" data-page="projects"><span class="sb-item-icon">⊞</span> Projects</div>
+    <div class="sb-item" data-page="projects"><span class="sb-item-icon"></span> Projects</div>
     <div class="sb-item" data-page="services"><span class="sb-item-icon">◎</span> Services</div>
-    <div class="sb-item" data-page="experience"><span class="sb-item-icon">◷</span> Experience</div>
-    <div class="sb-item" data-page="about"><span class="sb-item-icon">◉</span> About</div>
+    <div class="sb-item" data-page="experience"><span class="sb-item-icon"></span> Experience</div>
+    <div class="sb-item" data-page="about"><span class="sb-item-icon"></span> About</div>
     <div class="sb-item" data-page="contact"><span class="sb-item-icon">✉</span> Contact</div>
     <div class="sb-label">Appearance</div>
-    <div class="sb-item" data-page="design"><span class="sb-item-icon">◐</span> Design</div>
+    <div class="sb-item" data-page="design"><span class="sb-item-icon"></span> Design</div>
     <div class="sb-label">System</div>
     <div class="sb-item" data-page="settings"><span class="sb-item-icon">⚙</span> Settings</div>
     <div class="sb-bottom">
@@ -471,11 +469,11 @@ img{display:block;max-width:100%}
         <div class="card">
           <div class="card-title">How to add images</div>
           <div class="cloud-box" style="margin-bottom:0">
-            <strong>Option 1 — Cloudinary (recommended, free):</strong><br>
-            1. Go to <a href="https://cloudinary.com" target="_blank">cloudinary.com</a> → sign up free<br>
-            2. Upload your image → click it → copy the URL<br>
+            <strong>Option 1  Cloudinary (recommended, free):</strong><br>
+            1. Go to <a href="https://cloudinary.com" target="_blank">cloudinary.com</a>  sign up free<br>
+            2. Upload your image  click it  copy the URL<br>
             3. Paste the URL in any Image field below<br><br>
-            <strong>Option 2 — GitHub repo:</strong><br>
+            <strong>Option 2  GitHub repo:</strong><br>
             Upload image to your <code style="color:var(--green)">assets/uploads/</code> folder via GitHub Desktop,
             then use path: <code style="color:var(--green)">assets/uploads/your-image.jpg</code>
           </div>
@@ -492,7 +490,7 @@ img{display:block;max-width:100%}
           <div class="card-title">Main Text</div>
           <div class="field"><label>Display Name</label><input id="h-name" placeholder="RUMI"/></div>
           <div class="field"><label>Subtitle</label><small>Use \n for a line break</small><input id="h-sub"/></div>
-          <div class="field"><label>Body Text</label><small>HTML allowed: &lt;strong&gt;, &lt;a href=""&gt; — paste your Chess.com link here</small><textarea id="h-body" style="min-height:120px"></textarea></div>
+          <div class="field"><label>Body Text</label><small>HTML allowed: &lt;strong&gt;, &lt;a href=""&gt;  paste your Chess.com link here</small><textarea id="h-body" style="min-height:120px"></textarea></div>
           <div class="field"><label>Tagline (shown in italic with green border)</label><textarea id="h-tag"></textarea></div>
         </div>
         <div class="card">
@@ -508,11 +506,11 @@ img{display:block;max-width:100%}
       <div class="page" id="page-projects">
         <div class="page-header">
           <div class="page-title">Projects</div>
-          <div class="page-sub">Your portfolio work — click a card to expand and edit</div>
+          <div class="page-sub">Your portfolio work  click a card to expand and edit</div>
         </div>
         <div class="cloud-box">
-          <strong>Cover images:</strong> Upload to <a href="https://cloudinary.com" target="_blank">Cloudinary</a> → paste URL below.
-          Recommended size: <strong>1200 × 675px</strong> for covers, <strong>800 × 450px</strong> for horizontal thumbnails, <strong>450 × 800px</strong> for vertical.
+          <strong>Cover images:</strong> Upload to <a href="https://cloudinary.com" target="_blank">Cloudinary</a>  paste URL below.
+          Recommended size: <strong>1200  675px</strong> for covers, <strong>800  450px</strong> for horizontal thumbnails, <strong>450  800px</strong> for vertical.
         </div>
         <div id="proj-list"></div>
         <button class="add-btn" id="add-proj-btn">+ Add New Project</button>
@@ -545,7 +543,7 @@ img{display:block;max-width:100%}
         </div>
         <div class="card">
           <div class="card-title">Portrait Photo</div>
-          <div class="cloud-box">Upload your portrait to <a href="https://cloudinary.com" target="_blank">Cloudinary</a> → paste URL below. Recommended: <strong>600 × 800px portrait</strong></div>
+          <div class="cloud-box">Upload your portrait to <a href="https://cloudinary.com" target="_blank">Cloudinary</a>  paste URL below. Recommended: <strong>600  800px portrait</strong></div>
           <div class="img-field">
             <img id="about-photo-prev" class="img-thumb tall" src="" alt="" onerror="this.style.display='none'" onload="this.style.display='block'"/>
             <div class="img-input-wrap">
@@ -593,7 +591,7 @@ img{display:block;max-width:100%}
       <div class="page" id="page-design">
         <div class="page-header">
           <div class="page-title">Design</div>
-          <div class="page-sub">Fonts and colors — changes apply instantly on Publish</div>
+          <div class="page-sub">Fonts and colors  changes apply instantly on Publish</div>
         </div>
         <div class="card">
           <div class="card-title">Font Family</div>
@@ -624,7 +622,7 @@ img{display:block;max-width:100%}
         </div>
         <div class="card">
           <div class="card-title">GitHub Connection</div>
-          <div class="field"><label>Personal Access Token</label><small>Stored only in your browser. Never uploaded anywhere. Get one at github.com/settings/tokens → Classic → repo scope.</small><input type="password" id="s-token" placeholder="ghp_..."/></div>
+          <div class="field"><label>Personal Access Token</label><small>Stored only in your browser. Never uploaded anywhere. Get one at github.com/settings/tokens  Classic  repo scope.</small><input type="password" id="s-token" placeholder="ghp_..."/></div>
           <div class="field-row">
             <div class="field"><label>Repository</label><input id="s-repo" placeholder="rumimotion/rumimotion.github.io"/></div>
             <div class="field"><label>Branch</label><input id="s-branch" placeholder="main"/></div>
@@ -699,7 +697,7 @@ function toast(msg,type='success'){
 }
 
 /* -- LOGIN -- */
-const DEFAULT_PW='NewPortfolio@123';
+const DEFAULT_PW=atob('TmV3UG9ydGZvbGlvQDEyMw==');
 function getPassword(){return localStorage.getItem('rumi_admin_pw')||DEFAULT_PW;}
 
 $('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
@@ -736,7 +734,7 @@ async function loadData(){
     else { D=getDefaultData(); }
   }catch(e){
     D=getDefaultData();
-    toast('Could not load site data — using defaults','info');
+    toast('Could not load site data  using defaults','info');
   }
   D.github=D.github||{token:'',repo:'rumimotion/rumimotion.github.io',branch:'main',path:'index.html'};
   populateForms();
@@ -808,7 +806,7 @@ function buildProjects(){
           <div class="acc-name">${p.client||'New Project'}</div>
           <span class="acc-tag">${(p.videos||[]).length} videos</span>
         </div>
-        <span class="acc-chevron">›</span>
+        <span class="acc-chevron"></span>
       </div>
       <div class="acc-body">
         <div class="field-row">
@@ -830,9 +828,9 @@ function buildProjects(){
         <div class="field">
           <label>Video Gallery Layout</label>
           <div class="toggle-group" id="layout-tog-${i}">
-            <button class="toggle-opt${p.layout==='horizontal'?' on':''}" onclick="setLayout(${i},'horizontal')">▬ Horizontal 16:9 (2 cols)</button>
-            <button class="toggle-opt${p.layout==='vertical'?' on':''}" onclick="setLayout(${i},'vertical')">▮ Vertical 9:16 (3 cols)</button>
-            <button class="toggle-opt${(p.layout==='mixed'||!p.layout)?' on':''}" onclick="setLayout(${i},'mixed')">⊞ Mixed (per video)</button>
+            <button class="toggle-opt${p.layout==='horizontal'?' on':''}" onclick="setLayout(${i},'horizontal')"> Horizontal 16:9 (2 cols)</button>
+            <button class="toggle-opt${p.layout==='vertical'?' on':''}" onclick="setLayout(${i},'vertical')"> Vertical 9:16 (3 cols)</button>
+            <button class="toggle-opt${(p.layout==='mixed'||!p.layout)?' on':''}" onclick="setLayout(${i},'mixed')"> Mixed (per video)</button>
           </div>
         </div>
         <div style="margin-top:16px;margin-bottom:8px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green)">Videos</div>
@@ -911,7 +909,7 @@ function buildExperience(){
         <div class="field"><label>Job Title / Role</label><input id="er-${i}" value="${esc(e.role)}" oninput="markUnsaved()"/></div>
         <div class="field"><label>Company</label><input id="ec-${i}" value="${esc(e.company)}" oninput="markUnsaved()"/></div>
       </div>
-      <div class="field"><label>Period</label><input id="ep-${i}" value="${esc(e.period)}" placeholder="2022 – Present" oninput="markUnsaved()"/></div>
+      <div class="field"><label>Period</label><input id="ep-${i}" value="${esc(e.period)}" placeholder="2022  Present" oninput="markUnsaved()"/></div>
       <div class="field">
         <label>Company Logo URL</label>
         <div class="img-field">
@@ -1068,7 +1066,7 @@ async function publishToGitHub(){
     const getRes=await fetch(`https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`,
       {headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json'}});
     const getJson=await getRes.json();
-    if(!getJson.sha){toast('Could not get file SHA — check token & repo','error');return;}
+    if(!getJson.sha){toast('Could not get file SHA  check token & repo','error');return;}
     const sha=getJson.sha;
 
     /* 2. Get current HTML content and inject new D */
@@ -1099,7 +1097,7 @@ async function publishToGitHub(){
       console.error(err);
     }
   }catch(e){
-    toast('Network error — check console','error');
+    toast('Network error  check console','error');
     console.error(e);
   }
 

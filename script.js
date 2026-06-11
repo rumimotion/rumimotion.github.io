@@ -1,7 +1,7 @@
-/* RUMI PORTFOLIO — script.js */
+/* RUMI PORTFOLIO  script.js */
 'use strict';
 
-/* ── render everything from data object ── */
+/*  render everything from data object  */
 function renderSite(D){
   renderHero(D.hero);
   renderProjects(D.projects);
@@ -84,7 +84,7 @@ function openProjectPage(p,ci){
   const metaEl=document.getElementById('pp-meta');
   if(metaEl) metaEl.innerHTML=[
     {l:'Client',v:p.client||''},
-    {l:'My Role',v:roles.join(' · ')||''},
+    {l:'My Role',v:roles.join('  ')||''},
     {l:'Videos',v:(p.videos||[]).length+''},
     {l:'Services',v:(p.tags||[]).join(', ')||''},
   ].map(m=>`<div><div class="pp-meta-label">${m.l}</div><div class="pp-meta-val">${m.v}</div></div>`).join('');
@@ -234,7 +234,7 @@ function renderContact(c){
 /* FOOTER */
 function renderFooter(c,a){
   const copy=document.getElementById('footer-copy');
-  if(copy)copy.textContent=`© ${new Date().getFullYear()} ${(a&&a.name)||'RUMI'}`;
+  if(copy)copy.textContent=` ${new Date().getFullYear()} ${(a&&a.name)||'RUMI'}`;
   const fl=document.getElementById('footer-links');
   if(fl&&c) fl.innerHTML=[
     c.linkedin&&`<a href="${c.linkedin}" target="_blank" rel="noopener">LinkedIn</a>`,

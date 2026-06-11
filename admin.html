@@ -1217,6 +1217,30 @@ window.addExp=addExp;window.removeExp=removeExp;
 window.syncImg=syncImg;window.saveSettings=saveSettings;
 window.changePassword=changePassword;window.loadRawJson=loadRawJson;
 window.applyRawJson=applyRawJson;window.selectFont=selectFont;
+
+/* Auto-thumbnail preview in admin */
+async function previewVimeoThumb(id, imgId){
+  const img = document.getElementById(imgId);
+  if(!img) return;
+  if(!id){ img.src=''; img.classList.remove('on'); return; }
+  try {
+    const res = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}`);
+    const data = await res.json();
+    if(data.thumbnail_url){
+      img.src = data.thumbnail_url;
+      img.classList.add('on');
+    }
+  } catch(e){ img.classList.remove('on'); }
+}
+function previewYTThumb(id, imgId){
+  const img = document.getElementById(imgId);
+  if(!img) return;
+  if(!id){ img.src=''; img.classList.remove('on'); return; }
+  img.src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+  img.classList.add('on');
+}
+window.previewVimeoThumb = previewVimeoThumb;
+window.previewYTThumb = previewYTThumb;
 </script>
 </body>
 </html>

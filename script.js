@@ -31,6 +31,21 @@ function renderHero(h){
 }
 
 /* PROJECT GRID */
+
+/* Auto-fetch Vimeo thumbnail via oEmbed */
+async function fetchVimeoThumb(id, elemId){
+  try {
+    const res = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}`);
+    const data = await res.json();
+    if(data.thumbnail_url){
+      const img = document.getElementById(elemId);
+      const ph  = document.getElementById(elemId+'-ph');
+      if(img){ img.src=data.thumbnail_url; img.style.display='block'; }
+      if(ph)  { ph.style.display='none'; }
+    }
+  } catch(e){ /* silently fail */ }
+}
+
 const COVER_SHADES=['#0d1117','#16181d','#111418','#0e1015','#131618','#111315'];
 const THUMB_SHADES=['#1a1a1a','#161c22','#181818','#151a1f','#1c1c1c','#141414'];
 const FILM=`<svg width="44" height="44" viewBox="0 0 52 52" fill="none"><rect x="4" y="10" width="44" height="32" rx="3" stroke="currentColor" stroke-width="1.5"/><polygon points="20,18 20,34 36,26" fill="currentColor"/><rect x="4" y="6" width="5" height="4" rx="1" fill="currentColor"/><rect x="43" y="6" width="5" height="4" rx="1" fill="currentColor"/><rect x="4" y="42" width="5" height="4" rx="1" fill="currentColor"/><rect x="43" y="42" width="5" height="4" rx="1" fill="currentColor"/></svg>`;
@@ -118,8 +133,15 @@ function openProjectPage(p,ci){
         const orient=layout==='mixed'?(v.orientation||'horizontal'):layout;
         const isV=orient==='vertical';
         // Use YouTube auto-thumbnail if no thumb set and YouTube ID exists
-        const autoThumb=(!v.thumb&&v.youtubeId)?`https://img.youtube.com/vi/${v.youtubeId}/hqdefault.jpg`:'';
-        const tH=(v.thumb||autoThumb)?`<img src="${v.thumb||autoThumb}" alt="${v.name||''}" loading="lazy"/>`:`<div class="vid-thumb-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`;
+        // Auto thumbnail: YouTube = instant, Vimeo = fetched via oEmbed
+        const ytThumb = (!v.thumb && v.youtubeId) ? `https://img.youtube.com/vi/${v.youtubeId}/hqdefault.jpg` : '';
+        const vimeoThumbId = `vt-auto-${ci}-${vi}`;
+        const thumbSrc = v.thumb || ytThumb;
+        const tH = thumbSrc
+          ? `<img src="${thumbSrc}" alt="${v.name||''}" loading="lazy"/>`
+          : v.vimeoId
+            ? `<img id="${vimeoThumbId}" src="" alt="${v.name||''}" loading="lazy" style="display:none"/><div class="vid-thumb-ph" id="${vimeoThumbId}-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`
+            : `<div class="vid-thumb-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`;
         return `<div class="vid-tile${can?' playable':''}"${can?` data-id="${playId}" data-platform="${platform}" data-orient="${orient}" data-name="${(v.name||'').replace(/"/g,'&quot;')}" data-role="${(v.role||'').replace(/"/g,'&quot;')}"`:''}>
           <div class="vid-thumb ${isV?'r916':'r169'}">${tH}${can?`<div class="vid-play-ov"><div class="vid-play-btn">${PLAY}</div></div>`:''}</div>
           <div class="vid-info"><div class="vid-name">${v.name||''}</div><div class="vid-role">${v.role||''}</div></div>
@@ -128,6 +150,12 @@ function openProjectPage(p,ci){
     }
     vidCon.querySelectorAll('.vid-tile.playable').forEach(t=>{
       t.addEventListener('click',()=>openLightbox(t.dataset.id,t.dataset.name,t.dataset.role,t.dataset.orient,t.dataset.platform));
+    });
+    // Auto-fetch Vimeo thumbnails
+    vids.forEach((v,vi)=>{
+      if(v.vimeoId && !v.thumb && !v.youtubeId){
+        fetchVimeoThumb(v.vimeoId, `vt-auto-${ci}-${vi}`);
+      }
     });
   }
 

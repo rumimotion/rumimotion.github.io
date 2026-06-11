@@ -500,6 +500,26 @@ img{display:block;max-width:100%}
             <div class="field"><label>Button Link</label><input id="h-ctah" placeholder="#contact"/></div>
           </div>
         </div>
+        <div class="card">
+          <div class="card-title"><span>&#9654;</span> Hero Showreel (video frame on right side)</div>
+          <div class="field">
+            <label>Vimeo ID</label>
+            <small>Number from vimeo.com/<strong>1234567</strong> — thumbnail loads automatically</small>
+            <input class="inp" id="h-rvimeo" placeholder="e.g. 1146513897"/>
+          </div>
+          <div class="field">
+            <label>YouTube ID</label>
+            <small>From youtube.com/watch?v=<strong>XXXXXXXXXXX</strong> — thumbnail loads automatically</small>
+            <input class="inp" id="h-ryt" placeholder="e.g. dQw4w9WgXcQ"/>
+          </div>
+          <div class="field">
+            <label>Custom Thumbnail (optional)</label>
+            <small>Paste a Cloudinary URL to override auto thumbnail</small>
+            <input class="inp" id="h-rthumb" placeholder="https://..."/>
+          </div>
+        <div style="display:none"><!-- close grid2 -->
+          </div>
+        </div>
       </div>
 
       <!-- PROJECTS -->
@@ -751,6 +771,9 @@ function populateForms(){
   setv('h-tag',h.tagline);
   setv('h-ctat',h.ctaText);
   setv('h-ctah',h.ctaHref);
+  setv('h-rvimeo',h.reelVimeoId||'');
+  setv('h-ryt',h.reelYoutubeId||'');
+  setv('h-rthumb',h.reelThumb||'');
 
   buildProjects();
   buildServices();
@@ -989,6 +1012,9 @@ function readAll(){
   D.hero.tagline=gv('h-tag');
   D.hero.ctaText=gv('h-ctat');
   D.hero.ctaHref=gv('h-ctah');
+  D.hero.reelVimeoId=gv('h-rvimeo');
+  D.hero.reelYoutubeId=gv('h-ryt');
+  D.hero.reelThumb=gv('h-rthumb');
 
   /* projects */
   (D.projects||[]).forEach((p,i)=>{
@@ -1130,6 +1156,33 @@ function toggleAcc(id){
   const el=$(id);if(el)el.classList.toggle('on');
 }
 
+
+/* Save all form fields into D before any re-render to prevent data loss */
+function saveAllFields(){
+  (D.projects||[]).forEach((p,i)=>{
+    ['client','title','primaryRole','description'].forEach(f=>{
+      const el=document.getElementById(`pf-${f}-${i}`);
+      if(el) p[f]=el.value;
+    });
+    const tagsEl=document.getElementById(`pf-tags-${i}`);
+    if(tagsEl) p.tags=tagsEl.value.split(',').map(s=>s.trim()).filter(Boolean);
+    const coverEl=document.getElementById(`pf-cover-${i}`);
+    if(coverEl) p.cover=coverEl.value;
+    (p.videos||[]).forEach((v,vi)=>{
+      const nm=document.getElementById(`vf-name-${i}-${vi}`);
+      const ro=document.getElementById(`vf-role-${i}-${vi}`);
+      const vi_=document.getElementById(`vf-vimeo-${i}-${vi}`);
+      const vy=document.getElementById(`vf-yt-${i}-${vi}`);
+      const th=document.getElementById(`vf-thumb-${i}-${vi}`);
+      if(nm) v.name=nm.value;
+      if(ro) v.role=ro.value;
+      if(vi_) v.vimeoId=vi_.value;
+      if(vy) v.youtubeId=vy.value;
+      if(th) v.thumb=th.value;
+    });
+  });
+}
+
 /* -- LAYOUT / ORIENT helpers -- */
 function setLayout(i,val){
   (D.projects||[])[i].layout=val;
@@ -1139,18 +1192,21 @@ function setLayout(i,val){
   markUnsaved();
 }
 function setOrient(i,vi,val){
+  saveAllFields();
   ((D.projects||[])[i].videos||[])[vi].orientation=val;
   buildProjects();
   const acc=$(`acc-proj-${i}`);if(acc)acc.classList.add('on');
   markUnsaved();
 }
 function addVideo(i){
+  saveAllFields();
   (D.projects[i].videos=D.projects[i].videos||[]).push({name:'New Video',role:'',orientation:'horizontal',vimeoId:'',youtubeId:'',thumb:''});
   buildProjects();
   const acc=$(`acc-proj-${i}`);if(acc)acc.classList.add('on');
   markUnsaved();
 }
 function removeVideo(i,vi){
+  saveAllFields();
   D.projects[i].videos.splice(vi,1);
   buildProjects();
   const acc=$(`acc-proj-${i}`);if(acc)acc.classList.add('on');
@@ -1197,7 +1253,7 @@ function syncImg(input,imgId){
 function getDefaultData(){
   return{font:'General Sans',colors:{bg:'#0A0A0A',surface:'#1A1A1A',border:'#2a2a2a',text:'#F5F5F5',textMid:'#8A8A8A',green:'#4ADE80'},
     github:{token:'',repo:'rumimotion/rumimotion.github.io',branch:'main',path:'index.html'},
-    hero:{name:'RUMI',subtitle:'Motion Graphics Designer,\nVideo Editor & Creative Problem Solver',body:'',tagline:'',ctaText:'Get in Touch',ctaHref:'#contact'},
+    hero:{name:'RUMI',subtitle:'Motion Graphics Designer,\nVideo Editor & Creative Problem Solver',body:'',tagline:'',ctaText:'Get in Touch',ctaHref:'#contact',reelVimeoId:'',reelYoutubeId:'',reelThumb:''},
     projects:[],services:[{icon:'✂️',name:'Video Editing',desc:'Long-form and short-form editing'},{icon:'⬡',name:'Motion Design',desc:'Broadcast graphics and animations'},{icon:'◎',name:'Creative Direction',desc:'Concept development and storytelling'},{icon:'⚽',name:'Sports Storytelling',desc:'Football and sports content'}],
     experience:[],about:{photo:'',name:'',heading:'',bio:'',skills:[]},
     contact:{heading:'',sub:'',email:'',linkedin:'',vimeo:'',behance:''}};

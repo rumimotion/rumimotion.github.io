@@ -18,8 +18,9 @@
   <link rel="dns-prefetch" href="https://img.youtube.com"/>
   <link rel="dns-prefetch" href="https://www.youtube.com"/>
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin/>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230A0A0A'/><text y='.9em' font-size='85' x='8'>R</text></svg>"/>
-<link rel="alternate icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAA"/>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
 <!-- Preload font non-blocking to fix render-blocking resource -->
   <link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
   <noscript><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap"/></noscript>
@@ -1030,7 +1031,12 @@ window.addExp=addExp; window.previewImg=previewImg;
  */
 applyColors();
 applyFont(D.font);
-renderSite(D);
+// Wait for script.js to load before rendering
+if(typeof renderSite === 'function'){
+  renderSite(D);
+} else {
+  window.addEventListener('load', ()=>{ if(typeof renderSite==='function') renderSite(D); });
+}
 buildTab('design');
 </script>
 </body>

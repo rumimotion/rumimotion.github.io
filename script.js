@@ -76,6 +76,27 @@ async function fetchVimeoThumb(id, elemId){
   }catch(e){ return null; }
 }
 
+/* ── TIKTOK THUMBNAIL (auto via oEmbed) ────────────────────── */
+async function fetchTikTokThumb(id, elemId){
+  try{
+    // TikTok oEmbed — returns thumbnail_url
+    const res=await fetch(`https://www.tiktok.com/oembed?url=https://www.tiktok.com/video/${id}`);
+    const data=await res.json();
+    if(!data.thumbnail_url) return null;
+    if(elemId){
+      const img=document.getElementById(elemId);
+      const ph=document.getElementById(elemId+'-ph');
+      if(img){
+        const show=()=>{ img.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top'; if(ph)ph.style.display='none'; };
+        img.onload=show;
+        img.onerror=show;
+        img.src=data.thumbnail_url;
+      }
+    }
+    return data.thumbnail_url;
+  }catch(e){ return null; }
+}
+
 /* ── PROJECT GRID ──────────────────────────────────────────── */
 const COVER_SHADES=['#0d1117','#16181d','#111418','#0e1015','#131618','#111315'];
 const THUMB_SHADES=['#1a1a1a','#161c22','#181818','#151a1f','#1c1c1c','#141414'];
@@ -154,28 +175,31 @@ function openProjectPage(p,ci){
       vidCon.innerHTML=`<div class="${gc}"><div class="vid-empty">No videos yet — add Vimeo IDs via the editor.</div></div>`;
     } else {
       vidCon.innerHTML=`<div class="${gc}">${vids.map((v,vi)=>{
-        const can=!!(v.vimeoId||v.youtubeId);
-        const platform=v.vimeoId?'vimeo':'youtube';
-        const playId=v.vimeoId||v.youtubeId||'';
+        const can=!!(v.vimeoId||v.youtubeId||v.tiktokId||v.imageUrl);
+        const platform=v.vimeoId?'vimeo':v.tiktokId?'tiktok':v.imageUrl?'image':'youtube';
+        const playId=v.vimeoId||v.tiktokId||v.youtubeId||v.imageUrl||'';
         const orient=v.orientation||'horizontal';
         const isV=orient==='vertical';
         const ratio=isV?'r916':'r169';
         const ytThumb=(!v.thumb&&v.youtubeId)?`https://img.youtube.com/vi/${v.youtubeId}/maxresdefault.jpg`:'';
+        const imgThumb=(!v.thumb&&v.imageUrl)?v.imageUrl:'';
         const tid=`vt-${ci}-${vi}`;
-        const thumbSrc=v.thumb||ytThumb;
-        // thumb HTML — always use position:absolute so it fills the padding-top box
+        const thumbSrc=v.thumb||ytThumb||imgThumb;
         const imgStyle=`position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center ${isV?'top':'center'}`;
         let tH;
         if(thumbSrc){
           tH=`<img src="${thumbSrc}" alt="${v.name||''}" loading="lazy" style="${imgStyle}" onerror="if(this.src.includes('maxresdefault')){this.src=this.src.replace('maxresdefault','hqdefault')}else{this.style.display='none'}"/>`;
         } else if(v.vimeoId){
-          // placeholder shown until fetchVimeoThumb fills it in
           tH=`<div class="vid-ph" id="${tid}-ph" style="position:absolute;inset:0;background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333;display:flex;align-items:center;justify-content:center">${FILM}</div><img id="${tid}" src="" alt="" style="${imgStyle};display:none"/>`;
+        } else if(v.tiktokId){
+          tH=`<div class="vid-ph" id="${tid}-ph" style="position:absolute;inset:0;background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333;display:flex;align-items:center;justify-content:center">${FILM}</div><img id="${tid}" src="" alt="" style="${imgStyle};display:none"/>`;
+        } else if(v.imageUrl){
+          tH=`<img src="${v.imageUrl}" alt="${v.name||''}" loading="lazy" style="${imgStyle}"/>`;
         } else {
           tH=`<div class="vid-ph" style="position:absolute;inset:0;background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333;display:flex;align-items:center;justify-content:center">${FILM}</div>`;
         }
         return `<div class="vid-tile${can?' playable':''}"${can?` data-id="${playId}" data-platform="${platform}" data-orient="${orient}" data-name="${(v.name||'').replace(/"/g,'&quot;')}" data-role="${(v.role||'').replace(/"/g,'&quot;')}"`:''}>
-          <div class="vid-thumb ${ratio}">${tH}${can?`<div class="vid-play-ov"><div class="vid-play-btn">${PLAY}</div></div>`:''}</div>
+          <div class="vid-thumb ${ratio}">${tH}${can&&platform!=='image'?`<div class="vid-play-ov"><div class="vid-play-btn">${PLAY}</div></div>`:can?`<div class="vid-play-ov"><div class="vid-play-btn" style="background:rgba(10,10,10,.7)"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" style="width:15px;height:15px;color:var(--green)"><rect x="2" y="2" width="14" height="14" rx="2"/><path d="M6 6h6M6 9h6M6 12h4"/></svg></div></div>`:''}</div>
           <div class="vid-info"><div class="vid-name">${v.name||''}</div><div class="vid-role">${v.role||''}</div></div>
         </div>`;
       }).join('')}</div>`;
@@ -185,10 +209,12 @@ function openProjectPage(p,ci){
       t.addEventListener('click',()=>openLightbox(t.dataset.id,t.dataset.name,t.dataset.role,t.dataset.orient,t.dataset.platform));
     });
 
-    // Auto-fetch Vimeo thumbnails for tiles without a manual thumb
+    // Auto-fetch thumbnails for tiles without a manual thumb
     vids.forEach((v,vi)=>{
-      if(v.vimeoId&&!v.thumb&&!v.youtubeId){
+      if(v.vimeoId&&!v.thumb&&!v.youtubeId&&!v.tiktokId){
         fetchVimeoThumb(v.vimeoId, `vt-${ci}-${vi}`);
+      } else if(v.tiktokId&&!v.thumb){
+        fetchTikTokThumb(v.tiktokId, `vt-${ci}-${vi}`);
       }
     });
   }
@@ -217,16 +243,62 @@ const mFrame=document.getElementById('lb-frame');
 
 function openLightbox(id,name,role,orient,platform){
   const isV=orient==='vertical';
-  document.getElementById('lb-wrap').className='lb-wrap'+(isV?' lb-v':'');
-  document.getElementById('lb-ratio').className='lb-ratio '+(isV?'r916':'r169');
-  mFrame.src=platform==='youtube'
-    ?`https://www.youtube.com/embed/${id}?autoplay=1&rel=0`
-    :`https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0`;
+  const lbRatio=document.getElementById('lb-ratio');
+  const lbTiktok=document.getElementById('lb-tiktok');
+  const lbImage=document.getElementById('lb-image');
+  const lbImageImg=document.getElementById('lb-image-img');
   const t=document.getElementById('lb-title'); if(t)t.textContent=name||'';
   const r=document.getElementById('lb-role'); if(r)r.textContent=role||'';
+
+  // Hide all panels first
+  lbRatio.style.display='none';
+  lbTiktok.style.display='none';
+  lbImage.style.display='none';
+  mFrame.src='';
+
+  document.getElementById('lb-wrap').className='lb-wrap'+(isV?' lb-v':'');
+
+  if(platform==='image'){
+    // Show image fullscreen in lightbox
+    lbImageImg.src=id;
+    lbImage.style.display='block';
+    document.getElementById('lb-wrap').className='lb-wrap lb-img';
+
+  } else if(platform==='tiktok'){
+    // TikTok official embed — no login needed
+    lbTiktok.style.display='block';
+    lbTiktok.innerHTML=`<blockquote class="tiktok-embed" cite="https://www.tiktok.com/video/${id}" data-video-id="${id}" style="max-width:605px;min-width:325px"><section></section></blockquote>`;
+    // Load TikTok embed script if not already loaded
+    if(!document.getElementById('tiktok-embed-script')){
+      const s=document.createElement('script');
+      s.id='tiktok-embed-script';
+      s.src='https://www.tiktok.com/embed.js';
+      s.async=true;
+      document.body.appendChild(s);
+    } else if(window.tiktok){
+      window.tiktok.reload();
+    }
+
+  } else {
+    // Vimeo or YouTube iframe
+    lbRatio.style.display='';
+    lbRatio.className='lb-ratio '+(isV?'r916':'r169');
+    mFrame.src=platform==='youtube'
+      ?`https://www.youtube.com/embed/${id}?autoplay=1&rel=0`
+      :`https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0`;
+  }
+
   modal.classList.add('open');
 }
-function closeLightbox(){ modal.classList.remove('open'); mFrame.src=''; }
+function closeLightbox(){
+  modal.classList.remove('open');
+  mFrame.src='';
+  const lbTiktok=document.getElementById('lb-tiktok');
+  if(lbTiktok) lbTiktok.innerHTML='';
+  // Restore ratio display for next open
+  const lbRatio=document.getElementById('lb-ratio');
+  if(lbRatio) lbRatio.style.display='';
+}
 document.getElementById('lb-close-btn')?.addEventListener('click',closeLightbox);
 modal?.addEventListener('click',e=>{if(e.target===modal)closeLightbox();});
 document.addEventListener('keydown',e=>{

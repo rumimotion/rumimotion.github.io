@@ -74,28 +74,48 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   font-size: clamp(1rem, 2vw, 1.35rem); font-weight: 400;
   color: var(--text-mid); margin-bottom: 28px; letter-spacing: -.01em; max-width: 52ch; line-height: 1.45;
 }
-/* Showreel sits between subtitle and body */
+/* Showreel — between subtitle and body, Safari-safe */
 .hero-reel-wrap { margin: 0 0 28px; max-width: 720px; }
-.hero-reel-frame {
-  position: relative; width: 100%; aspect-ratio: 16/9;
-  background: #0f0f0f; border: 1px solid #1e1e1e; border-radius: 10px;
-  overflow: hidden; cursor: pointer; transition: border-color .2s;
+/* padding-top trick: 56.25% = 16/9 ratio, works in ALL browsers including Safari */
+.hero-reel-outer {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #0f0f0f;
+  border: 1px solid #1e1e1e;
+  cursor: pointer;
+  transition: border-color .2s;
 }
-.hero-reel-frame:hover { border-color: #2a2a2a; }
-.hero-reel-ph { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.hero-reel-outer:hover { border-color: #2a2a2a; }
+/* Frame sits absolutely inside the padded box */
+.hero-reel-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.hero-reel-ph {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
 .hero-reel-play-btn {
   position: absolute; inset: 0; z-index: 2;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(0,0,0,0); transition: background .2s; cursor: pointer; border: none; width: 100%;
+  background: rgba(0,0,0,0); transition: background .2s;
+  cursor: pointer; border: none; width: 100%;
 }
-.hero-reel-frame:hover .hero-reel-play-btn { background: rgba(0,0,0,.35); }
+.hero-reel-outer:hover .hero-reel-play-btn { background: rgba(0,0,0,.35); }
 .hero-reel-play-circle {
   width: 64px; height: 64px; border-radius: 50%;
   background: rgba(10,10,10,.85); border: 2px solid rgba(74,222,128,.45);
   display: flex; align-items: center; justify-content: center;
   transition: transform .15s, border-color .15s;
 }
-.hero-reel-frame:hover .hero-reel-play-circle { transform: scale(1.1); border-color: var(--green); }
+.hero-reel-outer:hover .hero-reel-play-circle { transform: scale(1.1); border-color: var(--green); }
 .hero-reel-play-circle svg { fill: var(--green); width: 20px; height: 20px; margin-left: 3px; }
 .hero-body { font-size: .93rem; line-height: 1.8; color: var(--text-mid); max-width: 62ch; margin-bottom: 32px; }
 .hero-body a { color: var(--green); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(74,222,128,.35); transition: text-decoration-color .15s; }
@@ -290,6 +310,34 @@ footer { padding: 26px 0; }
 @media (prefers-reduced-motion:reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
 
 #services, #experience, #about, #contact { content-visibility: auto; contain-intrinsic-size: 0 500px; }
+
+/* ── TIKTOK + IMAGE LIGHTBOX ─────────────────────────────── */
+/* TikTok embed container — centered, max-width matches TikTok widget */
+#lb-tiktok {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+#lb-tiktok .tiktok-embed {
+  margin: 0 auto !important;
+}
+/* Image lightbox — full image display */
+.lb-wrap.lb-img {
+  max-width: 90vw;
+}
+#lb-image {
+  text-align: center;
+}
+#lb-image img {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 8px;
+  object-fit: contain;
+  display: inline-block;
+}
 
 /* ── EDITOR BUTTON ───────────────────────────────────────── */
 #ed-btn {

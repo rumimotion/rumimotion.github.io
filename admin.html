@@ -445,8 +445,32 @@ const DEFAULT_PW=atob('TmV3UG9ydGZvbGlvQDEyMw==');
 function getPassword(){return localStorage.getItem('rumi_admin_pw')||DEFAULT_PW;}
 $('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 $('pw-btn').addEventListener('click',doLogin);
-function doLogin(){const pw=$('pw-input').value;if(pw===getPassword()){$('login-screen').style.display='none';$('app').classList.add('on');loadData();}else{$('pw-err').textContent='Incorrect password';$('pw-input').value='';$('pw-input').focus();}}
-$('logout-btn').addEventListener('click',()=>{$('app').classList.remove('on');$('login-screen').style.display='flex';$('pw-input').value='';$('pw-err').textContent='';});
+function doLogin(){
+  const pw=$('pw-input').value;
+  if(pw===getPassword()){
+    sessionStorage.setItem('rumi_admin_auth','1');
+    $('login-screen').style.display='none';
+    $('app').classList.add('on');
+    loadData();
+  } else {
+    $('pw-err').textContent='Incorrect password';
+    $('pw-input').value='';
+    $('pw-input').focus();
+  }
+}
+$('logout-btn').addEventListener('click',()=>{
+  sessionStorage.removeItem('rumi_admin_auth');
+  $('app').classList.remove('on');
+  $('login-screen').style.display='flex';
+  $('pw-input').value='';
+  $('pw-err').textContent='';
+});
+// Auto-login if already authenticated this session
+if(sessionStorage.getItem('rumi_admin_auth')==='1'){
+  $('login-screen').style.display='none';
+  $('app').classList.add('on');
+  loadData();
+}
 
 async function loadData(){
   try{
@@ -473,7 +497,8 @@ function populateForms(){
   setv('c-heading',c.heading);setv('c-sub',c.sub);setv('c-email',c.email);
   setv('c-li',c.linkedin);setv('c-vm',c.vimeo);setv('c-be',c.behance);
   buildDesign();buildFonts();
-  document.querySelectorAll('input,textarea,select').forEach(el=>el.addEventListener('input',markUnsaved));
+  // Only attach to inputs inside #content, not login screen
+  document.querySelectorAll('#content input,#content textarea,#content select').forEach(el=>el.addEventListener('input',markUnsaved));
 }
 
 function buildDashboard(){
@@ -729,21 +754,29 @@ async function publishToGitHub(){
     const getRes=await fetch(`https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`,{headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json'}});
     const getJson=await getRes.json();
     if(!getJson.sha){toast('Could not get file SHA — check token & repo','error');btn.disabled=false;btn.innerHTML=`<svg viewBox="0 0 16 16"><path d="M8 1v10M4 7l4-6 4 6M3 14h10"/></svg> Publish`;return;}
-    const currentHTML=atob(getJson.content.replace(/\n/g,''));
-    // SAFETY CHECK: abort if the file doesn't contain the data block
+    // Decode base64 safely — GitHub splits content with newlines
+    let currentHTML;
+    try {
+      currentHTML = decodeURIComponent(escape(atob(getJson.content.replace(/[\r\n]/g,''))));
+    } catch(decodeErr) {
+      // Fallback for files with special chars
+      currentHTML = atob(getJson.content.replace(/[\r\n]/g,''));
+    }
+    // SAFETY CHECK: abort if file doesn't contain the data block
     if(!currentHTML.includes('<script id="D" type="application/json">')){
-      toast('Safety check failed — index.html looks corrupted. Upload a fresh copy via GitHub first.','error');
+      toast('Safety check failed — index.html looks corrupted. Re-upload index.html manually first.','error');
       btn.disabled=false;btn.innerHTML=`<svg viewBox="0 0 16 16"><path d="M8 1v10M4 7l4-6 4 6M3 14h10"/></svg> Publish`;
       return;
     }
     const updatedHTML=currentHTML.replace(/(<script id="D" type="application\/json">)([\s\S]*?)(<\/script>)/,`$1\n${JSON.stringify(D,null,2)}\n$3`);
-    // SAFETY CHECK: verify the replacement worked
+    // SAFETY CHECK: verify the replacement actually changed something
     if(updatedHTML===currentHTML){
-      toast('Could not inject data — replacement failed. Check index.html structure.','error');
+      toast('Injection failed — data block not found in index.html.','error');
       btn.disabled=false;btn.innerHTML=`<svg viewBox="0 0 16 16"><path d="M8 1v10M4 7l4-6 4 6M3 14h10"/></svg> Publish`;
       return;
     }
     const pushRes=await fetch(`https://api.github.com/repos/${repo}/contents/${path}`,{method:'PUT',headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Update site via Admin Panel',content:btoa(unescape(encodeURIComponent(updatedHTML))),sha:getJson.sha,branch})});
+      // Note: btoa(unescape(encodeURIComponent())) is the correct way to handle Unicode in base64
     if(pushRes.ok){toast('Published! Live in ~30 seconds');markSaved();buildDashboard();}
     else{const err=await pushRes.json();toast('Error: '+(err.message||'check console'),'error');console.error(err);}
   }catch(e){toast('Network error — check console','error');console.error(e);}

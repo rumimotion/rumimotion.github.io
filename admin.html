@@ -7,30 +7,13 @@
 <link rel="preconnect" href="https://api.fontshare.com"/>
 <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700&display=swap" rel="stylesheet"/>
 <style>
-/* ================================================
-   RUMI ADMIN PANEL
-   Dark theme - Green accent - Full CMS
-   ================================================ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 :root{
-  --bg:     #0a0a0a;
-  --s1:     #111111;
-  --s2:     #181818;
-  --s3:     #222222;
-  --border: #2a2a2a;
-  --b2:     #333333;
-  --text:   #f0f0f0;
-  --mid:    #8a8a8a;
-  --dim:    #4a4a4a;
-  --green:  #4ADE80;
-  --gdim:   rgba(74,222,128,.12);
-  --red:    #ef4444;
-  --amber:  #f59e0b;
-  --blue:   #3b82f6;
-  --font:   'General Sans',system-ui,sans-serif;
-  --r:      8px;
-  --r2:     5px;
+  --bg:#0a0a0a;--s1:#111111;--s2:#181818;--s3:#222222;
+  --border:#2a2a2a;--b2:#333333;--text:#f0f0f0;--mid:#8a8a8a;--dim:#4a4a4a;
+  --green:#4ADE80;--gdim:rgba(74,222,128,.12);--red:#ef4444;--amber:#f59e0b;--blue:#3b82f6;
+  --font:'General Sans',system-ui,sans-serif;--r:8px;--r2:5px;
 }
 body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
@@ -38,226 +21,92 @@ button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
 input,textarea,select{font:inherit}
 img{display:block;max-width:100%}
 ::selection{background:var(--green);color:#0a0a0a}
-
-/* -- SCROLLBAR -- */
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
-/* ================================================
-   LOGIN SCREEN
-   ================================================ */
-#login-screen{
-  display:flex;align-items:center;justify-content:center;
-  min-height:100vh;padding:24px;
-  background:var(--bg);
-}
-.login-box{
-  width:100%;max-width:380px;
-  background:var(--s1);border:1px solid var(--border);
-  border-radius:16px;padding:40px 36px;
-  text-align:center;
-}
-.login-logo{
-  font-size:1.8rem;font-weight:700;letter-spacing:.06em;
-  color:var(--text);margin-bottom:6px;
-}
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;background:var(--bg)}
+.login-box{width:100%;max-width:380px;background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:40px 36px;text-align:center}
+.login-logo{font-size:1.8rem;font-weight:700;letter-spacing:.06em;color:var(--text);margin-bottom:6px}
 .login-logo span{color:var(--green)}
 .login-sub{font-size:.82rem;color:var(--mid);margin-bottom:32px}
 .login-field{text-align:left;margin-bottom:16px}
 .login-field label{display:block;font-size:.72rem;font-weight:600;color:var(--mid);margin-bottom:6px;letter-spacing:.04em}
-.login-field input{
-  width:100%;background:var(--s2);border:1px solid var(--border);
-  border-radius:var(--r2);padding:11px 14px;color:var(--text);
-  font-size:.9rem;outline:none;transition:border-color .15s;
-}
+.login-field input{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r2);padding:11px 14px;color:var(--text);font-size:.9rem;outline:none;transition:border-color .15s}
 .login-field input:focus{border-color:var(--green)}
-.login-btn{
-  width:100%;padding:12px;border-radius:100px;
-  background:var(--green);color:#0a0a0a;
-  font-size:.88rem;font-weight:700;letter-spacing:.04em;
-  margin-top:8px;transition:background .15s;
-}
+.login-btn{width:100%;padding:12px;border-radius:100px;background:var(--green);color:#0a0a0a;font-size:.88rem;font-weight:700;letter-spacing:.04em;margin-top:8px;transition:background .15s}
 .login-btn:hover{background:#3dcc6e}
 .login-err{font-size:.78rem;color:var(--red);margin-top:10px;min-height:18px}
 
-/* ================================================
-   APP SHELL
-   ================================================ */
 #app{display:none;height:100vh;overflow:hidden}
 #app.on{display:flex}
 
-/* -- SIDEBAR -- */
-#sidebar{
-  width:220px;min-width:220px;
-  background:var(--s1);border-right:1px solid var(--border);
-  display:flex;flex-direction:column;
-  overflow-y:auto;
-}
-.sb-logo{
-  padding:22px 20px 18px;
-  font-size:1rem;font-weight:700;letter-spacing:.06em;
-  border-bottom:1px solid var(--border);flex-shrink:0;
-  display:flex;align-items:center;gap:8px;
-}
-.sb-logo-dot{
-  width:7px;height:7px;border-radius:50%;
-  background:var(--green);flex-shrink:0;
-}
-.sb-label{
-  font-size:.6rem;font-weight:700;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--dim);
-  padding:16px 20px 8px;
-}
-.sb-item{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 20px;font-size:.84rem;font-weight:500;
-  color:var(--mid);cursor:pointer;transition:all .15s;
-  border-left:2px solid transparent;
-}
+#sidebar{width:220px;min-width:220px;background:var(--s1);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+.sb-logo{padding:22px 20px 18px;font-size:1rem;font-weight:700;letter-spacing:.06em;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;gap:8px}
+.sb-logo-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
+.sb-label{font-size:.6rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);padding:16px 20px 8px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:.84rem;font-weight:500;color:var(--mid);cursor:pointer;transition:all .15s;border-left:2px solid transparent}
 .sb-item:hover{color:var(--text);background:var(--s2)}
 .sb-item.on{color:var(--green);background:var(--gdim);border-left-color:var(--green)}
 .sb-item-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
 .sb-bottom{margin-top:auto;padding:16px 20px;border-top:1px solid var(--border)}
-.sb-site-link{
-  display:flex;align-items:center;gap:8px;
-  font-size:.78rem;color:var(--mid);
-  padding:9px 14px;border:1px solid var(--border);
-  border-radius:var(--r2);transition:all .15s;margin-bottom:8px;
-}
+.sb-site-link{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--mid);padding:9px 14px;border:1px solid var(--border);border-radius:var(--r2);transition:all .15s;margin-bottom:8px}
 .sb-site-link:hover{border-color:var(--green);color:var(--green)}
-.sb-logout{
-  display:flex;align-items:center;gap:8px;
-  font-size:.78rem;color:var(--dim);
-  padding:9px 14px;border-radius:var(--r2);
-  transition:all .15s;cursor:pointer;
-}
+.sb-logout{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--dim);padding:9px 14px;border-radius:var(--r2);transition:all .15s;cursor:pointer}
 .sb-logout:hover{color:var(--red)}
 
-/* -- MAIN AREA -- */
 #main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-
-/* top bar */
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 28px;height:60px;
-  background:var(--s1);border-bottom:1px solid var(--border);
-  flex-shrink:0;
-}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:60px;background:var(--s1);border-bottom:1px solid var(--border);flex-shrink:0}
 .topbar-title{font-size:1rem;font-weight:600;color:var(--text)}
 .topbar-right{display:flex;align-items:center;gap:10px}
-.publish-btn{
-  display:flex;align-items:center;gap:7px;
-  padding:9px 20px;border-radius:100px;
-  background:var(--green);color:#0a0a0a;
-  font-size:.82rem;font-weight:700;letter-spacing:.04em;
-  transition:all .15s;
-}
+.publish-btn{display:flex;align-items:center;gap:7px;padding:9px 20px;border-radius:100px;background:var(--green);color:#0a0a0a;font-size:.82rem;font-weight:700;letter-spacing:.04em;transition:all .15s}
 .publish-btn:hover{background:#3dcc6e}
 .publish-btn:disabled{opacity:.5;cursor:not-allowed}
 .publish-btn svg{width:14px;height:14px;fill:currentColor}
-.preview-btn{
-  display:flex;align-items:center;gap:6px;
-  padding:9px 16px;border-radius:100px;
-  border:1px solid var(--border);color:var(--mid);
-  font-size:.82rem;font-weight:600;transition:all .15s;
-}
+.preview-btn{display:flex;align-items:center;gap:6px;padding:9px 16px;border-radius:100px;border:1px solid var(--border);color:var(--mid);font-size:.82rem;font-weight:600;transition:all .15s}
 .preview-btn:hover{border-color:var(--mid);color:var(--text)}
-
-/* content */
 #content{flex:1;overflow-y:auto;padding:32px 28px}
 
-/* ================================================
-   SHARED FORM COMPONENTS
-   ================================================ */
 .page{display:none}
 .page.on{display:block}
-
 .page-header{margin-bottom:28px}
 .page-title{font-size:1.5rem;font-weight:700;letter-spacing:-.015em;color:var(--text)}
 .page-sub{font-size:.85rem;color:var(--mid);margin-top:4px}
 
-/* cards */
-.card{
-  background:var(--s1);border:1px solid var(--border);
-  border-radius:var(--r);padding:24px;margin-bottom:16px;
-}
-.card-title{
-  font-size:.72rem;font-weight:700;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--green);
-  margin-bottom:16px;padding-bottom:10px;
-  border-bottom:1px solid var(--border);
-}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:24px;margin-bottom:16px}
+.card-title{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
 
-/* fields */
 .field{margin-bottom:14px}
-.field label{
-  display:block;font-size:.72rem;font-weight:600;
-  color:var(--mid);margin-bottom:5px;letter-spacing:.04em;
-}
+.field label{display:block;font-size:.72rem;font-weight:600;color:var(--mid);margin-bottom:5px;letter-spacing:.04em}
 .field small{display:block;font-size:.65rem;color:var(--dim);margin-bottom:5px;line-height:1.5}
-.field input,.field textarea,.field select{
-  width:100%;background:var(--s2);border:1px solid var(--border);
-  border-radius:var(--r2);padding:10px 13px;color:var(--text);
-  font-size:.85rem;outline:none;transition:border-color .15s;
-}
+.field input,.field textarea,.field select{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:var(--r2);padding:10px 13px;color:var(--text);font-size:.85rem;outline:none;transition:border-color .15s}
 .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--green)}
 .field textarea{resize:vertical;min-height:80px;line-height:1.55}
-.field select{cursor:pointer}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .field-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 
-/* image field */
-.img-field{
-  display:flex;align-items:flex-start;gap:12px;
-  margin-top:6px;
-}
-.img-thumb{
-  width:80px;height:56px;border-radius:6px;
-  object-fit:cover;background:var(--s3);
-  border:1px solid var(--border);flex-shrink:0;
-}
+.img-field{display:flex;align-items:flex-start;gap:12px;margin-top:6px}
+.img-thumb{width:80px;height:56px;border-radius:6px;object-fit:cover;background:var(--s3);border:1px solid var(--border);flex-shrink:0}
 .img-thumb.square{height:80px}
 .img-thumb.tall{height:108px}
 .img-input-wrap{flex:1}
 .img-input-wrap .field{margin-bottom:0}
 
-/* color row */
 .color-row{display:flex;align-items:center;gap:10px;margin-top:5px}
-.color-swatch{
-  width:38px;height:38px;border-radius:6px;
-  border:1px solid var(--border);cursor:pointer;padding:2px;flex-shrink:0;
-}
+.color-swatch{width:38px;height:38px;border-radius:6px;border:1px solid var(--border);cursor:pointer;padding:2px;flex-shrink:0}
 .color-swatch::-webkit-color-swatch-wrapper{padding:0}
 .color-swatch::-webkit-color-swatch{border:none;border-radius:4px}
 
-/* toggle buttons */
 .toggle-group{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
-.toggle-opt{
-  padding:7px 14px;border:1.5px solid var(--border);border-radius:100px;
-  font-size:.72rem;font-weight:600;color:var(--mid);
-  cursor:pointer;transition:all .15s;background:none;font-family:inherit;
-}
+.toggle-opt{padding:7px 14px;border:1.5px solid var(--border);border-radius:100px;font-size:.72rem;font-weight:600;color:var(--mid);cursor:pointer;transition:all .15s;background:none;font-family:inherit}
 .toggle-opt:hover{border-color:var(--b2);color:var(--text)}
 .toggle-opt.on{border-color:var(--green);color:var(--green);background:var(--gdim)}
 
-/* accordion */
-.acc{
-  background:var(--s2);border:1px solid var(--border);
-  border-radius:var(--r);overflow:hidden;margin-bottom:10px;
-}
-.acc-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 18px;cursor:pointer;transition:background .15s;
-}
+.acc{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:10px}
+.acc-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;transition:background .15s}
 .acc-head:hover{background:var(--s3)}
 .acc-head-left{display:flex;align-items:center;gap:10px}
-.acc-num{
-  width:24px;height:24px;border-radius:6px;
-  background:var(--s3);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  font-size:.68rem;font-weight:700;color:var(--mid);flex-shrink:0;
-}
+.acc-num{width:24px;height:24px;border-radius:6px;background:var(--s3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:var(--mid);flex-shrink:0}
 .acc-name{font-size:.88rem;font-weight:600;color:var(--text)}
 .acc-tag{font-size:.6rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mid);background:var(--s3);padding:2px 8px;border-radius:100px;margin-left:6px}
 .acc-chevron{color:var(--dim);transition:transform .2s;font-size:.8rem}
@@ -265,100 +114,50 @@ img{display:block;max-width:100%}
 .acc-body{display:none;padding:18px;border-top:1px solid var(--border)}
 .acc.on .acc-body{display:block}
 
-/* video item */
-.vid-item{
-  background:var(--s1);border:1px solid var(--border);
-  border-radius:var(--r2);padding:14px;margin-bottom:10px;
-}
-.vid-item-head{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:12px;
-}
+.vid-item{background:var(--s1);border:1px solid var(--border);border-radius:var(--r2);padding:14px;margin-bottom:10px}
+.vid-item-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .vid-num{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
 
-/* add/remove */
-.add-btn{
-  width:100%;padding:10px;margin-top:4px;
-  border:1.5px dashed var(--border);border-radius:var(--r2);
-  font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--dim);cursor:pointer;background:none;font-family:inherit;
-  transition:all .15s;
-}
+/* Media type selector */
+.media-type-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.media-type-btn{padding:6px 14px;border:1.5px solid var(--border);border-radius:100px;font-size:.72rem;font-weight:600;color:var(--mid);cursor:pointer;transition:all .15s;background:none;font-family:inherit}
+.media-type-btn:hover{border-color:var(--b2);color:var(--text)}
+.media-type-btn.on{border-color:var(--green);color:var(--green);background:var(--gdim)}
+.media-fields{display:none}
+.media-fields.on{display:block}
+
+.add-btn{width:100%;padding:10px;margin-top:4px;border:1.5px dashed var(--border);border-radius:var(--r2);font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);cursor:pointer;background:none;font-family:inherit;transition:all .15s}
 .add-btn:hover{border-color:var(--green);color:var(--green)}
-.rm-btn{
-  font-size:.65rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
-  color:var(--red);padding:4px 10px;border:1px solid rgba(239,68,68,.2);
-  border-radius:var(--r2);cursor:pointer;background:none;font-family:inherit;transition:all .15s;
-}
+.rm-btn{font-size:.65rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--red);padding:4px 10px;border:1px solid rgba(239,68,68,.2);border-radius:var(--r2);cursor:pointer;background:none;font-family:inherit;transition:all .15s}
 .rm-btn:hover{background:rgba(239,68,68,.1)}
 
-/* cloudinary hint */
-.cloud-box{
-  background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.15);
-  border-radius:var(--r2);padding:12px 14px;margin-bottom:16px;
-  font-size:.75rem;color:var(--mid);line-height:1.65;
-}
+.cloud-box{background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.15);border-radius:var(--r2);padding:12px 14px;margin-bottom:16px;font-size:.75rem;color:var(--mid);line-height:1.65}
 .cloud-box strong{color:var(--text)}
 .cloud-box a{color:var(--green);text-decoration:underline}
 
-/* font grid */
 .font-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px}
-.font-card{
-  padding:12px 10px;background:var(--s2);border:1.5px solid var(--border);
-  border-radius:var(--r2);cursor:pointer;text-align:center;
-  font-size:.78rem;font-weight:600;color:var(--mid);transition:all .15s;
-}
+.font-card{padding:12px 10px;background:var(--s2);border:1.5px solid var(--border);border-radius:var(--r2);cursor:pointer;text-align:center;font-size:.78rem;font-weight:600;color:var(--mid);transition:all .15s}
 .font-card:hover{border-color:var(--b2);color:var(--text)}
 .font-card.on{border-color:var(--green);color:var(--green);background:var(--gdim)}
 .font-card small{display:block;font-size:.6rem;opacity:.6;margin-top:2px;font-weight:400}
 
-/* dashboard stats */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
-.stat-card{
-  background:var(--s1);border:1px solid var(--border);
-  border-radius:var(--r);padding:20px;
-}
+.stat-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r);padding:20px}
 .stat-val{font-size:2rem;font-weight:700;letter-spacing:-.025em;color:var(--text)}
 .stat-val span{color:var(--green)}
 .stat-lbl{font-size:.75rem;color:var(--mid);margin-top:4px}
 
-/* status badge */
-.badge{
-  display:inline-flex;align-items:center;gap:5px;
-  font-size:.68rem;font-weight:600;padding:3px 9px;border-radius:100px;
-}
-.badge-green{background:rgba(74,222,128,.15);color:var(--green)}
-.badge-amber{background:rgba(245,158,11,.15);color:var(--amber)}
-
-/* toast */
-#toast{
-  position:fixed;bottom:28px;right:28px;z-index:9999;
-  padding:12px 20px;border-radius:var(--r2);
-  font-size:.82rem;font-weight:700;
-  opacity:0;transform:translateY(8px);
-  transition:all .25s;pointer-events:none;
-  max-width:320px;
-}
+#toast{position:fixed;bottom:28px;right:28px;z-index:9999;padding:12px 20px;border-radius:var(--r2);font-size:.82rem;font-weight:700;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none;max-width:320px}
 #toast.on{opacity:1;transform:none}
 #toast.success{background:var(--green);color:#0a0a0a}
 #toast.error{background:var(--red);color:#fff}
 #toast.info{background:var(--s3);color:var(--text);border:1px solid var(--border)}
 
-/* publish status */
-.pub-status{
-  font-size:.72rem;color:var(--mid);
-  display:flex;align-items:center;gap:6px;
-}
+.pub-status{font-size:.72rem;color:var(--mid);display:flex;align-items:center;gap:6px}
 .pub-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
 .pub-dot.amber{background:var(--amber)}
 
-/* mobile */
-#mob-toggle{
-  display:none;position:fixed;top:14px;left:14px;z-index:200;
-  width:38px;height:38px;border-radius:8px;
-  background:var(--s2);border:1px solid var(--border);
-  align-items:center;justify-content:center;cursor:pointer;
-}
+#mob-toggle{display:none;position:fixed;top:14px;left:14px;z-index:200;width:38px;height:38px;border-radius:8px;background:var(--s2);border:1px solid var(--border);align-items:center;justify-content:center;cursor:pointer}
 @media(max-width:768px){
   #sidebar{position:fixed;top:0;left:0;bottom:0;z-index:100;transform:translateX(-100%);transition:transform .25s}
   #sidebar.open{transform:none}
@@ -373,11 +172,10 @@ img{display:block;max-width:100%}
 </head>
 <body>
 
-<!--  LOGIN  -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">RUMI<span>.</span></div>
-    <div class="login-sub">Admin Panel  enter your password</div>
+    <div class="login-sub">Admin Panel — enter your password</div>
     <div class="login-field">
       <label>Password</label>
       <input type="password" id="pw-input" placeholder="Enter password" autocomplete="current-password"/>
@@ -387,32 +185,25 @@ img{display:block;max-width:100%}
   </div>
 </div>
 
-<!--  APP  -->
 <div id="app">
-
-  <!-- mobile toggle -->
   <button id="mob-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--text)">
       <rect y="2" width="16" height="2" rx="1"/><rect y="7" width="16" height="2" rx="1"/><rect y="12" width="16" height="2" rx="1"/>
     </svg>
   </button>
 
-  <!-- sidebar -->
   <div id="sidebar">
-    <div class="sb-logo">
-      <div class="sb-logo-dot"></div>
-      RUMI Admin
-    </div>
+    <div class="sb-logo"><div class="sb-logo-dot"></div>RUMI Admin</div>
     <div class="sb-label">Content</div>
-    <div class="sb-item on" data-page="dashboard"><span class="sb-item-icon"></span> Dashboard</div>
+    <div class="sb-item on" data-page="dashboard"><span class="sb-item-icon">⊞</span> Dashboard</div>
     <div class="sb-item" data-page="hero"><span class="sb-item-icon">✦</span> Hero</div>
-    <div class="sb-item" data-page="projects"><span class="sb-item-icon"></span> Projects</div>
+    <div class="sb-item" data-page="projects"><span class="sb-item-icon">▤</span> Projects</div>
     <div class="sb-item" data-page="services"><span class="sb-item-icon">◎</span> Services</div>
-    <div class="sb-item" data-page="experience"><span class="sb-item-icon"></span> Experience</div>
-    <div class="sb-item" data-page="about"><span class="sb-item-icon"></span> About</div>
+    <div class="sb-item" data-page="experience"><span class="sb-item-icon">◈</span> Experience</div>
+    <div class="sb-item" data-page="about"><span class="sb-item-icon">◉</span> About</div>
     <div class="sb-item" data-page="contact"><span class="sb-item-icon">✉</span> Contact</div>
     <div class="sb-label">Appearance</div>
-    <div class="sb-item" data-page="design"><span class="sb-item-icon"></span> Design</div>
+    <div class="sb-item" data-page="design"><span class="sb-item-icon">◐</span> Design</div>
     <div class="sb-label">System</div>
     <div class="sb-item" data-page="settings"><span class="sb-item-icon">⚙</span> Settings</div>
     <div class="sb-bottom">
@@ -427,7 +218,6 @@ img{display:block;max-width:100%}
     </div>
   </div>
 
-  <!-- main -->
   <div id="main">
     <div class="topbar">
       <div class="topbar-title" id="page-title">Dashboard</div>
@@ -467,31 +257,26 @@ img{display:block;max-width:100%}
           </div>
         </div>
         <div class="card">
-          <div class="card-title">How to add images</div>
+          <div class="card-title">How to add images / videos</div>
           <div class="cloud-box" style="margin-bottom:0">
-            <strong>Option 1  Cloudinary (recommended, free):</strong><br>
-            1. Go to <a href="https://cloudinary.com" target="_blank">cloudinary.com</a>  sign up free<br>
-            2. Upload your image  click it  copy the URL<br>
-            3. Paste the URL in any Image field below<br><br>
-            <strong>Option 2  GitHub repo:</strong><br>
-            Upload image to your <code style="color:var(--green)">assets/uploads/</code> folder via GitHub Desktop,
-            then use path: <code style="color:var(--green)">assets/uploads/your-image.jpg</code>
+            <strong>Images (covers, thumbnails, photos):</strong><br>
+            Upload to <a href="https://cloudinary.com" target="_blank">Cloudinary.com</a> (free) → copy URL → paste in any image field.<br><br>
+            <strong>Videos:</strong> Paste the Vimeo ID, YouTube ID, or TikTok video ID.<br>
+            Thumbnails auto-fetch from Vimeo, YouTube and TikTok — no upload needed.<br><br>
+            <strong>Photo tiles</strong> (show a still image instead of video): use the <strong>📷 Photo URL</strong> field inside any video slot.
           </div>
         </div>
       </div>
 
       <!-- HERO -->
       <div class="page" id="page-hero">
-        <div class="page-header">
-          <div class="page-title">Hero Section</div>
-          <div class="page-sub">The first thing visitors see</div>
-        </div>
+        <div class="page-header"><div class="page-title">Hero Section</div><div class="page-sub">The first thing visitors see</div></div>
         <div class="card">
           <div class="card-title">Main Text</div>
           <div class="field"><label>Display Name</label><input id="h-name" placeholder="RUMI"/></div>
           <div class="field"><label>Subtitle</label><small>Use \n for a line break</small><input id="h-sub"/></div>
-          <div class="field"><label>Body Text</label><small>HTML allowed: &lt;strong&gt;, &lt;a href=""&gt;  paste your Chess.com link here</small><textarea id="h-body" style="min-height:120px"></textarea></div>
-          <div class="field"><label>Tagline (shown in italic with green border)</label><textarea id="h-tag"></textarea></div>
+          <div class="field"><label>Body Text</label><small>HTML allowed: &lt;strong&gt;, &lt;a href=""&gt;</small><textarea id="h-body" style="min-height:120px"></textarea></div>
+          <div class="field"><label>Tagline (italic with green border)</label><textarea id="h-tag"></textarea></div>
         </div>
         <div class="card">
           <div class="card-title">Call to Action Button</div>
@@ -501,36 +286,19 @@ img{display:block;max-width:100%}
           </div>
         </div>
         <div class="card">
-          <div class="card-title"><span>&#9654;</span> Hero Showreel (video frame on right side)</div>
-          <div class="field">
-            <label>Vimeo ID</label>
-            <small>Number from vimeo.com/<strong>1234567</strong> — thumbnail loads automatically</small>
-            <input class="inp" id="h-rvimeo" placeholder="e.g. 1146513897"/>
-          </div>
-          <div class="field">
-            <label>YouTube ID</label>
-            <small>From youtube.com/watch?v=<strong>XXXXXXXXXXX</strong> — thumbnail loads automatically</small>
-            <input class="inp" id="h-ryt" placeholder="e.g. dQw4w9WgXcQ"/>
-          </div>
-          <div class="field">
-            <label>Custom Thumbnail (optional)</label>
-            <small>Paste a Cloudinary URL to override auto thumbnail</small>
-            <input class="inp" id="h-rthumb" placeholder="https://..."/>
-          </div>
-        <div style="display:none"><!-- close grid2 -->
-          </div>
+          <div class="card-title">Hero Showreel</div>
+          <div class="field"><label>Vimeo ID</label><small>Number from vimeo.com/<strong>1234567</strong></small><input id="h-rvimeo" placeholder="e.g. 1199035358"/></div>
+          <div class="field"><label>YouTube ID</label><small>From youtube.com/watch?v=<strong>XXXXXXXXXXX</strong></small><input id="h-ryt" placeholder="e.g. dQw4w9WgXcQ"/></div>
+          <div class="field"><label>Custom Thumbnail (optional)</label><small>Leave blank for auto-fetch</small><input id="h-rthumb" placeholder="https://..."/></div>
         </div>
       </div>
 
       <!-- PROJECTS -->
       <div class="page" id="page-projects">
-        <div class="page-header">
-          <div class="page-title">Projects</div>
-          <div class="page-sub">Your portfolio work  click a card to expand and edit</div>
-        </div>
+        <div class="page-header"><div class="page-title">Projects</div><div class="page-sub">Click a card to expand and edit</div></div>
         <div class="cloud-box">
-          <strong>Cover images:</strong> Upload to <a href="https://cloudinary.com" target="_blank">Cloudinary</a>  paste URL below.
-          Recommended size: <strong>1200  675px</strong> for covers, <strong>800  450px</strong> for horizontal thumbnails, <strong>450  800px</strong> for vertical.
+          <strong>Cover images:</strong> Upload to <a href="https://cloudinary.com" target="_blank">Cloudinary</a> → paste URL.<br>
+          Recommended: <strong>1200×675px</strong> for covers, <strong>800×450px</strong> horizontal thumbnails, <strong>450×800px</strong> vertical.
         </div>
         <div id="proj-list"></div>
         <button class="add-btn" id="add-proj-btn">+ Add New Project</button>
@@ -538,37 +306,26 @@ img{display:block;max-width:100%}
 
       <!-- SERVICES -->
       <div class="page" id="page-services">
-        <div class="page-header">
-          <div class="page-title">Creative Services</div>
-          <div class="page-sub">The 4 service cards shown on your site</div>
-        </div>
+        <div class="page-header"><div class="page-title">Creative Services</div><div class="page-sub">The 4 service cards shown on your site</div></div>
         <div id="svc-list"></div>
       </div>
 
       <!-- EXPERIENCE -->
       <div class="page" id="page-experience">
-        <div class="page-header">
-          <div class="page-title">Experience</div>
-          <div class="page-sub">Your work history</div>
-        </div>
+        <div class="page-header"><div class="page-title">Experience</div><div class="page-sub">Your work history</div></div>
         <div id="exp-list"></div>
         <button class="add-btn" id="add-exp-btn">+ Add Position</button>
       </div>
 
       <!-- ABOUT -->
       <div class="page" id="page-about">
-        <div class="page-header">
-          <div class="page-title">About</div>
-          <div class="page-sub">Your photo, bio, and skills</div>
-        </div>
+        <div class="page-header"><div class="page-title">About</div><div class="page-sub">Your photo, bio, and skills</div></div>
         <div class="card">
           <div class="card-title">Portrait Photo</div>
-          <div class="cloud-box">Upload your portrait to <a href="https://cloudinary.com" target="_blank">Cloudinary</a>  paste URL below. Recommended: <strong>600  800px portrait</strong></div>
+          <div class="cloud-box">Upload to <a href="https://cloudinary.com" target="_blank">Cloudinary</a> → paste URL. Recommended: <strong>600×800px portrait</strong></div>
           <div class="img-field">
-            <img id="about-photo-prev" class="img-thumb tall" src="" alt="" onerror="this.style.display='none'" onload="this.style.display='block'"/>
-            <div class="img-input-wrap">
-              <div class="field"><label>Photo URL</label><input id="a-photo" placeholder="https://res.cloudinary.com/..." oninput="syncImg(this,'about-photo-prev')"/></div>
-            </div>
+            <img id="about-photo-prev" class="img-thumb tall" src="" alt="" onerror="this.style.display='none'" onload="this.style.display='block'" style="display:none"/>
+            <div class="img-input-wrap"><div class="field"><label>Photo URL</label><input id="a-photo" placeholder="https://res.cloudinary.com/..." oninput="syncImg(this,'about-photo-prev')"/></div></div>
           </div>
           <div class="field-row" style="margin-top:12px">
             <div class="field"><label>Name (shown under photo)</label><input id="a-name"/></div>
@@ -581,16 +338,13 @@ img{display:block;max-width:100%}
         </div>
         <div class="card">
           <div class="card-title">Skills</div>
-          <div class="field"><label>Skills (comma separated)</label><small>e.g. After Effects, Premiere Pro, Blender</small><input id="a-skills"/></div>
+          <div class="field"><label>Skills (comma separated)</label><input id="a-skills"/></div>
         </div>
       </div>
 
       <!-- CONTACT -->
       <div class="page" id="page-contact">
-        <div class="page-header">
-          <div class="page-title">Contact</div>
-          <div class="page-sub">Your links and contact information</div>
-        </div>
+        <div class="page-header"><div class="page-title">Contact</div><div class="page-sub">Your links and contact info</div></div>
         <div class="card">
           <div class="card-title">Section Text</div>
           <div class="field"><label>Heading</label><input id="c-heading"/></div>
@@ -609,10 +363,7 @@ img{display:block;max-width:100%}
 
       <!-- DESIGN -->
       <div class="page" id="page-design">
-        <div class="page-header">
-          <div class="page-title">Design</div>
-          <div class="page-sub">Fonts and colors  changes apply instantly on Publish</div>
-        </div>
+        <div class="page-header"><div class="page-title">Design</div><div class="page-sub">Fonts and colors</div></div>
         <div class="card">
           <div class="card-title">Font Family</div>
           <div class="font-grid" id="font-grid"></div>
@@ -636,13 +387,10 @@ img{display:block;max-width:100%}
 
       <!-- SETTINGS -->
       <div class="page" id="page-settings">
-        <div class="page-header">
-          <div class="page-title">Settings</div>
-          <div class="page-sub">Admin panel configuration</div>
-        </div>
+        <div class="page-header"><div class="page-title">Settings</div><div class="page-sub">Admin configuration</div></div>
         <div class="card">
           <div class="card-title">GitHub Connection</div>
-          <div class="field"><label>Personal Access Token</label><small>Stored only in your browser. Never uploaded anywhere. Get one at github.com/settings/tokens  Classic  repo scope.</small><input type="password" id="s-token" placeholder="ghp_..."/></div>
+          <div class="field"><label>Personal Access Token</label><small>Stored only in your browser. Get one at github.com/settings/tokens → Classic → repo scope.</small><input type="password" id="s-token" placeholder="ghp_..."/></div>
           <div class="field-row">
             <div class="field"><label>Repository</label><input id="s-repo" placeholder="rumimotion/rumimotion.github.io"/></div>
             <div class="field"><label>Branch</label><input id="s-branch" placeholder="main"/></div>
@@ -656,8 +404,8 @@ img{display:block;max-width:100%}
           <button class="toggle-opt" onclick="changePassword()" style="margin-top:4px">Change Password</button>
         </div>
         <div class="card">
-          <div class="card-title">Site Data</div>
-          <div class="field"><label>Raw JSON (advanced)</label><textarea id="s-json" style="min-height:200px;font-family:monospace;font-size:.75rem"></textarea></div>
+          <div class="card-title">Raw JSON (advanced)</div>
+          <div class="field"><textarea id="s-json" style="min-height:200px;font-family:monospace;font-size:.75rem"></textarea></div>
           <div style="display:flex;gap:8px;margin-top:8px">
             <button class="toggle-opt" onclick="loadRawJson()">Load Current Data</button>
             <button class="toggle-opt" onclick="applyRawJson()">Apply JSON</button>
@@ -665,17 +413,13 @@ img{display:block;max-width:100%}
         </div>
       </div>
 
-    </div><!-- /content -->
-  </div><!-- /main -->
-</div><!-- /app -->
+    </div>
+  </div>
+</div>
 
 <div id="toast"></div>
 
 <script>
-/* ================================================
-   RUMI ADMIN -- JavaScript Engine
-   ================================================ */
-
 const FONTS=[
   {name:'General Sans',url:'https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700&display=swap'},
   {name:'Inter',url:'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'},
@@ -687,138 +431,61 @@ const FONTS=[
   {name:'Plus Jakarta',url:'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap'},
 ];
 
-/* -- helpers -- */
 const $=id=>document.getElementById(id);
 const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
 const gv=id=>{const e=$(id);return e?e.value:''};
 const setv=(id,v)=>{const e=$(id);if(e)e.value=v||''};
+let D={};let unsaved=false;
 
-let D={};
-let unsaved=false;
+function markUnsaved(){unsaved=true;$('pub-dot').className='pub-dot amber';$('pub-label').textContent='Unsaved changes';}
+function markSaved(){unsaved=false;$('pub-dot').className='pub-dot';$('pub-label').textContent='All changes saved';}
+function toast(msg,type='success'){const t=$('toast');t.textContent=msg;t.className='on '+type;clearTimeout(t._tm);t._tm=setTimeout(()=>t.className='',3000);}
 
-function markUnsaved(){
-  unsaved=true;
-  $('pub-dot').className='pub-dot amber';
-  $('pub-label').textContent='Unsaved changes';
-}
-function markSaved(){
-  unsaved=false;
-  $('pub-dot').className='pub-dot';
-  $('pub-label').textContent='All changes saved';
-}
-
-/* -- TOAST -- */
-function toast(msg,type='success'){
-  const t=$('toast');
-  t.textContent=msg;
-  t.className='on '+type;
-  clearTimeout(t._tm);
-  t._tm=setTimeout(()=>t.className='',3000);
-}
-
-/* -- LOGIN -- */
 const DEFAULT_PW=atob('TmV3UG9ydGZvbGlvQDEyMw==');
 function getPassword(){return localStorage.getItem('rumi_admin_pw')||DEFAULT_PW;}
-
 $('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 $('pw-btn').addEventListener('click',doLogin);
+function doLogin(){const pw=$('pw-input').value;if(pw===getPassword()){$('login-screen').style.display='none';$('app').classList.add('on');loadData();}else{$('pw-err').textContent='Incorrect password';$('pw-input').value='';$('pw-input').focus();}}
+$('logout-btn').addEventListener('click',()=>{$('app').classList.remove('on');$('login-screen').style.display='flex';$('pw-input').value='';$('pw-err').textContent='';});
 
-function doLogin(){
-  const pw=$('pw-input').value;
-  if(pw===getPassword()){
-    $('login-screen').style.display='none';
-    $('app').classList.add('on');
-    loadData();
-    buildDashboard();
-  } else {
-    $('pw-err').textContent='Incorrect password';
-    $('pw-input').value='';
-    $('pw-input').focus();
-  }
-}
-
-$('logout-btn').addEventListener('click',()=>{
-  $('app').classList.remove('on');
-  $('login-screen').style.display='flex';
-  $('pw-input').value='';
-  $('pw-err').textContent='';
-});
-
-/* -- LOAD DATA from index.html via fetch -- */
 async function loadData(){
   try{
     const res=await fetch('/index.html?_='+Date.now());
     const html=await res.text();
     const m=html.match(/<script id="D" type="application\/json">([\s\S]*?)<\/script>/);
-    if(m){ D=JSON.parse(m[1]); }
-    else { D=getDefaultData(); }
-  }catch(e){
-    D=getDefaultData();
-    toast('Could not load site data  using defaults','info');
-  }
+    if(m){D=JSON.parse(m[1]);}else{D=getDefaultData();}
+  }catch(e){D=getDefaultData();toast('Could not load site data','info');}
   D.github=D.github||{token:'',repo:'rumimotion/rumimotion.github.io',branch:'main',path:'index.html'};
-  populateForms();
-  buildDashboard();
-  loadSettings();
+  populateForms();buildDashboard();loadSettings();
 }
 
-/* -- POPULATE ALL FORMS -- */
 function populateForms(){
   const h=D.hero||{};
-  setv('h-name',h.name);
-  setv('h-sub',(h.subtitle||'').replace(/\n/g,'\\n'));
-  setv('h-body',h.body);
-  setv('h-tag',h.tagline);
-  setv('h-ctat',h.ctaText);
-  setv('h-ctah',h.ctaHref);
-  setv('h-rvimeo',h.reelVimeoId||'');
-  setv('h-ryt',h.reelYoutubeId||'');
-  setv('h-rthumb',h.reelThumb||'');
-
-  buildProjects();
-  buildServices();
-  buildExperience();
-
+  setv('h-name',h.name);setv('h-sub',(h.subtitle||'').replace(/\n/g,'\\n'));
+  setv('h-body',h.body);setv('h-tag',h.tagline);
+  setv('h-ctat',h.ctaText);setv('h-ctah',h.ctaHref);
+  setv('h-rvimeo',h.reelVimeoId||'');setv('h-ryt',h.reelYoutubeId||'');setv('h-rthumb',h.reelThumb||'');
+  buildProjects();buildServices();buildExperience();
   const a=D.about||{};
-  setv('a-photo',a.photo); syncImg($('a-photo'),$('about-photo-prev'));
-  setv('a-name',a.name);
-  setv('a-heading',a.heading);
-  setv('a-bio',a.bio);
-  setv('a-skills',(a.skills||[]).join(', '));
-
+  setv('a-photo',a.photo);syncImg($('a-photo'),$('about-photo-prev'));
+  setv('a-name',a.name);setv('a-heading',a.heading);setv('a-bio',a.bio);setv('a-skills',(a.skills||[]).join(', '));
   const c=D.contact||{};
-  setv('c-heading',c.heading);
-  setv('c-sub',c.sub);
-  setv('c-email',c.email);
-  setv('c-li',c.linkedin);
-  setv('c-vm',c.vimeo);
-  setv('c-be',c.behance);
-
-  buildDesign();
-  buildFonts();
-
-  /* auto-mark unsaved on any input */
-  document.querySelectorAll('input,textarea,select').forEach(el=>{
-    el.addEventListener('input',markUnsaved);
-  });
+  setv('c-heading',c.heading);setv('c-sub',c.sub);setv('c-email',c.email);
+  setv('c-li',c.linkedin);setv('c-vm',c.vimeo);setv('c-be',c.behance);
+  buildDesign();buildFonts();
+  document.querySelectorAll('input,textarea,select').forEach(el=>el.addEventListener('input',markUnsaved));
 }
 
-/* -- DASHBOARD -- */
 function buildDashboard(){
   const stats=[
     {val:(D.projects||[]).length,label:'Projects',accent:true},
-    {val:(D.projects||[]).reduce((a,p)=>a+(p.videos||[]).length,0),label:'Total Videos',accent:false},
+    {val:(D.projects||[]).reduce((a,p)=>a+(p.videos||[]).length,0),label:'Total Items',accent:false},
     {val:(D.services||[]).length,label:'Services',accent:false},
-    {val:(D.experience||[]).length,label:'Experience Rows',accent:false},
+    {val:(D.experience||[]).length,label:'Experience',accent:false},
   ];
-  $('dash-stats').innerHTML=stats.map(s=>`
-    <div class="stat-card">
-      <div class="stat-val">${s.accent?`<span>${s.val}</span>`:s.val}</div>
-      <div class="stat-lbl">${s.label}</div>
-    </div>`).join('');
+  $('dash-stats').innerHTML=stats.map(s=>`<div class="stat-card"><div class="stat-val">${s.accent?`<span>${s.val}</span>`:s.val}</div><div class="stat-lbl">${s.label}</div></div>`).join('');
 }
 
-/* -- PROJECTS -- */
 function buildProjects(){
   const list=$('proj-list');
   list.innerHTML=(D.projects||[]).map((p,i)=>`
@@ -827,45 +494,36 @@ function buildProjects(){
         <div class="acc-head-left">
           <div class="acc-num">${i+1}</div>
           <div class="acc-name">${p.client||'New Project'}</div>
-          <span class="acc-tag">${(p.videos||[]).length} videos</span>
+          <span class="acc-tag">${(p.videos||[]).length} items</span>
         </div>
-        <span class="acc-chevron"></span>
+        <span class="acc-chevron">›</span>
       </div>
       <div class="acc-body">
         <div class="field-row">
           <div class="field"><label>Client Name</label><input id="pc-${i}" value="${esc(p.client)}" oninput="markUnsaved()"/></div>
           <div class="field"><label>Project Title</label><input id="pt-${i}" value="${esc(p.title)}" oninput="markUnsaved()"/></div>
         </div>
-        <div class="field"><label>Primary Role (shown on card)</label><input id="pr-${i}" value="${esc(p.primaryRole)}" oninput="markUnsaved()"/></div>
-        <div class="field">
-          <label>Project Description</label>
-          <small>Shown on project page below meta info. What was the project and what did you do?</small>
-          <textarea class="ta" id="pdesc-${i}" style="min-height:90px" oninput="markUnsaved()">${esc(p.description||'')}</textarea>
-        </div>
+        <div class="field"><label>Primary Role</label><input id="pr-${i}" value="${esc(p.primaryRole)}" oninput="markUnsaved()"/></div>
+        <div class="field"><label>Description</label><small>Shown on project page below meta info</small><textarea id="pdesc-${i}" style="min-height:90px" oninput="markUnsaved()">${esc(p.description||'')}</textarea></div>
         <div class="field"><label>Tags (comma separated)</label><input id="ptags-${i}" value="${esc((p.tags||[]).join(', '))}" oninput="markUnsaved()"/></div>
         <div class="field">
           <label>Cover Image URL</label>
-          <small>Paste Cloudinary URL or use assets/uploads/filename.jpg</small>
           <div class="img-field">
             <img id="cov-prev-${i}" class="img-thumb" src="${esc(p.cover)}" alt="" onerror="this.style.display='none'" onload="this.style.display='block'" style="${p.cover?'':'display:none'}"/>
-            <div class="img-input-wrap">
-              <div class="field"><input id="pcover-${i}" value="${esc(p.cover)}" oninput="syncImg(this,'cov-prev-${i}');markUnsaved()"/></div>
-            </div>
+            <div class="img-input-wrap"><div class="field"><input id="pcover-${i}" value="${esc(p.cover)}" oninput="syncImg(this,'cov-prev-${i}');markUnsaved()"/></div></div>
           </div>
         </div>
         <div class="field">
-          <label>Video Gallery Layout</label>
+          <label>Gallery Layout</label>
           <div class="toggle-group" id="layout-tog-${i}">
-            <button class="toggle-opt${p.layout==='horizontal'?' on':''}" onclick="setLayout(${i},'horizontal')"> Horizontal 16:9 (2 cols)</button>
-            <button class="toggle-opt${p.layout==='vertical'?' on':''}" onclick="setLayout(${i},'vertical')"> Vertical 9:16 (3 cols)</button>
-            <button class="toggle-opt${(p.layout==='mixed'||!p.layout)?' on':''}" onclick="setLayout(${i},'mixed')"> Mixed (per video)</button>
+            <button class="toggle-opt${p.layout==='horizontal'?' on':''}" onclick="setLayout(${i},'horizontal')">▬ Horizontal 16:9</button>
+            <button class="toggle-opt${p.layout==='vertical'?' on':''}" onclick="setLayout(${i},'vertical')">▮ Vertical 9:16</button>
+            <button class="toggle-opt${(p.layout==='mixed'||!p.layout)?' on':''}" onclick="setLayout(${i},'mixed')">▤ Mixed</button>
           </div>
         </div>
-        <div style="margin-top:16px;margin-bottom:8px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green)">Videos</div>
-        <div id="vids-${i}">
-          ${(p.videos||[]).map((v,vi)=>vidHTML(i,vi,v)).join('')}
-        </div>
-        <button class="add-btn" onclick="addVideo(${i})">+ Add Video</button>
+        <div style="margin-top:16px;margin-bottom:8px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green)">Media Items</div>
+        <div id="vids-${i}">${(p.videos||[]).map((v,vi)=>vidHTML(i,vi,v)).join('')}</div>
+        <button class="add-btn" onclick="addVideo(${i})">+ Add Media Item</button>
         <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
           <button class="rm-btn" onclick="removeProject(${i})">Remove this project</button>
         </div>
@@ -873,15 +531,24 @@ function buildProjects(){
     </div>`).join('');
 }
 
+function getMediaType(v){
+  if(v.imageUrl) return 'image';
+  if(v.tiktokId) return 'tiktok';
+  if(v.youtubeId) return 'youtube';
+  if(v.vimeoId) return 'vimeo';
+  return 'vimeo'; // default
+}
+
 function vidHTML(i,vi,v){
   const or=v.orientation||'horizontal';
+  const mt=getMediaType(v);
   return `<div class="vid-item" id="vid-${i}-${vi}">
     <div class="vid-item-head">
-      <div class="vid-num">Video ${vi+1}</div>
+      <div class="vid-num">Item ${vi+1}</div>
       <button class="rm-btn" onclick="removeVideo(${i},${vi})">Remove</button>
     </div>
-    <div class="field"><label>Video Title</label><input id="vn-${i}-${vi}" value="${esc(v.name)}" oninput="markUnsaved()"/></div>
-    <div class="field"><label>Your Role on this video</label><input id="vr-${i}-${vi}" value="${esc(v.role)}" oninput="markUnsaved()"/></div>
+    <div class="field"><label>Title</label><input id="vn-${i}-${vi}" value="${esc(v.name)}" oninput="markUnsaved()"/></div>
+    <div class="field"><label>Your Role</label><input id="vr-${i}-${vi}" value="${esc(v.role)}" oninput="markUnsaved()"/></div>
     <div class="field">
       <label>Orientation</label>
       <div class="toggle-group">
@@ -889,30 +556,58 @@ function vidHTML(i,vi,v){
         <button class="toggle-opt${or==='vertical'?' on':''}" onclick="setOrient(${i},${vi},'vertical')">Vertical 9:16</button>
       </div>
     </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Vimeo ID</label>
-        <small>Number from vimeo.com/<strong>1234567</strong></small>
-        <input id="vi-${i}-${vi}" value="${esc(v.vimeoId||'')}" oninput="markUnsaved()" placeholder="e.g. 1146513897"/>
-      </div>
-      <div class="field">
-        <label>YouTube ID</label>
-        <small>From youtube.com/watch?v=<strong>XXXXXXXXXXX</strong></small>
-        <input id="vy-${i}-${vi}" value="${esc(v.youtubeId||'')}" oninput="markUnsaved()" placeholder="e.g. dQw4w9WgXcQ"/>
+    <div class="field">
+      <label>Media Type</label>
+      <div class="media-type-row" id="mtype-${i}-${vi}">
+        <button class="media-type-btn${mt==='vimeo'?' on':''}" onclick="setMediaType(${i},${vi},'vimeo')">▶ Vimeo</button>
+        <button class="media-type-btn${mt==='youtube'?' on':''}" onclick="setMediaType(${i},${vi},'youtube')">▶ YouTube</button>
+        <button class="media-type-btn${mt==='tiktok'?' on':''}" onclick="setMediaType(${i},${vi},'tiktok')">♪ TikTok</button>
+        <button class="media-type-btn${mt==='image'?' on':''}" onclick="setMediaType(${i},${vi},'image')">📷 Photo</button>
       </div>
     </div>
-    <div class="field">
-      <label>Thumbnail Image</label>
-      <small>Option A: Cloudinary URL &nbsp;|&nbsp; Option B: <code>assets/uploads/name.jpg</code> &nbsp;|&nbsp; Option C: any image URL</small>
+    <div class="media-fields${mt==='vimeo'?' on':''}" id="mf-vimeo-${i}-${vi}">
+      <div class="field"><label>Vimeo ID</label><small>Number from vimeo.com/<strong>1234567</strong> — thumbnail auto-fetches</small><input id="vi-${i}-${vi}" value="${esc(v.vimeoId||'')}" oninput="markUnsaved()" placeholder="e.g. 1146513897"/></div>
+    </div>
+    <div class="media-fields${mt==='youtube'?' on':''}" id="mf-youtube-${i}-${vi}">
+      <div class="field"><label>YouTube ID</label><small>From youtube.com/watch?v=<strong>XXXXXXXXXXX</strong> — thumbnail auto-fetches</small><input id="vy-${i}-${vi}" value="${esc(v.youtubeId||'')}" oninput="markUnsaved()" placeholder="e.g. dQw4w9WgXcQ"/></div>
+    </div>
+    <div class="media-fields${mt==='tiktok'?' on':''}" id="mf-tiktok-${i}-${vi}">
+      <div class="field"><label>TikTok Video ID</label><small>Long number from tiktok.com/video/<strong>7234567890123456789</strong> — thumbnail auto-fetches</small><input id="vtt-${i}-${vi}" value="${esc(v.tiktokId||'')}" oninput="markUnsaved()" placeholder="e.g. 7234567890123456789"/></div>
+    </div>
+    <div class="media-fields${mt==='image'?' on':''}" id="mf-image-${i}-${vi}">
+      <div class="field">
+        <label>📷 Photo URL</label>
+        <small>Upload to <a href="https://cloudinary.com" target="_blank" style="color:var(--green)">Cloudinary</a> → paste URL here. Shows full-size on click.</small>
+        <div class="img-field" style="margin-top:6px">
+          <img id="img-prev-${i}-${vi}" class="img-thumb" src="${esc(v.imageUrl||'')}" alt="" onerror="this.style.display='none'" onload="this.style.display='block'" style="${v.imageUrl?'':'display:none'}"/>
+          <div class="img-input-wrap"><div class="field"><input id="vim-${i}-${vi}" value="${esc(v.imageUrl||'')}" oninput="syncImg(this,'img-prev-${i}-${vi}');markUnsaved()" placeholder="https://res.cloudinary.com/..."/></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="field" style="margin-top:4px">
+      <label>Custom Thumbnail (optional)</label>
+      <small>Leave blank — auto-fetched for Vimeo/YouTube/TikTok. For photos, thumbnail is the photo itself.</small>
       <div class="img-field" style="margin-top:4px">
         <img id="vtp-${i}-${vi}" class="img-thumb" src="${esc(v.thumb||'')}" alt="" onerror="this.style.display='none'" onload="this.style.display='block'" style="${v.thumb?'':'display:none'}"/>
-        <div class="img-input-wrap"><div class="field"><input id="vt-${i}-${vi}" value="${esc(v.thumb||'')}" oninput="syncImg(this,'vtp-${i}-${vi}');markUnsaved()" placeholder="Paste URL or path"/></div></div>
+        <div class="img-input-wrap"><div class="field"><input id="vt-${i}-${vi}" value="${esc(v.thumb||'')}" oninput="syncImg(this,'vtp-${i}-${vi}');markUnsaved()" placeholder="Paste URL or leave blank"/></div></div>
       </div>
     </div>
   </div>`;
 }
 
-/* -- SERVICES -- */
+function setMediaType(i,vi,type){
+  // Update buttons
+  document.querySelectorAll(`#mtype-${i}-${vi} .media-type-btn`).forEach(b=>b.classList.remove('on'));
+  const btn=document.querySelector(`#mtype-${i}-${vi} .media-type-btn[onclick*="'${type}'"]`);
+  if(btn) btn.classList.add('on');
+  // Show/hide field panels
+  ['vimeo','youtube','tiktok','image'].forEach(t=>{
+    const f=document.getElementById(`mf-${t}-${i}-${vi}`);
+    if(f) f.classList.toggle('on', t===type);
+  });
+  markUnsaved();
+}
+
 function buildServices(){
   $('svc-list').innerHTML=(D.services||[]).map((s,i)=>`
     <div class="card">
@@ -925,7 +620,6 @@ function buildServices(){
     </div>`).join('');
 }
 
-/* -- EXPERIENCE -- */
 function buildExperience(){
   $('exp-list').innerHTML=(D.experience||[]).map((e,i)=>`
     <div class="card">
@@ -937,7 +631,7 @@ function buildExperience(){
         <div class="field"><label>Job Title / Role</label><input id="er-${i}" value="${esc(e.role)}" oninput="markUnsaved()"/></div>
         <div class="field"><label>Company</label><input id="ec-${i}" value="${esc(e.company)}" oninput="markUnsaved()"/></div>
       </div>
-      <div class="field"><label>Period</label><input id="ep-${i}" value="${esc(e.period)}" placeholder="2022  Present" oninput="markUnsaved()"/></div>
+      <div class="field"><label>Period</label><input id="ep-${i}" value="${esc(e.period)}" placeholder="2022 – Present" oninput="markUnsaved()"/></div>
       <div class="field">
         <label>Company Logo URL</label>
         <div class="img-field">
@@ -948,11 +642,11 @@ function buildExperience(){
     </div>`).join('');
 }
 
-/* -- DESIGN -- */
 function buildDesign(){
   const C=D.colors||{};
-  [['bg','Background'],['surface','Surface'],['text','Text'],['textMid','Dimmed Text'],['green','Accent'],['border','Borders']].forEach(([k])=>{
-    const sw=$('col-'+k), hx=$('col-'+k+'-hex');
+  [['bg'],['surface'],['text'],['textMid','mid'],['green'],['border']].forEach(([k,alias])=>{
+    const key=alias||k;
+    const sw=$('col-'+key), hx=$('col-'+key+'-hex');
     const val=C[k]||'#000000';
     if(sw){sw.value=val;sw.addEventListener('input',e=>{if(hx)hx.value=e.target.value;markUnsaved();});}
     if(hx){hx.value=val;hx.addEventListener('input',e=>{if(/^#[0-9a-fA-F]{6}$/.test(e.target.value)&&sw)sw.value=e.target.value;markUnsaved();});}
@@ -965,338 +659,141 @@ function buildFonts(){
       ${f.name}<small>Aa</small>
     </div>`).join('');
 }
+function selectFont(name){D.font=name;document.querySelectorAll('.font-card').forEach(c=>{c.classList.toggle('on',c.textContent.trim().startsWith(name));});markUnsaved();}
 
-function selectFont(name){
-  D.font=name;
-  document.querySelectorAll('.font-card').forEach(c=>{
-    c.classList.toggle('on',c.textContent.trim().startsWith(name));
-  });
-  markUnsaved();
-}
-
-/* -- SETTINGS -- */
 function loadSettings(){
   const gh=D.github||{};
-  const stored=localStorage.getItem('rumi_gh_token')||'';
-  setv('s-token',stored||gh.token||'');
+  setv('s-token',localStorage.getItem('rumi_gh_token')||'');
   setv('s-repo',gh.repo||'rumimotion/rumimotion.github.io');
   setv('s-branch',gh.branch||'main');
 }
-function saveSettings(){
-  const token=gv('s-token');
-  if(token) localStorage.setItem('rumi_gh_token',token);
-  D.github={token:'',repo:gv('s-repo'),branch:gv('s-branch'),path:'index.html'};
-  toast('GitHub settings saved!');
-}
-function changePassword(){
-  const p1=gv('s-pw1'),p2=gv('s-pw2');
-  if(!p1){toast('Enter a password','error');return;}
-  if(p1!==p2){toast('Passwords do not match','error');return;}
-  localStorage.setItem('rumi_admin_pw',p1);
-  toast('Password changed!');
-  setv('s-pw1','');setv('s-pw2','');
-}
+function saveSettings(){const token=gv('s-token');if(token)localStorage.setItem('rumi_gh_token',token);D.github={token:'',repo:gv('s-repo'),branch:gv('s-branch'),path:'index.html'};toast('GitHub settings saved!');}
+function changePassword(){const p1=gv('s-pw1'),p2=gv('s-pw2');if(!p1){toast('Enter a password','error');return;}if(p1!==p2){toast('Passwords do not match','error');return;}localStorage.setItem('rumi_admin_pw',p1);toast('Password changed!');setv('s-pw1','');setv('s-pw2','');}
 function loadRawJson(){setv('s-json',JSON.stringify(D,null,2));}
-function applyRawJson(){
-  try{D=JSON.parse(gv('s-json'));populateForms();markUnsaved();toast('JSON applied!');}
-  catch(e){toast('Invalid JSON: '+e.message,'error');}
-}
+function applyRawJson(){try{D=JSON.parse(gv('s-json'));populateForms();markUnsaved();toast('JSON applied!');}catch(e){toast('Invalid JSON: '+e.message,'error');}}
 
-/* -- READ ALL FORMS -> update D -- */
 function readAll(){
-  /* hero */
   D.hero=D.hero||{};
-  D.hero.name=gv('h-name');
-  D.hero.subtitle=gv('h-sub').replace(/\\n/g,'\n');
-  D.hero.body=gv('h-body');
-  D.hero.tagline=gv('h-tag');
-  D.hero.ctaText=gv('h-ctat');
-  D.hero.ctaHref=gv('h-ctah');
-  D.hero.reelVimeoId=gv('h-rvimeo');
-  D.hero.reelYoutubeId=gv('h-ryt');
-  D.hero.reelThumb=gv('h-rthumb');
+  D.hero.name=gv('h-name');D.hero.subtitle=gv('h-sub').replace(/\\n/g,'\n');
+  D.hero.body=gv('h-body');D.hero.tagline=gv('h-tag');
+  D.hero.ctaText=gv('h-ctat');D.hero.ctaHref=gv('h-ctah');
+  D.hero.reelVimeoId=gv('h-rvimeo');D.hero.reelYoutubeId=gv('h-ryt');D.hero.reelThumb=gv('h-rthumb');
 
-  /* projects */
   (D.projects||[]).forEach((p,i)=>{
-    p.client=gv(`pc-${i}`);
-    p.title=gv(`pt-${i}`);
-    p.primaryRole=gv(`pr-${i}`);
+    p.client=gv(`pc-${i}`);p.title=gv(`pt-${i}`);p.primaryRole=gv(`pr-${i}`);
     p.description=gv(`pdesc-${i}`);
     p.tags=gv(`ptags-${i}`).split(',').map(s=>s.trim()).filter(Boolean);
     p.cover=gv(`pcover-${i}`);
     (p.videos||[]).forEach((v,vi)=>{
       v.name=gv(`vn-${i}-${vi}`);
       v.role=gv(`vr-${i}-${vi}`);
-      v.vimeoId=gv(`vi-${i}-${vi}`);
-      v.youtubeId=gv(`vy-${i}-${vi}`);
-      v.thumb=gv(`vt-${i}-${vi}`);
+      v.vimeoId=gv(`vi-${i}-${vi}`)||'';
+      v.youtubeId=gv(`vy-${i}-${vi}`)||'';
+      v.tiktokId=gv(`vtt-${i}-${vi}`)||'';
+      v.imageUrl=gv(`vim-${i}-${vi}`)||'';
+      v.thumb=gv(`vt-${i}-${vi}`)||'';
     });
   });
 
-  /* services */
   (D.services||[]).forEach((s,i)=>{s.icon=gv(`si-${i}`);s.name=gv(`sn-${i}`);s.desc=gv(`sd-${i}`);});
-
-  /* experience */
   (D.experience||[]).forEach((e,i)=>{e.role=gv(`er-${i}`);e.company=gv(`ec-${i}`);e.period=gv(`ep-${i}`);e.logo=gv(`el-${i}`);});
 
-  /* about */
   D.about=D.about||{};
-  D.about.photo=gv('a-photo');
-  D.about.name=gv('a-name');
-  D.about.heading=gv('a-heading');
-  D.about.bio=gv('a-bio');
-  D.about.skills=gv('a-skills').split(',').map(s=>s.trim()).filter(Boolean);
+  D.about.photo=gv('a-photo');D.about.name=gv('a-name');D.about.heading=gv('a-heading');
+  D.about.bio=gv('a-bio');D.about.skills=gv('a-skills').split(',').map(s=>s.trim()).filter(Boolean);
 
-  /* contact */
   D.contact=D.contact||{};
-  D.contact.heading=gv('c-heading');
-  D.contact.sub=gv('c-sub');
-  D.contact.email=gv('c-email');
-  D.contact.linkedin=gv('c-li');
-  D.contact.vimeo=gv('c-vm');
-  D.contact.behance=gv('c-be');
+  D.contact.heading=gv('c-heading');D.contact.sub=gv('c-sub');D.contact.email=gv('c-email');
+  D.contact.linkedin=gv('c-li');D.contact.vimeo=gv('c-vm');D.contact.behance=gv('c-be');
 
-  /* colors */
   D.colors=D.colors||{};
   ['bg','surface','text','textMid','green','border'].forEach(k=>{
-    D.colors[k]=gv('col-'+k+'-hex')||gv('col-'+k)||D.colors[k];
+    const alias=k==='textMid'?'mid':k;
+    D.colors[k]=gv('col-'+alias+'-hex')||gv('col-'+alias)||D.colors[k];
   });
 
-  /* github -- token from localStorage, never in D */
-  D.github=D.github||{};
-  D.github.token='';
+  D.github=D.github||{};D.github.token='';
   D.github.repo=gv('s-repo')||'rumimotion/rumimotion.github.io';
-  D.github.branch=gv('s-branch')||'main';
-  D.github.path='index.html';
+  D.github.branch=gv('s-branch')||'main';D.github.path='index.html';
 }
 
-/* -- PUBLISH -> push index.html to GitHub -- */
 $('publish-btn').addEventListener('click', publishToGitHub);
-
 async function publishToGitHub(){
   readAll();
-
   let token=localStorage.getItem('rumi_gh_token')||'';
-  if(!token){
-    token=prompt('Enter your GitHub Personal Access Token:\n(stored only in your browser, never uploaded)');
-    if(!token){toast('Cancelled','info');return;}
-    localStorage.setItem('rumi_gh_token',token);
-  }
-
-  const gh=D.github;
-  const repo=gh.repo||gv('s-repo')||'rumimotion/rumimotion.github.io';
-  const branch=gh.branch||'main';
-  const path=gh.path||'index.html';
-
-  const btn=$('publish-btn');
-  btn.disabled=true;
-  btn.innerHTML=`<svg viewBox="0 0 16 16" style="animation:spin 1s linear infinite"><path d="M8 1v3M8 12v3M1 8h3M12 8h3"/></svg> Publishing...`;
+  if(!token){token=prompt('Enter your GitHub Personal Access Token:');if(!token){toast('Cancelled','info');return;}localStorage.setItem('rumi_gh_token',token);}
+  const gh=D.github;const repo=gh.repo||'rumimotion/rumimotion.github.io';const branch=gh.branch||'main';const path=gh.path||'index.html';
+  const btn=$('publish-btn');btn.disabled=true;btn.innerHTML=`<svg viewBox="0 0 16 16" style="animation:spin 1s linear infinite"><path d="M8 1v3M8 12v3M1 8h3M12 8h3"/></svg> Publishing...`;
   toast('Pushing to GitHub...','info');
-
   try{
-    /* 1. Fetch current index.html */
-    const getRes=await fetch(`https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`,
-      {headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json'}});
+    const getRes=await fetch(`https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`,{headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json'}});
     const getJson=await getRes.json();
-    if(!getJson.sha){toast('Could not get file SHA  check token & repo','error');return;}
-    const sha=getJson.sha;
-
-    /* 2. Get current HTML content and inject new D */
+    if(!getJson.sha){toast('Could not get file SHA — check token & repo','error');btn.disabled=false;btn.innerHTML=`<svg viewBox="0 0 16 16"><path d="M8 1v10M4 7l4-6 4 6M3 14h10"/></svg> Publish`;return;}
     const currentHTML=atob(getJson.content.replace(/\n/g,''));
-    const updatedHTML=currentHTML.replace(
-      /(<script id="D" type="application\/json">)([\s\S]*?)(<\/script>)/,
-      `$1\n${JSON.stringify(D,null,2)}\n$3`
-    );
-
-    /* 3. Push updated file */
-    const pushRes=await fetch(`https://api.github.com/repos/${repo}/contents/${path}`,{
-      method:'PUT',
-      headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-      body:JSON.stringify({
-        message:'Update site via Admin Panel',
-        content:btoa(unescape(encodeURIComponent(updatedHTML))),
-        sha,branch
-      })
-    });
-
-    if(pushRes.ok){
-      toast('Published! Live in ~30 seconds');
-      markSaved();
-      buildDashboard();
-    } else {
-      const err=await pushRes.json();
-      toast('Error: '+(err.message||'check console'),'error');
-      console.error(err);
-    }
-  }catch(e){
-    toast('Network error  check console','error');
-    console.error(e);
-  }
-
-  btn.disabled=false;
-  btn.innerHTML=`<svg viewBox="0 0 16 16"><path d="M8 1v10M4 7l4-6 4 6M3 14h10"/></svg> Publish`;
+    const updatedHTML=currentHTML.replace(/(<script id="D" type="application\/json">)([\s\S]*?)(<\/script>)/,`$1\n${JSON.stringify(D,null,2)}\n$3`);
+    const pushRes=await fetch(`https://api.github.com/repos/${repo}/contents/${path}`,{method:'PUT',headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Update site via Admin Panel',content:btoa(unescape(encodeURIComponent(updatedHTML))),sha:getJson.sha,branch})});
+    if(pushRes.ok){toast('Published! Live in ~30 seconds');markSaved();buildDashboard();}
+    else{const err=await pushRes.json();toast('Error: '+(err.message||'check console'),'error');console.error(err);}
+  }catch(e){toast('Network error — check console','error');console.error(e);}
+  btn.disabled=false;btn.innerHTML=`<svg viewBox="0 0 16 16"><path d="M8 1v10M4 7l4-6 4 6M3 14h10"/></svg> Publish`;
 }
 
-/* -- NAVIGATION -- */
 function goPage(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.sb-item').forEach(s=>s.classList.remove('on'));
-  const p=$('page-'+name); if(p)p.classList.add('on');
+  const p=$('page-'+name);if(p)p.classList.add('on');
   const s=document.querySelector(`[data-page="${name}"]`);if(s)s.classList.add('on');
   $('page-title').textContent=s?s.textContent.trim():'';
-  if(document.getElementById('sidebar').classList.contains('open'))
-    document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar').classList.remove('open');
 }
-document.querySelectorAll('.sb-item').forEach(item=>{
-  item.addEventListener('click',()=>goPage(item.dataset.page));
-});
+document.querySelectorAll('.sb-item').forEach(item=>item.addEventListener('click',()=>goPage(item.dataset.page)));
+function toggleAcc(id){const el=$(id);if(el)el.classList.toggle('on');}
 
-/* -- TOGGLE ACCORDION -- */
-function toggleAcc(id){
-  const el=$(id);if(el)el.classList.toggle('on');
-}
-
-
-/* Save all form fields into D before any re-render to prevent data loss */
-function saveAllFields(){
-  (D.projects||[]).forEach((p,i)=>{
-    ['client','title','primaryRole','description'].forEach(f=>{
-      const el=document.getElementById(`pf-${f}-${i}`);
-      if(el) p[f]=el.value;
-    });
-    const tagsEl=document.getElementById(`pf-tags-${i}`);
-    if(tagsEl) p.tags=tagsEl.value.split(',').map(s=>s.trim()).filter(Boolean);
-    const coverEl=document.getElementById(`pf-cover-${i}`);
-    if(coverEl) p.cover=coverEl.value;
-    (p.videos||[]).forEach((v,vi)=>{
-      const nm=document.getElementById(`vf-name-${i}-${vi}`);
-      const ro=document.getElementById(`vf-role-${i}-${vi}`);
-      const vi_=document.getElementById(`vf-vimeo-${i}-${vi}`);
-      const vy=document.getElementById(`vf-yt-${i}-${vi}`);
-      const th=document.getElementById(`vf-thumb-${i}-${vi}`);
-      if(nm) v.name=nm.value;
-      if(ro) v.role=ro.value;
-      if(vi_) v.vimeoId=vi_.value;
-      if(vy) v.youtubeId=vy.value;
-      if(th) v.thumb=th.value;
-    });
-  });
-}
-
-/* -- LAYOUT / ORIENT helpers -- */
 function setLayout(i,val){
   (D.projects||[])[i].layout=val;
-  document.querySelectorAll(`#layout-tog-${i} .toggle-opt`).forEach(b=>{
-    b.classList.toggle('on',b.textContent.toLowerCase().includes(val));
-  });
+  document.querySelectorAll(`#layout-tog-${i} .toggle-opt`).forEach(b=>b.classList.toggle('on',b.textContent.toLowerCase().includes(val)));
   markUnsaved();
 }
 function setOrient(i,vi,val){
-  saveAllFields();
-  ((D.projects||[])[i].videos||[])[vi].orientation=val;
-  buildProjects();
-  const acc=$(`acc-proj-${i}`);if(acc)acc.classList.add('on');
-  markUnsaved();
+  readAll();((D.projects||[])[i].videos||[])[vi].orientation=val;buildProjects();
+  const acc=$(`acc-proj-${i}`);if(acc)acc.classList.add('on');markUnsaved();
 }
 function addVideo(i){
-  saveAllFields();
-  (D.projects[i].videos=D.projects[i].videos||[]).push({name:'New Video',role:'',orientation:'horizontal',vimeoId:'',youtubeId:'',thumb:''});
-  buildProjects();
-  const acc=$(`acc-proj-${i}`);if(acc)acc.classList.add('on');
-  markUnsaved();
+  readAll();
+  (D.projects[i].videos=D.projects[i].videos||[]).push({name:'',role:'',orientation:'horizontal',vimeoId:'',youtubeId:'',tiktokId:'',imageUrl:'',thumb:''});
+  buildProjects();const acc=$(`acc-proj-${i}`);if(acc)acc.classList.add('on');markUnsaved();
 }
-function removeVideo(i,vi){
-  saveAllFields();
-  D.projects[i].videos.splice(vi,1);
-  buildProjects();
-  const acc=$(`acc-proj-${i}`);if(acc)acc.classList.add('on');
-  markUnsaved();
-}
-function addProject(){
-  (D.projects=D.projects||[]).push({client:'New Client',title:'New Project',primaryRole:'',description:'',tags:[],cover:'',layout:'horizontal',videos:[]});
-  buildProjects();
-  buildDashboard();
-  markUnsaved();
-}
-function removeProject(i){
-  if(!confirm('Remove this project?'))return;
-  D.projects.splice(i,1);
-  buildProjects();
-  buildDashboard();
-  markUnsaved();
-}
-function addExp(){
-  (D.experience=D.experience||[]).push({logo:'',role:'',company:'',period:''});
-  buildExperience();
-  markUnsaved();
-}
-function removeExp(i){
-  D.experience.splice(i,1);
-  buildExperience();
-  markUnsaved();
-}
+function removeVideo(i,vi){readAll();D.projects[i].videos.splice(vi,1);buildProjects();const acc=$(`acc-proj-${i}`);if(acc)acc.classList.add('on');markUnsaved();}
+function addProject(){(D.projects=D.projects||[]).push({client:'New Client',title:'New Client',primaryRole:'',description:'',tags:[],cover:'',layout:'horizontal',videos:[]});buildProjects();buildDashboard();markUnsaved();}
+function removeProject(i){if(!confirm('Remove this project?'))return;D.projects.splice(i,1);buildProjects();buildDashboard();markUnsaved();}
+function addExp(){(D.experience=D.experience||[]).push({logo:'',role:'',company:'',period:''});buildExperience();markUnsaved();}
+function removeExp(i){D.experience.splice(i,1);buildExperience();markUnsaved();}
 
-/* add btn wiring */
 $('add-proj-btn').addEventListener('click',addProject);
 $('add-exp-btn').addEventListener('click',addExp);
 
-/* -- IMAGE PREVIEW -- */
 function syncImg(input,imgId){
-  const img=$(imgId)||input.parentElement.querySelector('img');
+  const img=typeof imgId==='string'?$(imgId):imgId;
   if(!img)return;
   const val=typeof input==='string'?gv(input):input.value;
-  if(val){img.src=val;img.style.display='block';}
-  else{img.src='';img.style.display='none';}
+  if(val){img.src=val;img.style.display='block';}else{img.src='';img.style.display='none';}
 }
 
-/* -- DEFAULT DATA fallback -- */
 function getDefaultData(){
   return{font:'General Sans',colors:{bg:'#0A0A0A',surface:'#1A1A1A',border:'#2a2a2a',text:'#F5F5F5',textMid:'#8A8A8A',green:'#4ADE80'},
     github:{token:'',repo:'rumimotion/rumimotion.github.io',branch:'main',path:'index.html'},
     hero:{name:'RUMI',subtitle:'Motion Graphics Designer,\nVideo Editor & Creative Problem Solver',body:'',tagline:'',ctaText:'Get in Touch',ctaHref:'#contact',reelVimeoId:'',reelYoutubeId:'',reelThumb:''},
     projects:[],services:[{icon:'✂️',name:'Video Editing',desc:'Long-form and short-form editing'},{icon:'⬡',name:'Motion Design',desc:'Broadcast graphics and animations'},{icon:'◎',name:'Creative Direction',desc:'Concept development and storytelling'},{icon:'⚽',name:'Sports Storytelling',desc:'Football and sports content'}],
-    experience:[],about:{photo:'',name:'',heading:'',bio:'',skills:[]},
-    contact:{heading:'',sub:'',email:'',linkedin:'',vimeo:'',behance:''}};
+    experience:[],about:{photo:'',name:'',heading:'',bio:'',skills:[]},contact:{heading:'',sub:'',email:'',linkedin:'',vimeo:'',behance:''}};
 }
 
-/* spin animation */
-const sty=document.createElement('style');
-sty.textContent='@keyframes spin{to{transform:rotate(360deg)}}';
-document.head.appendChild(sty);
+const sty=document.createElement('style');sty.textContent='@keyframes spin{to{transform:rotate(360deg)}}';document.head.appendChild(sty);
 
-/* expose globals */
-window.goPage=goPage;window.toggleAcc=toggleAcc;
-window.setLayout=setLayout;window.setOrient=setOrient;
-window.addVideo=addVideo;window.removeVideo=removeVideo;
-window.addProject=addProject;window.removeProject=removeProject;
-window.addExp=addExp;window.removeExp=removeExp;
-window.syncImg=syncImg;window.saveSettings=saveSettings;
-window.changePassword=changePassword;window.loadRawJson=loadRawJson;
-window.applyRawJson=applyRawJson;window.selectFont=selectFont;
-
-/* Auto-thumbnail preview in admin */
-async function previewVimeoThumb(id, imgId){
-  const img = document.getElementById(imgId);
-  if(!img) return;
-  if(!id){ img.src=''; img.classList.remove('on'); return; }
-  try {
-    const res = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}`);
-    const data = await res.json();
-    if(data.thumbnail_url){
-      img.src = data.thumbnail_url;
-      img.classList.add('on');
-    }
-  } catch(e){ img.classList.remove('on'); }
-}
-function previewYTThumb(id, imgId){
-  const img = document.getElementById(imgId);
-  if(!img) return;
-  if(!id){ img.src=''; img.classList.remove('on'); return; }
-  img.src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-  img.classList.add('on');
-}
-window.previewVimeoThumb = previewVimeoThumb;
-window.previewYTThumb = previewYTThumb;
+window.goPage=goPage;window.toggleAcc=toggleAcc;window.setLayout=setLayout;window.setOrient=setOrient;
+window.setMediaType=setMediaType;window.addVideo=addVideo;window.removeVideo=removeVideo;
+window.addProject=addProject;window.removeProject=removeProject;window.addExp=addExp;
+window.removeExp=removeExp;window.syncImg=syncImg;window.saveSettings=saveSettings;
+window.changePassword=changePassword;window.loadRawJson=loadRawJson;window.applyRawJson=applyRawJson;window.selectFont=selectFont;
 </script>
 </body>
 </html>

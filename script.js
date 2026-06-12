@@ -34,31 +34,8 @@ function renderHero(h){
 }
 
 function buildHeroColumns(){
-  const wrap=document.querySelector('#hero .wrap');
-  if(!wrap||wrap.querySelector('.hero-col-left'))return; // already built
-  // Collect left-column elements
-  const leftIds=['hero-eyebrow','s-name','s-subtitle','s-body','s-tagline'];
-  const actionsEl=wrap.querySelector('.hero-actions');
-  const reelWrap=wrap.querySelector('.hero-reel-wrap');
-  // Create columns
-  const left=document.createElement('div');
-  left.className='hero-col-left';
-  const right=document.createElement('div');
-  right.className='hero-col-right';
-  // Move eyebrow (it's a direct child div)
-  const eyebrow=wrap.querySelector('.hero-eyebrow');
-  if(eyebrow) left.appendChild(eyebrow);
-  leftIds.forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) left.appendChild(el);
-  });
-  if(actionsEl) left.appendChild(actionsEl);
-  // Move reel to right column
-  if(reelWrap) right.appendChild(reelWrap);
-  // Clear wrap and append columns
-  wrap.innerHTML='';
-  wrap.appendChild(left);
-  if(reelWrap) wrap.appendChild(right);
+  // Single column layout — reel stays inline between subtitle and body (original design)
+  // Nothing to restructure; CSS handles max-width on the reel
 }
 
 function renderHeroReel(h){

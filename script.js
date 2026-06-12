@@ -63,7 +63,7 @@ async function fetchVimeoThumb(id, elemId){
       if(elemId){
         const img = document.getElementById(elemId);
         const ph  = document.getElementById(elemId+'-ph');
-        if(img){ img.src=data.thumbnail_url; img.style.display='block'; }
+        if(img){ img.src=data.thumbnail_url; img.style.display='block'; img.style.width='100%'; img.style.height='100%'; img.style.objectFit='cover'; }
         if(ph)  { ph.style.display='none'; }
       }
       return data.thumbnail_url;
@@ -93,7 +93,7 @@ function renderProjects(projects){
         <div class="card-view-overlay"><span class="card-view-pill">View Project</span></div>
       </div>
       <div class="card-meta">
-        <div class="card-title">${p.title||p.client||''}</div>
+        <div class="card-title">${p.client||''}</div>
         <div class="card-role">${p.primaryRole||''}</div>
         <div class="card-tags">${tags}</div>
       </div>`;
@@ -145,9 +145,13 @@ function openProjectPage(p,ci){
   const vidCon=document.getElementById('pp-vid-container');
   if(vidCon){
     const layout=p.layout||'horizontal';
-    let gc='vid-grid-h';
-    if(layout==='vertical')gc='vid-grid-v';
-    if(layout==='mixed')gc='vid-grid-m';
+    // Auto-detect grid class: if any video is vertical, use mixed grid
+    const hasVertical=(p.videos||[]).some(v=>v.orientation==='vertical');
+    const hasHorizontal=(p.videos||[]).some(v=>!v.orientation||v.orientation==='horizontal');
+    let gc;
+    if(layout==='vertical'||(!hasHorizontal&&hasVertical)) gc='vid-grid-v';
+    else if(layout==='mixed'||hasVertical) gc='vid-grid-m';
+    else gc='vid-grid-h';
     if(vids.length===0){
       vidCon.innerHTML=`<div class="${gc}"><div class="vid-empty">No videos yet. Open the editor (pencil button) to add Vimeo IDs and thumbnails.</div></div>`;
     } else {
@@ -155,15 +159,17 @@ function openProjectPage(p,ci){
         const can=!!(v.vimeoId||v.youtubeId);
         const platform=v.vimeoId?'vimeo':'youtube';
         const playId=v.vimeoId||v.youtubeId||'';
-        const orient=layout==='mixed'?(v.orientation||'horizontal'):layout;
+        // Always respect per-video orientation
+        const orient=v.orientation||'horizontal';
         const isV=orient==='vertical';
         const ytThumb = (!v.thumb && v.youtubeId) ? `https://img.youtube.com/vi/${v.youtubeId}/maxresdefault.jpg` : '';
         const vimeoThumbId = `vt-auto-${ci}-${vi}`;
         const thumbSrc = v.thumb || ytThumb;
+        const thumbFit = isV ? 'width:100%;height:100%;object-fit:cover;object-position:center top' : 'width:100%;height:100%;object-fit:cover';
         const tH = thumbSrc
-          ? `<img src="${thumbSrc}" alt="${v.name||''}" loading="lazy" onerror="if(this.src.includes('maxresdefault')){this.src=this.src.replace('maxresdefault','hqdefault')}else{this.style.display='none'}"/>`
+          ? `<img src="${thumbSrc}" alt="${v.name||''}" loading="lazy" style="${thumbFit}" onerror="if(this.src.includes('maxresdefault')){this.src=this.src.replace('maxresdefault','hqdefault')}else{this.style.display='none'}"/>`
           : v.vimeoId
-            ? `<img id="${vimeoThumbId}" src="" alt="${v.name||''}" loading="lazy" style="display:none"/><div class="vid-thumb-ph" id="${vimeoThumbId}-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`
+            ? `<img id="${vimeoThumbId}" src="" alt="${v.name||''}" loading="lazy" style="${thumbFit};display:none"/><div class="vid-thumb-ph" id="${vimeoThumbId}-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`
             : `<div class="vid-thumb-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`;
         return `<div class="vid-tile${can?' playable':''}"${can?` data-id="${playId}" data-platform="${platform}" data-orient="${orient}" data-name="${(v.name||'').replace(/"/g,'&quot;')}" data-role="${(v.role||'').replace(/"/g,'&quot;')}"`:''}>
           <div class="vid-thumb ${isV?'r916':'r169'}">${tH}${can?`<div class="vid-play-ov"><div class="vid-play-btn">${PLAY}</div></div>`:''}</div>

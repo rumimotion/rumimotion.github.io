@@ -250,13 +250,14 @@ function openLightbox(id,name,role,orient,platform){
   const t=document.getElementById('lb-title'); if(t)t.textContent=name||'';
   const r=document.getElementById('lb-role'); if(r)r.textContent=role||'';
 
-  // Hide all panels first
-  lbRatio.style.display='none';
-  lbTiktok.style.display='none';
-  lbImage.style.display='none';
-  mFrame.src='';
+  // Hide all panels first — null-safe
+  if(lbRatio) lbRatio.style.display='none';
+  if(lbTiktok) lbTiktok.style.display='none';
+  if(lbImage) lbImage.style.display='none';
+  if(mFrame) mFrame.src='';
 
-  document.getElementById('lb-wrap').className='lb-wrap'+(isV?' lb-v':'');
+  const lbWrap=document.getElementById('lb-wrap');
+  if(lbWrap) lbWrap.className='lb-wrap'+(isV?' lb-v':'');
 
   if(platform==='image'){
     // Show image fullscreen in lightbox
@@ -281,18 +282,17 @@ function openLightbox(id,name,role,orient,platform){
 
   } else {
     // Vimeo or YouTube iframe
-    lbRatio.style.display='';
-    lbRatio.className='lb-ratio '+(isV?'r916':'r169');
-    mFrame.src=platform==='youtube'
+    if(lbRatio){ lbRatio.style.display=''; lbRatio.className='lb-ratio '+(isV?'r916':'r169'); }
+    if(mFrame) mFrame.src=platform==='youtube'
       ?`https://www.youtube.com/embed/${id}?autoplay=1&rel=0`
       :`https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0`;
   }
 
-  modal.classList.add('open');
+  if(modal) modal.classList.add('open');
 }
 function closeLightbox(){
-  modal.classList.remove('open');
-  mFrame.src='';
+  if(modal) modal.classList.remove('open');
+  if(mFrame) mFrame.src='';
   const lbTiktok=document.getElementById('lb-tiktok');
   if(lbTiktok) lbTiktok.innerHTML='';
   // Restore ratio display for next open

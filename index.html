@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>RUMI - Motion Designer &amp; Video Editor</title>
+<meta name="description" content="Motion design, video editing and creative direction by Malkhaz Rumi Tchubabria."/>
+<meta property="og:title" content="RUMI  -  Motion Designer &amp; Video Editor"/>
+<meta property="og:type" content="website"/>
+<meta name="theme-color" content="#0a0a0a"/>
+<meta name="robots" content="index, follow"/>
+<meta property="og:url" content="https://rumimotion.com"/>
+<meta property="og:image" content="https://framerusercontent.com/assets/YhKR5zxaMbXddMQhNtDMQLe8E.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<link rel="dns-prefetch" href="https://player.vimeo.com"/>
+<link rel="dns-prefetch" href="https://img.youtube.com"/>
+<link rel="dns-prefetch" href="https://www.youtube.com"/>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin/>
+<link rel="icon" type="image/x-icon" href="favicon.ico"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" onload="this.onload=null;this.rel='stylesheet'"/>
+<noscript><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap"/></noscript>
+<link id="font-link" rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap"/>
+<link rel="stylesheet" href="style.css"/>
+<style>
+/* ── EDITOR PANEL STYLES ─────────────────────────────────── */
+#ed-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:8998; backdrop-filter:blur(4px); }
+#ed-overlay.on { display:block; }
+#ed-panel { display:none; position:fixed; top:0; right:0; bottom:0; width:min(580px,100vw); background:#111; border-left:1px solid #2a2a2a; z-index:8999; flex-direction:column; font-family:'General Sans',system-ui,sans-serif; }
+#ed-panel.on { display:flex; }
+.ep-head { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:#0a0a0a; border-bottom:1px solid #2a2a2a; flex-shrink:0; }
+.ep-head-title { font-size:.9rem; font-weight:700; color:#f5f5f5; }
+.ep-head-title span { color:#4ADE80; }
+.ep-close { width:30px; height:30px; border-radius:6px; border:1px solid #2a2a2a; color:#8a8a8a; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .15s; }
+.ep-close:hover { border-color:#4ADE80; color:#4ADE80; }
+.ep-tabs { display:flex; overflow-x:auto; scrollbar-width:none; background:#0a0a0a; border-bottom:1px solid #2a2a2a; flex-shrink:0; }
+.ep-tabs::-webkit-scrollbar { display:none; }
+.ep-tab { padding:10px 16px; white-space:nowrap; font-size:.68rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#555; border-bottom:2px solid transparent; cursor:pointer; transition:all .15s; flex-shrink:0; }
+.ep-tab:hover { color:#f5f5f5; }
+.ep-tab.on { color:#4ADE80; border-bottom-color:#4ADE80; }
+.ep-body { flex:1; overflow-y:auto; padding:20px; scrollbar-width:thin; scrollbar-color:#2a2a2a transparent; }
+.eg { margin-bottom:24px; }
+.eg-title { font-size:.6rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#555; padding-bottom:8px; border-bottom:1px solid #1e1e1e; margin-bottom:12px; }
+.ef { margin-bottom:10px; }
+.ef label { display:block; font-size:.68rem; font-weight:600; color:#8a8a8a; margin-bottom:4px; letter-spacing:.04em; }
+.ef small { display:block; font-size:.6rem; color:#444; margin-bottom:4px; line-height:1.5; }
+.ef input,.ef textarea,.ef select { width:100%; background:#1a1a1a; border:1px solid #2a2a2a; border-radius:5px; padding:9px 11px; color:#f5f5f5; font-size:.82rem; font-family:inherit; outline:none; transition:border-color .15s; }
+.ef input:focus,.ef textarea:focus,.ef select:focus { border-color:#4ADE80; }
+.ef textarea { resize:vertical; min-height:72px; line-height:1.5; }
+.ef-2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.ec-row { display:flex; align-items:center; gap:10px; }
+.ec-swatch { width:36px; height:36px; border-radius:6px; border:1px solid #2a2a2a; cursor:pointer; padding:2px; flex-shrink:0; }
+.ec-swatch::-webkit-color-swatch-wrapper { padding:0; }
+.ec-swatch::-webkit-color-swatch { border:none; border-radius:4px; }
+.font-grid { display:flex; flex-wrap:wrap; gap:6px; margin-top:4px; }
+.font-pill { padding:6px 12px; border-radius:100px; border:1.5px solid #2a2a2a; font-size:.72rem; font-weight:600; color:#8a8a8a; cursor:pointer; transition:all .15s; }
+.font-pill:hover { border-color:#8a8a8a; color:#f5f5f5; }
+.font-pill.on { border-color:#4ADE80; color:#4ADE80; background:rgba(74,222,128,.1); }
+.epc-list { display:flex; flex-direction:column; gap:10px; }
+.epc { background:#1a1a1a; border:1px solid #2a2a2a; border-radius:7px; overflow:hidden; }
+.epc-head { display:flex; align-items:center; justify-content:space-between; padding:11px 14px; cursor:pointer; transition:background .15s; }
+.epc-head:hover { background:#222; }
+.epc-head-name { font-size:.82rem; font-weight:600; color:#f5f5f5; }
+.epc-chevron { color:#555; font-size:.8rem; transition:transform .2s; }
+.epc.on .epc-chevron { transform:rotate(90deg); }
+.epc-body { display:none; padding:14px; border-top:1px solid #2a2a2a; }
+.epc.on .epc-body { display:block; }
+.evid { background:#222; border:1px solid #2a2a2a; border-radius:6px; padding:12px; margin-bottom:8px; }
+.evid-num { font-size:.58rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#444; margin-bottom:8px; }
+.layout-row { display:flex; gap:6px; margin-top:4px; }
+.layout-btn { flex:1; padding:8px 4px; border:1.5px solid #2a2a2a; border-radius:5px; font-size:.65rem; font-weight:600; color:#555; cursor:pointer; text-align:center; transition:all .15s; background:none; font-family:inherit; }
+.layout-btn:hover { border-color:#8a8a8a; color:#f5f5f5; }
+.layout-btn.on { border-color:#4ADE80; color:#4ADE80; background:rgba(74,222,128,.08); }
+.layout-icon { font-size:1rem; display:block; margin-bottom:3px; }
+.orient-row { display:flex; gap:6px; margin-top:4px; }
+.orient-btn { flex:1; padding:7px 6px; border:1.5px solid #2a2a2a; border-radius:5px; font-size:.65rem; font-weight:600; color:#555; cursor:pointer; text-align:center; transition:all .15s; background:none; font-family:inherit; }
+.orient-btn:hover { border-color:#8a8a8a; color:#f5f5f5; }
+.orient-btn.on { border-color:#4ADE80; color:#4ADE80; background:rgba(74,222,128,.08); }
+.add-btn { width:100%; padding:8px; margin-top:8px; border:1px dashed #2a2a2a; border-radius:5px; font-size:.7rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#444; cursor:pointer; background:none; font-family:inherit; transition:all .15s; }
+.add-btn:hover { border-color:#4ADE80; color:#4ADE80; }
+.rm-btn { font-size:.6rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#c0392b; padding:3px 8px; border:1px solid rgba(192,57,43,.2); border-radius:4px; cursor:pointer; background:none; font-family:inherit; margin-top:6px; transition:all .15s; }
+.rm-btn:hover { background:rgba(192,57,43,.12); }
+.img-preview { width:100%; aspect-ratio:16/9; border-radius:5px; object-fit:cover; background:#1a1a1a; border:1px solid #2a2a2a; margin-top:6px; display:none; }
+.img-preview.on { display:block; }
+.cloud-hint { background:rgba(74,222,128,.07); border:1px solid rgba(74,222,128,.15); border-radius:6px; padding:10px 12px; margin-bottom:14px; font-size:.72rem; color:#8a8a8a; line-height:1.6; }
+.cloud-hint a { color:#4ADE80; }
+.cloud-hint strong { color:#f5f5f5; }
+.ep-foot { display:flex; gap:8px; padding:14px 20px; background:#0a0a0a; border-top:1px solid #2a2a2a; flex-shrink:0; }
+.ep-apply { flex:1; padding:11px; border-radius:6px; background:#4ADE80; color:#0a0a0a; font-family:inherit; font-size:.8rem; font-weight:700; letter-spacing:.04em; cursor:pointer; border:none; transition:background .15s; }
+.ep-apply:hover { background:#3dcc6e; }
+.ep-export { padding:11px 18px; border-radius:6px; border:1px solid #2a2a2a; color:#8a8a8a; font-family:inherit; font-size:.8rem; font-weight:600; letter-spacing:.04em; cursor:pointer; background:none; transition:all .15s; }
+.ep-export:hover { border-color:#8a8a8a; color:#f5f5f5; }
+.ep-toast { position:fixed; bottom:88px; right:28px; z-index:9999; background:#4ADE80; color:#0a0a0a; font-family:inherit; font-size:.78rem; font-weight:700; padding:10px 18px; border-radius:6px; opacity:0; transform:translateY(8px); transition:all .25s; pointer-events:none; }
+.ep-toast.on { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+<a href="#main-content" style="position:absolute;left:-9999px;top:0;z-index:9999;padding:8px 16px;background:var(--green,#4ADE80);color:#0a0a0a;font-weight:700;border-radius:4px" onfocus="this.style.left='0'">Skip to content</a>
+
+<script id="D" type="application/json">
+{
+  "github": {
+    "token": "",
+    "repo": "rumimotion/rumimotion.github.io",
+    "branch": "main",
+    "path": "index.html"
+  },
+  "font": "General Sans",
+  "colors": {
+    "bg": "#0A0A0A",
+    "surface": "#1A1A1A",
+    "border": "#2a2a2a",
+    "text": "#F5F5F5",
+    "textMid": "#8A8A8A",
+    "green": "#4ADE80"
+  },
+  "hero": {
+    "name": "RUMI",
+    "subtitle": "Motion Graphics Designer,\nVideo Editor & Creative Problem Solver",
+    "body": "I'm <a href='https://www.linkedin.com/in/malkhaztchubabria/' target='_blank'>Malkhaz Tchubabria</a> (aka <strong>RUMI</strong>), a Motion Graphics Designer, Video Editor, and Visual Storyteller based in Tbilisi, Georgia. Over the last decade, I've worked across sports media, digital content, documentaries, government communications, and branded campaigns, helping organizations transform ideas into engaging visual stories. As part of the creative team at <a href='https://www.chess.com' target='_blank'><strong>Chess.com</strong></a>, I create educational content, broadcast graphics, YouTube productions, and social media videos for a global audience.",
+    "tagline": "I don't just animate graphics, I build visual experiences that help audiences understand, remember, and connect with a story.",
+    "ctaText": "Get in Touch",
+    "ctaHref": "#contact",
+    "reelVimeoId": "1199035358",
+    "reelYoutubeId": "",
+    "reelThumb": ""
+  },
+  "projects": [
+    {
+      "client": "Chess.com",
+      "title": "Chess.com",
+      "primaryRole": "Motion Designer & Video Editor",
+      "tags": ["Motion Design","Video Editing","Broadcast"],
+      "cover": "https://res.cloudinary.com/dldu6xtns/image/upload/v1781175212/4-red_flag_green_flag_gfg0xf.png",
+      "layout": "horizontal",
+      "videos": [
+        {"name":"Chess.com Showreel","role":"Motion Designer & Video Editor","orientation":"horizontal","vimeoId":"1146513897","thumb":"","youtubeId":""},
+        {"name":"Checkmate with Two Bishops","role":"Motion Designer","orientation":"horizontal","vimeoId":"","thumb":"","youtubeId":""},
+        {"name":"World Cup 2026 Chess Edition","role":"Creative Director","orientation":"horizontal","vimeoId":"","thumb":"","youtubeId":""}
+      ],
+      "description": ""
+    },
+    {
+      "client": "90 Otkhmocdaati",
+      "title": "90 Otkhmocdaati",
+      "primaryRole": "Video Editor & Creative Director",
+      "tags": ["Sports Media","Video Editing","Creative Direction"],
+      "cover": "",
+      "layout": "mixed",
+      "videos": [
+        {"name":"90 Season Opener","role":"Video Editor","orientation":"vertical","vimeoId":"1199036547","thumb":"","youtubeId":""},
+        {"name":"Match Highlights","role":"Video Editor","orientation":"horizontal","vimeoId":"","thumb":"","youtubeId":""}
+      ],
+      "description": ""
+    },
+    {
+      "client": "McDonald's Georgia",
+      "title": "McDonald's Georgia",
+      "primaryRole": "Motion Graphics Designer",
+      "tags": ["Brand Content","Motion Graphics"],
+      "cover": "",
+      "layout": "vertical",
+      "videos": [
+        {"name":"Campaign Launch Film","role":"Motion Graphics Designer","orientation":"vertical","vimeoId":"","thumb":"","youtubeId":""},
+        {"name":"Social Media Pack","role":"Motion Designer","orientation":"vertical","vimeoId":"","thumb":"","youtubeId":""}
+      ],
+      "description": ""
+    },
+    {
+      "client": "Zephyr (UK)",
+      "title": "Zephyr (UK)",
+      "primaryRole": "Video Editor",
+      "tags": ["Video Editing","Colour Grade"],
+      "cover": "",
+      "layout": "horizontal",
+      "videos": [
+        {"name":"Zephyr Brand Film","role":"Video Editor","orientation":"horizontal","vimeoId":"","thumb":"","youtubeId":""}
+      ],
+      "description": ""
+    },
+    {
+      "client": "Government of Georgia",
+      "title": "Government of Georgia",
+      "primaryRole": "Motion Graphics Designer",
+      "tags": ["Motion Graphics","Broadcast"],
+      "cover": "",
+      "layout": "horizontal",
+      "videos": [
+        {"name":"Communications Film","role":"Motion Graphics Designer","orientation":"horizontal","vimeoId":"","thumb":"","youtubeId":""}
+      ],
+      "description": ""
+    },
+    {
+      "client": "Rumi Lab",
+      "title": "Rumi Lab",
+      "primaryRole": "Creative Director",
+      "tags": ["Creative Direction","Motion Design"],
+      "cover": "",
+      "layout": "horizontal",
+      "videos": [
+        {"name":"Studio Reel","role":"Creative Director","orientation":"horizontal","vimeoId":"","thumb":"","youtubeId":""}
+      ],
+      "description": ""
+    }
+  ],
+  "services": [
+    {"icon":"✂️","name":"Video Editing","desc":"Long-form, short-form, branded and documentary editing."},
+    {"icon":"⬡","name":"Motion Design","desc":"Broadcast graphics, social animations, UI motion."},
+    {"icon":"◎","name":"Creative Direction","desc":"Concept development, pacing, visual storytelling."},
+    {"icon":"⚽","name":"Sports Storytelling","desc":"Football, chess and emotionally driven sports content."}
+  ],
+  "experience": [
+    {"logo":"https://framerusercontent.com/images/ae3vkS5Hf13BQjReNKliLLX6lus.png","role":"Video Editor","company":"Chess.com","period":"2022 – Present"},
+    {"logo":"https://framerusercontent.com/images/UZTYrMlXlc2U9GshSt8lyjBvIM0.png","role":"Motion Graphics Designer","company":"Government of Georgia","period":"2014 – 2020"},
+    {"logo":"https://framerusercontent.com/images/ZZO1P4O9Oi0QtP7NZpenoQt8PfU.png","role":"Freelance Video Editor","company":"Zephyr","period":"2018 – 2020"},
+    {"logo":"https://framerusercontent.com/images/XUd20EhFpAmQq0xzSujX4wZ3OL8.png","role":"Motion Graphics Designer","company":"McDonald's Georgia","period":"2022 – 2025"}
+  ],
+  "about": {
+    "photo": "https://res.cloudinary.com/dldu6xtns/image/upload/v1781259735/Personal_Photo_sazur4.png",
+    "name": "Malkhaz Tchubabria (Rumi)",
+    "heading": "Freelance motion designer & video editor, 10+ years.",
+    "bio": "Freelance motion designer and video editor with 10+ years of experience across sports media, broadcast production, branded content, documentaries, and digital storytelling.\n\nCurrently collaborating with Chess.com on long-form productions, social media content, and broadcast visuals, combining cinematic editing with motion graphics and visual systems.\n\nExperienced in motion graphics, UI/UX thinking, social media production, camera operation, and TV broadcast environments.",
+    "skills": ["After Effects","Premiere Pro","Motion Graphics","Broadcast Graphics","Sports Media","AI Workflows"]
+  },
+  "contact": {
+    "heading": "Available for freelance projects and creative collaborations.",
+    "sub": "Open to sports media, branded content, documentaries, and motion design projects worldwide.",
+    "email": "rumimotion@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/malkhaztchubabria/",
+    "vimeo": "https://vimeo.com/rumimotion",
+    "behance": "https://www.behance.net/rumimotion"
+  }
+}
+</script>
+
+<!-- NAV -->
+<header id="nav">
+  <div class="wrap">
+    <nav class="nav-inner">
+      <a href="#hero" class="nav-logo" id="s-logo">RUMI <span class="nav-logo-dot"></span></a>
+      <ul id="nav-links" class="nav-links">
+        <li><a href="#projects">Work</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact" class="nav-contact-btn">Contact</a></li>
+      </ul>
+      <button id="nav-burger" class="nav-burger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main id="main-content">
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-eyebrow">Motion Designer &amp; Video Editor &middot; Tbilisi, Georgia</div>
+    <h1 class="hero-name reveal" id="s-name">RUMI</h1>
+    <p class="hero-subtitle reveal" id="s-subtitle">Motion Graphics Designer,<br>Video Editor &amp; Creative Problem Solver</p>
+
+    <!-- SHOWREEL — between subtitle and body text -->
+    <div class="hero-reel-wrap reveal">
+      <!-- padding-top trick: works in ALL browsers including Safari -->
+      <div class="hero-reel-outer">
+        <div class="hero-reel-frame" id="hero-reel">
+          <div class="hero-reel-ph" id="hero-reel-ph">
+            <svg width="44" height="44" viewBox="0 0 52 52" fill="none" style="color:#2a2a2a">
+              <rect x="4" y="10" width="44" height="32" rx="3" stroke="currentColor" stroke-width="1.5"/>
+              <polygon points="20,18 20,34 36,26" fill="currentColor"/>
+              <rect x="4" y="6" width="5" height="4" rx="1" fill="currentColor"/>
+              <rect x="43" y="6" width="5" height="4" rx="1" fill="currentColor"/>
+              <rect x="4" y="42" width="5" height="4" rx="1" fill="currentColor"/>
+              <rect x="43" y="42" width="5" height="4" rx="1" fill="currentColor"/>
+            </svg>
+            <span style="font-size:.7rem;color:#333;margin-top:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:600">Showreel</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-body reveal" id="s-body"></div>
+    <p class="hero-tagline reveal" id="s-tagline"></p>
+    <div class="hero-actions reveal">
+      <a class="btn btn-green" id="s-cta" href="#contact">Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="projects" class="section">
+  <div class="wrap">
+    <div class="section-header">
+      <div><div class="section-eyebrow">Selected Projects</div><h2 class="section-title">Work</h2></div>
+    </div>
+    <div id="projects-grid" class="projects-grid"></div>
+  </div>
+</section>
+
+<!-- PROJECT DETAIL PAGE -->
+<div id="project-page" role="dialog" aria-modal="true">
+  <div class="pp-bar">
+    <button class="pp-back" id="pp-back-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16"><polyline points="10,3 5,8 10,13"/></svg>
+      Back to Work
+    </button>
+    <span class="pp-bar-right" id="pp-bar-right-text"></span>
+  </div>
+  <div class="pp-hero" id="pp-hero" style="display:none">
+    <div class="pp-hero-ph" id="pp-hero-ph">
+      <svg width="60" height="60" viewBox="0 0 52 52" fill="none" style="color:#333">
+        <rect x="4" y="10" width="44" height="32" rx="3" stroke="currentColor" stroke-width="1.5"/>
+        <polygon points="20,18 20,34 36,26" fill="currentColor"/>
+      </svg>
+    </div>
+    <img id="pp-hero-img" src="" alt="" style="display:none"/>
+    <div class="pp-hero-text">
+      <div class="pp-eyebrow" id="pp-eyebrow-text"></div>
+      <h2 class="pp-title" id="pp-title-text"></h2>
+    </div>
+  </div>
+  <div class="pp-content">
+    <div class="pp-meta-row" id="pp-meta"></div>
+    <div class="pp-vid-label" id="pp-vid-label" style="display:none"></div>
+    <div id="pp-description" style="display:none;margin-bottom:28px;padding:20px 24px;background:#161616;border:1px solid #2a2a2a;border-radius:8px;font-size:.92rem;line-height:1.78;color:#8a8a8a;max-width:72ch"></div>
+    <div id="pp-vid-container"></div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <div class="lb-wrap" id="lb-wrap">
+    <div class="lb-head">
+      <div><div class="lb-title" id="lb-title"></div><div class="lb-role" id="lb-role"></div></div>
+      <button class="lb-close" id="lb-close-btn">
+        <svg width="10" height="10" viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <line x1="1" y1="1" x2="9" y2="9"/><line x1="9" y1="1" x2="1" y2="9"/>
+        </svg>
+        Close (Esc)
+      </button>
+    </div>
+    <div class="lb-ratio r169" id="lb-ratio">
+      <iframe id="lb-frame" src="" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <!-- TikTok embed container (shown instead of iframe for TikTok) -->
+    <div id="lb-tiktok" style="display:none"></div>
+    <!-- Image lightbox (shown for photo tiles) -->
+    <div id="lb-image" style="display:none;text-align:center">
+      <img id="lb-image-img" src="" alt="" style="max-width:100%;max-height:80vh;border-radius:8px;object-fit:contain"/>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services" class="section">
+  <div class="wrap">
+    <div class="section-header">
+      <div><div class="section-eyebrow">What I Do</div><h2 class="section-title">Creative Services</h2></div>
+    </div>
+    <div id="services-grid" class="services-grid reveal"></div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="section">
+  <div class="wrap">
+    <div class="section-header">
+      <div><div class="section-eyebrow">Career</div><h2 class="section-title">Experience</h2></div>
+    </div>
+    <div id="exp-list" class="exp-list reveal"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <div class="wrap">
+    <div class="section-inner">
+      <div class="about-photo-wrap reveal">
+        <div class="about-photo" id="about-photo"></div>
+        <div class="about-photo-cap" id="about-name-cap"></div>
+      </div>
+      <div class="about-text reveal">
+        <div class="section-eyebrow">About</div>
+        <h2 id="about-heading"></h2>
+        <div id="about-bio"></div>
+        <div class="skills-row" id="about-skills"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="contact-left reveal">
+        <div class="section-eyebrow">Get in Touch</div>
+        <h2 id="contact-heading"></h2>
+        <p id="contact-sub"></p>
+        <a id="contact-email-btn" class="btn btn-green" href="">Send an Email</a>
+      </div>
+      <div class="reveal" id="contact-links"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <span class="footer-copy" id="footer-copy"></span>
+      <div class="footer-links" id="footer-links"></div>
+    </div>
+  </div>
+</footer>
+
+</main>
+
+<!-- EDITOR BUTTON -->
+<button id="ed-btn" title="Edit Site">&#9998;</button>
+<div id="ed-overlay"></div>
+
+<!-- EDITOR PANEL -->
+<div id="ed-panel">
+  <div class="ep-head">
+    <div class="ep-head-title">Site Editor <span> - RUMI</span></div>
+    <button class="ep-close" id="ed-close">
+      <svg width="10" height="10" viewBox="0 0 10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+        <line x1="1" y1="1" x2="9" y2="9"/><line x1="9" y1="1" x2="1" y2="9"/>
+      </svg>
+    </button>
+  </div>
+  <div class="ep-tabs" id="ed-tabs">
+    <div class="ep-tab on" data-tab="design">Design</div>
+    <div class="ep-tab" data-tab="hero">Hero</div>
+    <div class="ep-tab" data-tab="projects">Projects</div>
+    <div class="ep-tab" data-tab="services">Services</div>
+    <div class="ep-tab" data-tab="experience">Experience</div>
+    <div class="ep-tab" data-tab="about">About</div>
+    <div class="ep-tab" data-tab="contact">Contact</div>
+  </div>
+  <div class="ep-body" id="ed-body"></div>
+  <div class="ep-foot">
+    <button class="ep-apply" id="ed-apply">Apply Changes</button>
+    <button class="ep-export" id="ed-export">Save to GitHub</button>
+  </div>
+  <div style="padding:8px 20px;background:#0a0a0a;border-top:1px solid #1a1a1a;display:flex;align-items:center;justify-content:space-between">
+    <span style="font-size:.62rem;color:#444;letter-spacing:.04em">Token stored locally on your device</span>
+    <button onclick="localStorage.removeItem('rumi_gh_token');showToast('Token cleared - will ask next save')" style="font-size:.62rem;color:#555;background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 8px;border:1px solid #2a2a2a;border-radius:4px">Change Token</button>
+  </div>
+</div>
+<div class="ep-toast" id="ed-toast"></div>
+
+<script src="script.js"></script>
+<script>
+let D = JSON.parse(document.getElementById('D').textContent);
+const FONTS = [
+  {name:'General Sans', url:'https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap'},
+  {name:'Inter',         url:'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'},
+  {name:'Satoshi',       url:'https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700&display=swap'},
+  {name:'DM Sans',       url:'https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap'},
+  {name:'Space Grotesk', url:'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap'},
+  {name:'Outfit',        url:'https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap'},
+  {name:'Urbanist',      url:'https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap'},
+  {name:'Plus Jakarta',  url:'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap'},
+];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const gv=id=>{const e=$(id);return e?e.value:'';};
+function showToast(msg){const t=$('ed-toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2400);}
+$('ed-btn').addEventListener('click',()=>{$('ed-panel').classList.add('on');$('ed-overlay').classList.add('on');});
+function closeEd(){$('ed-panel').classList.remove('on');$('ed-overlay').classList.remove('on');}
+$('ed-close').addEventListener('click',closeEd);
+$('ed-overlay').addEventListener('click',closeEd);
+let activeTab='design';
+$('ed-tabs').addEventListener('click',e=>{const t=e.target.closest('.ep-tab');if(!t)return;document.querySelectorAll('.ep-tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');activeTab=t.dataset.tab;buildTab(activeTab);});
+function buildTab(tab){const b=$('ed-body');b.innerHTML='';({design:tabDesign,hero:tabHero,projects:tabProjects,services:tabServices,experience:tabExp,about:tabAbout,contact:tabContact}[tab]||tabDesign)();}
+function tabDesign(){const C=D.colors,f=D.font;const fontPills=FONTS.map(fn=>`<div class="font-pill${fn.name===f?' on':''}" data-font="${fn.name}" style="font-family:'${fn.name}'">${fn.name}</div>`).join('');$('ed-body').innerHTML=`<div class="eg"><div class="eg-title">Typography</div><div class="ef"><label>Font Family</label><small>Click to preview instantly</small><div class="font-grid" id="font-grid">${fontPills}</div></div></div><div class="eg"><div class="eg-title">Colors</div>${colorRow('Background','c-bg',C.bg)}${colorRow('Card Surface','c-surface',C.surface)}${colorRow('Borders','c-border',C.border)}${colorRow('Text','c-text',C.text)}${colorRow('Dimmed Text','c-textMid',C.textMid)}${colorRow('Accent','c-green',C.green)}</div>`;document.querySelectorAll('.font-pill').forEach(p=>{p.addEventListener('click',()=>{document.querySelectorAll('.font-pill').forEach(x=>x.classList.remove('on'));p.classList.add('on');D.font=p.dataset.font;applyFont(p.dataset.font);});});['bg','surface','border','text','textMid','green'].forEach(k=>{const sw=$('c-'+k),hx=$('c-'+k+'-hex');if(!sw||!hx)return;sw.addEventListener('input',e=>{hx.value=e.target.value;});hx.addEventListener('input',e=>{if(/^#[0-9a-fA-F]{6}$/.test(e.target.value))sw.value=e.target.value;});});}
+function colorRow(label,id,val){return `<div class="ef"><label>${label}</label><div class="ec-row"><input type="color" class="ec-swatch" id="${id}" value="${val}"/><input class="cms-input" id="${id}-hex" value="${val}" style="font-family:monospace"/></div></div>`;}
+function readDesignTab(){['bg','surface','border','text','textMid','green'].forEach(k=>{const v=gv('c-'+k+'-hex')||gv('c-'+k);if(v)D.colors[k]=v;});}
+function applyFont(name){const f=FONTS.find(x=>x.name===name);if(!f)return;$('font-link').href=f.url;document.documentElement.style.setProperty('--font',`'${name}',system-ui,sans-serif`);}
+function applyColors(){const C=D.colors,r=document.documentElement.style;r.setProperty('--bg',C.bg);r.setProperty('--surface',C.surface);r.setProperty('--border',C.border);r.setProperty('--text',C.text);r.setProperty('--text-mid',C.textMid);r.setProperty('--green',C.green);r.setProperty('--green-dim',hexA(C.green,.14));let sel=document.getElementById('dyn-sel');if(!sel){sel=document.createElement('style');sel.id='dyn-sel';document.head.appendChild(sel);}sel.textContent=`::selection{background:${C.green};color:${C.bg}}::-moz-selection{background:${C.green};color:${C.bg}}`;}
+function hexA(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return `rgba(${r},${g},${b},${a})`;}
+function tabHero(){const h=D.hero;$('ed-body').innerHTML=`<div class="eg"><div class="eg-title">Hero Section</div><div class="ef"><label>Name</label><input id="h-name" value="${esc(h.name)}"/></div><div class="ef"><label>Subtitle</label><input id="h-sub" value="${esc(h.subtitle.replace(/\n/g,'\\n'))}"/></div><div class="ef"><label>Body Text</label><textarea id="h-body">${esc(h.body)}</textarea></div><div class="ef"><label>Tagline</label><textarea id="h-tag">${esc(h.tagline)}</textarea></div><div class="ef-2"><div class="ef"><label>Button Text</label><input id="h-ctat" value="${esc(h.ctaText)}"/></div><div class="ef"><label>Button Link</label><input id="h-ctah" value="${esc(h.ctaHref)}"/></div></div><div class="ef"><label>Showreel Vimeo ID</label><input id="h-rvimeo" value="${esc(h.reelVimeoId)}"/></div></div>`;}
+function readHeroTab(){D.hero.name=gv('h-name');D.hero.subtitle=gv('h-sub').replace(/\\n/g,'\n');D.hero.body=gv('h-body');D.hero.tagline=gv('h-tag');D.hero.ctaText=gv('h-ctat');D.hero.ctaHref=gv('h-ctah');D.hero.reelVimeoId=gv('h-rvimeo');D.hero.reelYoutubeId=gv('h-ryt')||'';D.hero.reelThumb=gv('h-rthumb')||'';}
+function tabProjects(){$('ed-body').innerHTML=`<div class="eg"><div class="eg-title">Projects</div><div class="cloud-hint"><strong>Images tip:</strong> Upload to <a href="https://cloudinary.com" target="_blank">Cloudinary.com</a> (free) → copy URL → paste below.</div><div class="epc-list" id="epc-list">${D.projects.map((p,i)=>projectCard(p,i)).join('')}</div><button class="add-btn" onclick="addProject()">+ Add Project</button></div>`;setupAccordions();}
+function projectCard(p,i){const vids=(p.videos||[]).map((v,vi)=>vidRow(i,vi,v)).join('');return `<div class="epc" id="epc-${i}"><div class="epc-head"><span class="epc-head-name">${p.client||'New Project'}</span><span class="epc-chevron">›</span></div><div class="epc-body"><div class="ef-2"><div class="ef"><label>Client Name</label><input id="pc-client-${i}" value="${esc(p.client)}"/></div><div class="ef"><label>Project Title</label><input id="pc-title-${i}" value="${esc(p.title)}"/></div></div><div class="ef"><label>Primary Role</label><input id="pc-role-${i}" value="${esc(p.primaryRole)}"/></div><div class="ef"><label>Tags (comma separated)</label><input id="pc-tags-${i}" value="${esc((p.tags||[]).join(', '))}"/></div><div class="ef"><label>Cover Image URL</label><input id="pc-cover-${i}" value="${esc(p.cover)}" oninput="previewImg('pc-cover-${i}','pc-prev-${i}')"/><img id="pc-prev-${i}" class="img-preview${p.cover?' on':''}" src="${esc(p.cover)}" alt=""/></div><div class="ef"><label>Layout</label><div class="layout-row" id="layout-${i}"><button class="layout-btn${p.layout==='horizontal'?' on':''}" onclick="setLayout(${i},'horizontal')"><span class="layout-icon">▬</span>Horizontal</button><button class="layout-btn${p.layout==='vertical'?' on':''}" onclick="setLayout(${i},'vertical')"><span class="layout-icon">▮</span>Vertical</button><button class="layout-btn${(p.layout==='mixed'||!p.layout)?' on':''}" onclick="setLayout(${i},'mixed')"><span class="layout-icon">▤</span>Mixed</button></div></div><div class="eg-title" style="margin-top:14px">Videos</div><div id="vids-${i}">${vids}</div><button class="add-btn" onclick="addVideo(${i})">+ Add Video</button><br><button class="rm-btn" onclick="removeProject(${i})">Remove project</button></div></div>`;}
+function vidRow(i,vi,v){const or=v.orientation||'horizontal';return `<div class="evid" id="vid-${i}-${vi}"><div class="evid-num">Video ${vi+1}</div><div class="ef"><label>Title</label><input id="vn-${i}-${vi}" value="${esc(v.name)}"/></div><div class="ef"><label>Your Role</label><input id="vr-${i}-${vi}" value="${esc(v.role)}"/></div><div class="ef"><label>Orientation</label><div class="orient-row"><button class="orient-btn${or==='horizontal'?' on':''}" onclick="setOrient(${i},${vi},'horizontal')">Horizontal 16:9</button><button class="orient-btn${or==='vertical'?' on':''}" onclick="setOrient(${i},${vi},'vertical')">Vertical 9:16</button></div></div><div class="ef-2"><div class="ef"><label>Vimeo ID</label><small>vimeo.com/XXXXXXX</small><input id="vi-${i}-${vi}" value="${esc(v.vimeoId)}"/></div><div class="ef"><label>YouTube ID</label><small>youtube.com/watch?v=XXXXX</small><input id="vyt-${i}-${vi}" value="${esc(v.youtubeId||'')}"/></div></div><div class="ef"><label>TikTok Video ID</label><small>tiktok.com/video/XXXXXXX — the long number in the URL</small><input id="vtt-${i}-${vi}" value="${esc(v.tiktokId||'')}"/></div><div class="ef"><label>📷 Photo / Image URL</label><small>Use instead of a video — paste Cloudinary URL. Will show full-size on click.</small><input id="vim-${i}-${vi}" value="${esc(v.imageUrl||'')}" oninput="previewImg('vim-${i}-${vi}','vimp-${i}-${vi}')"/></div><img id="vimp-${i}-${vi}" class="img-preview${v.imageUrl?' on':''}" src="${esc(v.imageUrl||'')}" alt=""/><div class="ef"><label>Thumbnail URL</label><small>Optional — auto-fetched for Vimeo/YouTube/TikTok. For images, paste same URL as above or a cropped version.</small><input id="vt-${i}-${vi}" value="${esc(v.thumb)}" oninput="previewImg('vt-${i}-${vi}','vtp-${i}-${vi}')"/></div><img id="vtp-${i}-${vi}" class="img-preview${v.thumb?' on':''}" src="${esc(v.thumb)}" alt=""/><button class="rm-btn" onclick="removeVideo(${i},${vi})">Remove video</button></div>`;}
+function setupAccordions(){document.querySelectorAll('.epc-head').forEach(h=>{h.addEventListener('click',()=>h.parentElement.classList.toggle('on'));});}
+function previewImg(inputId,imgId){const val=gv(inputId),img=$(imgId);if(!img)return;if(val){img.src=val;img.classList.add('on');}else{img.src='';img.classList.remove('on');}}
+function saveProjectFields(){D.projects.forEach((p,i)=>{const client=document.getElementById('pc-client-'+i),title=document.getElementById('pc-title-'+i),role=document.getElementById('pc-role-'+i),tags=document.getElementById('pc-tags-'+i),cover=document.getElementById('pc-cover-'+i);if(client)p.client=client.value;if(title)p.title=title.value;if(role)p.primaryRole=role.value;if(tags)p.tags=tags.value.split(',').map(s=>s.trim()).filter(Boolean);if(cover)p.cover=cover.value;(p.videos||[]).forEach((v,vi)=>{const vn=document.getElementById('vn-'+i+'-'+vi),vr=document.getElementById('vr-'+i+'-'+vi),vi_=document.getElementById('vi-'+i+'-'+vi),vt=document.getElementById('vt-'+i+'-'+vi);const vyt=document.getElementById('vyt-'+i+'-'+vi);const vtt=document.getElementById('vtt-'+i+'-'+vi);const vim=document.getElementById('vim-'+i+'-'+vi);if(vn)v.name=vn.value;if(vr)v.role=vr.value;if(vi_)v.vimeoId=vi_.value;if(vyt)v.youtubeId=vyt.value;if(vtt)v.tiktokId=vtt.value;if(vim)v.imageUrl=vim.value;if(vt)v.thumb=vt.value;});});}
+function setLayout(i,val){saveProjectFields();D.projects[i].layout=val;tabProjects();const el=$(`epc-${i}`);if(el)el.classList.add('on');}
+function setOrient(i,vi,val){saveProjectFields();D.projects[i].videos[vi].orientation=val;tabProjects();const el=$(`epc-${i}`);if(el)el.classList.add('on');}
+function addProject(){D.projects.push({client:'New Client',title:'New Client',primaryRole:'',tags:[],cover:'',layout:'horizontal',videos:[]});tabProjects();const el=$(`epc-${D.projects.length-1}`);if(el)el.classList.add('on');}
+function removeProject(i){if(confirm('Remove this project?')){D.projects.splice(i,1);tabProjects();}}
+function addVideo(i){saveProjectFields();D.projects[i].videos.push({name:'New Video',role:'',orientation:'horizontal',vimeoId:'',thumb:''});tabProjects();const el=$(`epc-${i}`);if(el)el.classList.add('on');}
+function removeVideo(i,vi){saveProjectFields();D.projects[i].videos.splice(vi,1);tabProjects();const el=$(`epc-${i}`);if(el)el.classList.add('on');}
+function readProjectsTab(){D.projects.forEach((p,i)=>{p.client=gv(`pc-client-${i}`);p.title=gv(`pc-title-${i}`);p.primaryRole=gv(`pc-role-${i}`);p.tags=gv(`pc-tags-${i}`).split(',').map(s=>s.trim()).filter(Boolean);p.cover=gv(`pc-cover-${i}`);p.videos.forEach((v,vi)=>{v.name=gv(`vn-${i}-${vi}`);v.role=gv(`vr-${i}-${vi}`);v.vimeoId=gv(`vi-${i}-${vi}`);v.youtubeId=gv(`vyt-${i}-${vi}`)||'';v.tiktokId=gv(`vtt-${i}-${vi}`)||'';v.imageUrl=gv(`vim-${i}-${vi}`)||'';v.thumb=gv(`vt-${i}-${vi}`);});});}
+function tabServices(){$('ed-body').innerHTML=`<div class="eg"><div class="eg-title">Services</div>`+D.services.map((s,i)=>`<div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:7px;padding:14px;margin-bottom:10px"><div class="eg-title">Service ${i+1}</div><div class="ef-2"><div class="ef"><label>Icon</label><input id="si-${i}" value="${esc(s.icon)}"/></div><div class="ef"><label>Name</label><input id="sn-${i}" value="${esc(s.name)}"/></div></div><div class="ef"><label>Description</label><input id="sd-${i}" value="${esc(s.desc)}"/></div></div>`).join('')+`</div>`;}
+function readServicesTab(){D.services.forEach((s,i)=>{s.icon=gv(`si-${i}`);s.name=gv(`sn-${i}`);s.desc=gv(`sd-${i}`);});}
+function tabExp(){$('ed-body').innerHTML=`<div class="eg"><div class="eg-title">Experience</div>`+D.experience.map((e,i)=>`<div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:7px;padding:14px;margin-bottom:10px"><div class="eg-title">Job ${i+1}</div><div class="ef"><label>Role</label><input id="er-${i}" value="${esc(e.role)}"/></div><div class="ef-2"><div class="ef"><label>Company</label><input id="ec-${i}" value="${esc(e.company)}"/></div><div class="ef"><label>Period</label><input id="ep-${i}" value="${esc(e.period)}"/></div></div><div class="ef"><label>Logo URL</label><input id="el-${i}" value="${esc(e.logo)}" oninput="previewImg('el-${i}','elp-${i}')"/></div><img id="elp-${i}" class="img-preview${e.logo?' on':''}" style="aspect-ratio:1;max-width:80px;border-radius:10px" src="${esc(e.logo)}" alt=""/></div>`).join('')+`<button class="add-btn" onclick="addExp()">+ Add Position</button></div>`;}
+function addExp(){D.experience.push({logo:'',role:'Role',company:'Company',period:'2024'});tabExp();}
+function readExpTab(){D.experience.forEach((e,i)=>{e.role=gv(`er-${i}`);e.company=gv(`ec-${i}`);e.period=gv(`ep-${i}`);e.logo=gv(`el-${i}`);});}
+function tabAbout(){const a=D.about;$('ed-body').innerHTML=`<div class="eg"><div class="eg-title">About</div><div class="ef"><label>Photo URL</label><input id="ap" value="${esc(a.photo)}" oninput="previewImg('ap','app')"/></div><img id="app" class="img-preview${a.photo?' on':''}" style="aspect-ratio:3/4;max-width:120px;border-radius:8px" src="${esc(a.photo)}" alt=""/><div class="ef"><label>Name</label><input id="an" value="${esc(a.name)}"/></div><div class="ef"><label>Heading</label><input id="ah" value="${esc(a.heading)}"/></div><div class="ef"><label>Bio</label><textarea id="ab" style="min-height:120px">${esc(a.bio)}</textarea></div><div class="ef"><label>Skills (comma separated)</label><input id="ask" value="${esc((a.skills||[]).join(', '))}"/></div></div>`;}
+function readAboutTab(){const a=D.about;a.photo=gv('ap');a.name=gv('an');a.heading=gv('ah');a.bio=gv('ab');a.skills=gv('ask').split(',').map(s=>s.trim()).filter(Boolean);}
+function tabContact(){const c=D.contact;$('ed-body').innerHTML=`<div class="eg"><div class="eg-title">Contact</div><div class="ef"><label>Heading</label><input id="ch" value="${esc(c.heading)}"/></div><div class="ef"><label>Sub Text</label><textarea id="cs">${esc(c.sub)}</textarea></div><div class="ef"><label>Email</label><input id="ce" value="${esc(c.email)}"/></div><div class="ef"><label>LinkedIn URL</label><input id="cli" value="${esc(c.linkedin)}"/></div><div class="ef"><label>Vimeo URL</label><input id="cvi" value="${esc(c.vimeo)}"/></div><div class="ef"><label>Behance URL</label><input id="cbe" value="${esc(c.behance)}"/></div></div>`;}
+function readContactTab(){const c=D.contact;c.heading=gv('ch');c.sub=gv('cs');c.email=gv('ce');c.linkedin=gv('cli');c.vimeo=gv('cvi');c.behance=gv('cbe');}
+function readCurrentTab(){({design:readDesignTab,hero:readHeroTab,projects:readProjectsTab,services:readServicesTab,experience:readExpTab,about:readAboutTab,contact:readContactTab}[activeTab]||function(){})();}
+$('ed-apply').addEventListener('click',()=>{readCurrentTab();applyColors();applyFont(D.font);renderSite(D);showToast('Changes applied!');});
+$('ed-export').addEventListener('click',async()=>{readCurrentTab();const gh=D.github;let token=localStorage.getItem('rumi_gh_token')||gh.token||'';if(!token){token=prompt('Enter your GitHub Personal Access Token:');if(!token){showToast('Cancelled');return;}localStorage.setItem('rumi_gh_token',token);}gh.token='';if(!gh.repo){showToast('No GitHub repo set!');return;}const html=document.documentElement.outerHTML;const updated=html.replace(/(<script id="D" type="application\/json">)([\s\S]*?)(<\/script>)/,`$1\n${JSON.stringify(D,null,2)}\n$3`);showToast('Saving to GitHub...');$('ed-export').disabled=true;$('ed-export').textContent='Saving...';try{const getRes=await fetch(`https://api.github.com/repos/${gh.repo}/contents/${gh.path}?ref=${gh.branch}`,{headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json'}});const getJson=await getRes.json();const sha=getJson.sha;const pushRes=await fetch(`https://api.github.com/repos/${gh.repo}/contents/${gh.path}`,{method:'PUT',headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Update site content via editor',content:btoa(unescape(encodeURIComponent(updated))),sha:sha,branch:gh.branch})});if(pushRes.ok){showToast('Saved to GitHub! Live in ~30 sec');}else{const err=await pushRes.json();showToast('Error: '+(err.message||'check console'));}}catch(e){showToast('Network error');}$('ed-export').disabled=false;$('ed-export').textContent='Save to GitHub';});
+window.setLayout=setLayout;window.setOrient=setOrient;window.addProject=addProject;window.removeProject=removeProject;window.addVideo=addVideo;window.removeVideo=removeVideo;window.addExp=addExp;window.previewImg=previewImg;
+applyColors();applyFont(D.font);
+if(typeof renderSite==='function'){renderSite(D);}else{window.addEventListener('load',()=>{if(typeof renderSite==='function')renderSite(D);});}
+buildTab('design');
+</script>
+</body>
+</html>

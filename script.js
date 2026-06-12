@@ -1,8 +1,7 @@
 /* RUMI PORTFOLIO  script.js */
 'use strict';
 
-/*  render everything from data object  */
-function renderSite(D){ window._D=D; window._D = D;
+function renderSite(D){ window._D=D;
   renderHero(D.hero);
   renderProjects(D.projects);
   renderServices(D.services);
@@ -13,29 +12,20 @@ function renderSite(D){ window._D=D; window._D = D;
   initScrollReveal();
 }
 
-/* HERO */
+/* ── HERO ─────────────────────────────────────────────────── */
 function renderHero(h){
   if(!h)return;
-  const nameEl=document.getElementById('s-name');
-  if(nameEl) nameEl.textContent=h.name||'';
-  const subEl=document.getElementById('s-subtitle');
-  if(subEl) subEl.innerHTML=(h.subtitle||'').replace(/\n/g,'<br>');
-  const bodyEl=document.getElementById('s-body');
-  if(bodyEl) bodyEl.innerHTML=h.body||'';
-  const tagEl=document.getElementById('s-tagline');
-  if(tagEl) tagEl.textContent=h.tagline||'';
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v||'';};
+  const html=(id,v)=>{const e=document.getElementById(id);if(e)e.innerHTML=v||'';};
+  set('s-name', h.name);
+  html('s-subtitle', (h.subtitle||'').replace(/\n/g,'<br>'));
+  html('s-body', h.body||'');
+  set('s-tagline', h.tagline||'');
   const cta=document.getElementById('s-cta');
   if(cta){ if(h.ctaText)cta.textContent=h.ctaText; if(h.ctaHref)cta.href=h.ctaHref; }
   const logo=document.getElementById('s-logo');
   if(logo) logo.innerHTML=(h.name||'RUMI')+' <span class="nav-logo-dot"></span>';
   renderHeroReel(h);
-  // Restructure hero into two columns if not already done
-  buildHeroColumns();
-}
-
-function buildHeroColumns(){
-  // Single column layout — reel stays inline between subtitle and body (original design)
-  // Nothing to restructure; CSS handles max-width on the reel
 }
 
 function renderHeroReel(h){
@@ -45,11 +35,16 @@ function renderHeroReel(h){
   if(!vid&&!yt){ if(ph)ph.style.display='flex'; return; }
   if(ph)ph.style.display='none';
   const autoThumb=(!thumb&&yt)?'https://img.youtube.com/vi/'+yt+'/maxresdefault.jpg':thumb;
-  const tHTML=autoThumb?'<img src="'+autoThumb+'" alt="Showreel" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0"/>':'';
-  frame.innerHTML=tHTML+'<div class="hero-reel-play-btn" onclick="openHeroReel()"><div class="hero-reel-play-circle"><svg viewBox="0 0 18 18"><polygon points="4,2 4,16 16,9" fill="currentColor"/></svg></div></div>';
+  const tHTML=autoThumb?`<img src="${autoThumb}" alt="Showreel" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0"/>`:'';
+  frame.innerHTML=tHTML+`<div class="hero-reel-play-btn" onclick="openHeroReel()"><div class="hero-reel-play-circle"><svg viewBox="0 0 18 18"><polygon points="4,2 4,16 16,9" fill="currentColor"/></svg></div></div>`;
   if(vid&&!thumb&&!yt){
     fetchVimeoThumb(vid,null).then(url=>{
-      if(url){const img=document.createElement('img');img.src=url;img.alt='Showreel';img.style.cssText='width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:0';frame.insertBefore(img,frame.firstChild);}
+      if(url){
+        const img=document.createElement('img');
+        img.src=url; img.alt='Showreel';
+        img.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0';
+        frame.insertBefore(img,frame.firstChild);
+      }
     });
   }
 }
@@ -59,37 +54,29 @@ window.openHeroReel=function(){
   if(id)openLightbox(id,'Showreel','Motion Designer & Video Editor','horizontal',h.reelVimeoId?'vimeo':'youtube');
 };
 
-/* PROJECT GRID */
-
-/* Auto-fetch best Vimeo thumbnail via oEmbed — requests max resolution */
+/* ── VIMEO THUMBNAIL (auto, high-res) ──────────────────────── */
 async function fetchVimeoThumb(id, elemId){
-  try {
-    // Request the largest possible thumbnail (1920px wide)
-    const res = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}&width=1920`);
-    const data = await res.json();
-    if(data.thumbnail_url){
-      // Vimeo returns e.g. "...thumbnail_1280" — bump to largest available
-      const hiRes = data.thumbnail_url.replace(/_\d+$/, '_1920');
-      if(elemId){
-        const img = document.getElementById(elemId);
-        const ph  = document.getElementById(elemId+'-ph');
-        if(img){
-          img.onload = () => { img.style.display='block'; if(ph) ph.style.display='none'; };
-          img.onerror = () => {
-            // fallback to original url if _1920 doesn't exist
-            img.onerror = () => { img.style.display='block'; if(ph) ph.style.display='none'; };
-            img.src = data.thumbnail_url;
-          };
-          img.src = hiRes;
-          img.style.cssText='width:100%;height:100%;object-fit:cover;object-position:center top;display:none';
-        }
+  try{
+    const res=await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}&width=1920`);
+    const data=await res.json();
+    if(!data.thumbnail_url) return null;
+    // Try to get highest resolution by replacing the size suffix
+    const hiRes=data.thumbnail_url.replace(/_\d+$/, '_1920');
+    if(elemId){
+      const img=document.getElementById(elemId);
+      const ph=document.getElementById(elemId+'-ph');
+      if(img){
+        const show=()=>{ img.removeAttribute('style'); img.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top'; if(ph)ph.style.display='none'; };
+        img.onload=show;
+        img.onerror=()=>{ img.onerror=show; img.src=data.thumbnail_url; };
+        img.src=hiRes;
       }
-      return hiRes;
     }
-  } catch(e){ /* silently fail */ }
-  return null;
+    return hiRes;
+  }catch(e){ return null; }
 }
 
+/* ── PROJECT GRID ──────────────────────────────────────────── */
 const COVER_SHADES=['#0d1117','#16181d','#111418','#0e1015','#131618','#111315'];
 const THUMB_SHADES=['#1a1a1a','#161c22','#181818','#151a1f','#1c1c1c','#141414'];
 const FILM=`<svg width="44" height="44" viewBox="0 0 52 52" fill="none"><rect x="4" y="10" width="44" height="32" rx="3" stroke="currentColor" stroke-width="1.5"/><polygon points="20,18 20,34 36,26" fill="currentColor"/><rect x="4" y="6" width="5" height="4" rx="1" fill="currentColor"/><rect x="43" y="6" width="5" height="4" rx="1" fill="currentColor"/><rect x="4" y="42" width="5" height="4" rx="1" fill="currentColor"/><rect x="43" y="42" width="5" height="4" rx="1" fill="currentColor"/></svg>`;
@@ -102,8 +89,9 @@ function renderProjects(projects){
   projects.forEach((p,i)=>{
     const card=document.createElement('div');
     card.className='project-card reveal';
-    const th=p.cover?`<img src="${p.cover}" alt="${p.title||p.client}" loading="lazy"/>`:`<div class="card-thumb-ph" style="background:${COVER_SHADES[i%COVER_SHADES.length]};color:#333">${FILM}</div>`;
-    const vc=(p.videos||[]).length;
+    const th=p.cover
+      ?`<img src="${p.cover}" alt="${p.client}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/>`
+      :`<div class="card-thumb-ph" style="background:${COVER_SHADES[i%COVER_SHADES.length]};color:#333;position:absolute;inset:0;display:flex;align-items:center;justify-content:center">${FILM}</div>`;
     const tags=(p.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
     card.innerHTML=`
       <div class="card-thumb">
@@ -121,7 +109,7 @@ function renderProjects(projects){
   initScrollReveal();
 }
 
-/* PROJECT DETAIL PAGE */
+/* ── PROJECT DETAIL PAGE ───────────────────────────────────── */
 const projPage=document.getElementById('project-page');
 let _prevScroll=0;
 
@@ -132,10 +120,10 @@ function openProjectPage(p,ci){
     if(p.cover){heroImg.src=p.cover;heroImg.style.display='block';heroPh.style.display='none';}
     else{heroImg.style.display='none';heroPh.style.display='flex';}
   }
-  const setT=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v||'';};
-  setT('pp-eyebrow-text',p.client);
-  setT('pp-title-text',p.title||p.client);
-  setT('pp-bar-right-text',p.client);
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v||'';};
+  set('pp-eyebrow-text',p.client);
+  set('pp-title-text',p.title||p.client);
+  set('pp-bar-right-text',p.client);
 
   const roles=[...new Set((p.videos||[]).map(v=>v.role).filter(Boolean))];
   const metaEl=document.getElementById('pp-meta');
@@ -145,16 +133,8 @@ function openProjectPage(p,ci){
     {l:'Services',v:(p.tags||[]).join(', ')||''},
   ].filter(m=>m.v).map(m=>`<div><div class="pp-meta-label">${m.l}</div><div class="pp-meta-val">${m.v}</div></div>`).join('');
 
-  // Project description
   const descEl=document.getElementById('pp-description');
-  if(descEl){
-    if(p.description){
-      descEl.style.display='block';
-      descEl.innerHTML=p.description;
-    } else {
-      descEl.style.display='none';
-    }
-  }
+  if(descEl){ if(p.description){descEl.style.display='block';descEl.innerHTML=p.description;}else{descEl.style.display='none';} }
 
   const vids=p.videos||[];
   const vidLabel=document.getElementById('pp-vid-label');
@@ -163,56 +143,62 @@ function openProjectPage(p,ci){
   const vidCon=document.getElementById('pp-vid-container');
   if(vidCon){
     const layout=p.layout||'horizontal';
-    // Auto-detect grid class: if any video is vertical, use mixed grid
-    const hasVertical=(p.videos||[]).some(v=>v.orientation==='vertical');
-    const hasHorizontal=(p.videos||[]).some(v=>!v.orientation||v.orientation==='horizontal');
+    const hasV=(p.videos||[]).some(v=>v.orientation==='vertical');
+    const hasH=(p.videos||[]).some(v=>!v.orientation||v.orientation==='horizontal');
     let gc;
-    if(layout==='vertical'||(!hasHorizontal&&hasVertical)) gc='vid-grid-v';
-    else if(layout==='mixed'||hasVertical) gc='vid-grid-m';
+    if(layout==='vertical'||(!hasH&&hasV)) gc='vid-grid-v';
+    else if(layout==='mixed'||hasV) gc='vid-grid-m';
     else gc='vid-grid-h';
+
     if(vids.length===0){
-      vidCon.innerHTML=`<div class="${gc}"><div class="vid-empty">No videos yet. Open the editor (pencil button) to add Vimeo IDs and thumbnails.</div></div>`;
+      vidCon.innerHTML=`<div class="${gc}"><div class="vid-empty">No videos yet — add Vimeo IDs via the editor.</div></div>`;
     } else {
       vidCon.innerHTML=`<div class="${gc}">${vids.map((v,vi)=>{
         const can=!!(v.vimeoId||v.youtubeId);
         const platform=v.vimeoId?'vimeo':'youtube';
         const playId=v.vimeoId||v.youtubeId||'';
-        // Always respect per-video orientation
         const orient=v.orientation||'horizontal';
         const isV=orient==='vertical';
-        const ytThumb = (!v.thumb && v.youtubeId) ? `https://img.youtube.com/vi/${v.youtubeId}/maxresdefault.jpg` : '';
-        const vimeoThumbId = `vt-auto-${ci}-${vi}`;
-        const thumbSrc = v.thumb || ytThumb;
-        const tH = thumbSrc
-          ? `<img src="${thumbSrc}" alt="${v.name||''}" loading="lazy" class="vid-thumb-img" onerror="if(this.src.includes('maxresdefault')){this.src=this.src.replace('maxresdefault','hqdefault')}else{this.style.display='none'}"/>`
-          : v.vimeoId
-            ? `<img id="${vimeoThumbId}" src="" alt="${v.name||''}" loading="lazy" class="vid-thumb-img" style="display:none"/><div class="vid-thumb-ph" id="${vimeoThumbId}-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`
-            : `<div class="vid-thumb-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`;
+        const ratio=isV?'r916':'r169';
+        const ytThumb=(!v.thumb&&v.youtubeId)?`https://img.youtube.com/vi/${v.youtubeId}/maxresdefault.jpg`:'';
+        const tid=`vt-${ci}-${vi}`;
+        const thumbSrc=v.thumb||ytThumb;
+        // thumb HTML — always use position:absolute so it fills the padding-top box
+        const imgStyle=`position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center ${isV?'top':'center'}`;
+        let tH;
+        if(thumbSrc){
+          tH=`<img src="${thumbSrc}" alt="${v.name||''}" loading="lazy" style="${imgStyle}" onerror="if(this.src.includes('maxresdefault')){this.src=this.src.replace('maxresdefault','hqdefault')}else{this.style.display='none'}"/>`;
+        } else if(v.vimeoId){
+          // placeholder shown until fetchVimeoThumb fills it in
+          tH=`<div class="vid-ph" id="${tid}-ph" style="position:absolute;inset:0;background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333;display:flex;align-items:center;justify-content:center">${FILM}</div><img id="${tid}" src="" alt="" style="${imgStyle};display:none"/>`;
+        } else {
+          tH=`<div class="vid-ph" style="position:absolute;inset:0;background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333;display:flex;align-items:center;justify-content:center">${FILM}</div>`;
+        }
         return `<div class="vid-tile${can?' playable':''}"${can?` data-id="${playId}" data-platform="${platform}" data-orient="${orient}" data-name="${(v.name||'').replace(/"/g,'&quot;')}" data-role="${(v.role||'').replace(/"/g,'&quot;')}"`:''}>
-          <div class="vid-thumb ${isV?'r916':'r169'}">${tH}${can?`<div class="vid-play-ov"><div class="vid-play-btn">${PLAY}</div></div>`:''}</div>
+          <div class="vid-thumb ${ratio}">${tH}${can?`<div class="vid-play-ov"><div class="vid-play-btn">${PLAY}</div></div>`:''}</div>
           <div class="vid-info"><div class="vid-name">${v.name||''}</div><div class="vid-role">${v.role||''}</div></div>
         </div>`;
       }).join('')}</div>`;
     }
+
     vidCon.querySelectorAll('.vid-tile.playable').forEach(t=>{
       t.addEventListener('click',()=>openLightbox(t.dataset.id,t.dataset.name,t.dataset.role,t.dataset.orient,t.dataset.platform));
     });
-    // Auto-fetch Vimeo thumbnails
+
+    // Auto-fetch Vimeo thumbnails for tiles without a manual thumb
     vids.forEach((v,vi)=>{
-      if(v.vimeoId && !v.thumb && !v.youtubeId){
-        fetchVimeoThumb(v.vimeoId, `vt-auto-${ci}-${vi}`);
+      if(v.vimeoId&&!v.thumb&&!v.youtubeId){
+        fetchVimeoThumb(v.vimeoId, `vt-${ci}-${vi}`);
       }
     });
   }
 
-  // Hide hero banner
   const ppHero=document.getElementById('pp-hero');
   if(ppHero) ppHero.style.display='none';
   _prevScroll=window.scrollY;
   document.body.style.overflow='hidden';
   projPage.classList.add('open');
   projPage.scrollTop=0;
-  // Update URL for shareability
   const slug=p.client.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
   history.pushState({project:ci},'',`#project/${slug}`);
 }
@@ -220,12 +206,12 @@ function openProjectPage(p,ci){
 function closeProjectPage(){
   projPage.classList.remove('open');
   document.body.style.overflow='';
-  history.pushState({},'','/');
+  history.pushState({},'',window.location.pathname);
   window.scrollTo(0,_prevScroll);
 }
 document.getElementById('pp-back-btn')?.addEventListener('click',closeProjectPage);
 
-/* LIGHTBOX */
+/* ── LIGHTBOX ──────────────────────────────────────────────── */
 const modal=document.getElementById('lightbox');
 const mFrame=document.getElementById('lb-frame');
 
@@ -233,19 +219,14 @@ function openLightbox(id,name,role,orient,platform){
   const isV=orient==='vertical';
   document.getElementById('lb-wrap').className='lb-wrap'+(isV?' lb-v':'');
   document.getElementById('lb-ratio').className='lb-ratio '+(isV?'r916':'r169');
-  if(platform==='youtube'){
-    mFrame.src=`https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
-  } else {
-    mFrame.src=`https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0`;
-  }
+  mFrame.src=platform==='youtube'
+    ?`https://www.youtube.com/embed/${id}?autoplay=1&rel=0`
+    :`https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0`;
   const t=document.getElementById('lb-title'); if(t)t.textContent=name||'';
   const r=document.getElementById('lb-role'); if(r)r.textContent=role||'';
   modal.classList.add('open');
 }
-function closeLightbox(){
-  modal.classList.remove('open');
-  mFrame.src='';
-}
+function closeLightbox(){ modal.classList.remove('open'); mFrame.src=''; }
 document.getElementById('lb-close-btn')?.addEventListener('click',closeLightbox);
 modal?.addEventListener('click',e=>{if(e.target===modal)closeLightbox();});
 document.addEventListener('keydown',e=>{
@@ -255,7 +236,7 @@ document.addEventListener('keydown',e=>{
   }
 });
 
-/* SERVICES */
+/* ── SERVICES ──────────────────────────────────────────────── */
 function renderServices(services){
   const g=document.getElementById('services-grid');
   if(!g||!services)return;
@@ -267,7 +248,7 @@ function renderServices(services){
     </div>`).join('');
 }
 
-/* EXPERIENCE */
+/* ── EXPERIENCE ────────────────────────────────────────────── */
 function renderExperience(exp){
   const l=document.getElementById('exp-list');
   if(!l||!exp)return;
@@ -284,35 +265,35 @@ function renderExperience(exp){
     </div>`).join('');
 }
 
-/* ABOUT */
+/* ── ABOUT ─────────────────────────────────────────────────── */
 function renderAbout(a){
   if(!a)return;
   const ph=document.getElementById('about-photo');
   if(ph) ph.innerHTML=a.photo?`<img src="${a.photo}" alt="${a.name||''}" loading="lazy"/>`:'';
-  const setT=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v||'';};
-  setT('about-name-cap',a.name);
-  setT('about-heading',a.heading);
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v||'';};
+  set('about-name-cap',a.name);
+  set('about-heading',a.heading);
   const bio=document.getElementById('about-bio');
   if(bio) bio.innerHTML=(a.bio||'').split('\n\n').map(p=>`<p>${p}</p>`).join('');
   const sk=document.getElementById('about-skills');
   if(sk&&a.skills) sk.innerHTML=a.skills.map(s=>`<span class="skill-tag">${s}</span>`).join('');
 }
 
-/* CONTACT */
+/* ── CONTACT ───────────────────────────────────────────────── */
 function renderContact(c){
   if(!c)return;
-  const setT=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v||'';};
-  setT('contact-heading',c.heading);
-  setT('contact-sub',c.sub);
+  const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v||'';};
+  set('contact-heading',c.heading);
+  set('contact-sub',c.sub);
   const btn=document.getElementById('contact-email-btn');
   if(btn)btn.href=`mailto:${c.email||''}`;
   const links=document.getElementById('contact-links');
   if(!links)return;
   links.innerHTML=[
-    {k:'Email',    v:c.email,    h:`mailto:${c.email}`},
-    {k:'LinkedIn', v:(c.linkedin||'').replace('https://www.linkedin.com/in/','').replace('/',''), h:c.linkedin},
-    {k:'Vimeo',    v:(c.vimeo||'').replace('https://',''),    h:c.vimeo},
-    {k:'Behance',  v:(c.behance||'').replace('https://www.',''), h:c.behance},
+    {k:'Email',   v:c.email, h:`mailto:${c.email}`},
+    {k:'LinkedIn',v:(c.linkedin||'').replace('https://www.linkedin.com/in/','').replace('/',''), h:c.linkedin},
+    {k:'Vimeo',   v:(c.vimeo||'').replace('https://',''), h:c.vimeo},
+    {k:'Behance', v:(c.behance||'').replace('https://www.',''), h:c.behance},
   ].filter(r=>r.h).map(r=>`
     <a href="${r.h}" target="${r.h.startsWith('mailto')?'_self':'_blank'}" rel="noopener" class="contact-link-row">
       <div><div class="contact-link-key">${r.k}</div><div class="contact-link-val">${r.v}</div></div>
@@ -320,10 +301,10 @@ function renderContact(c){
     </a>`).join('');
 }
 
-/* FOOTER */
+/* ── FOOTER ────────────────────────────────────────────────── */
 function renderFooter(c,a){
   const copy=document.getElementById('footer-copy');
-  if(copy)copy.textContent=` ${new Date().getFullYear()} ${(a&&a.name)||'RUMI'}`;
+  if(copy)copy.textContent=`© ${new Date().getFullYear()} ${(a&&a.name)||'RUMI'}`;
   const fl=document.getElementById('footer-links');
   if(fl&&c) fl.innerHTML=[
     c.linkedin&&`<a href="${c.linkedin}" target="_blank" rel="noopener">LinkedIn</a>`,
@@ -332,7 +313,7 @@ function renderFooter(c,a){
   ].filter(Boolean).join('');
 }
 
-/* NAV */
+/* ── NAV ───────────────────────────────────────────────────── */
 const burger=document.getElementById('nav-burger');
 const navLinks=document.getElementById('nav-links');
 if(burger&&navLinks){
@@ -342,8 +323,7 @@ if(burger&&navLinks){
     burger.setAttribute('aria-expanded',String(open));
   });
   navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
-    navLinks.classList.remove('open');
-    burger.classList.remove('open');
+    navLinks.classList.remove('open'); burger.classList.remove('open');
   }));
 }
 window.addEventListener('scroll',()=>{
@@ -352,7 +332,7 @@ window.addEventListener('scroll',()=>{
   navLinks?.querySelectorAll('a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
 },{passive:true});
 
-/* SCROLL REVEAL */
+/* ── SCROLL REVEAL ─────────────────────────────────────────── */
 let revIO;
 function initScrollReveal(){
   if(revIO)revIO.disconnect();
@@ -362,25 +342,17 @@ function initScrollReveal(){
   document.querySelectorAll('.reveal:not(.visible)').forEach(el=>revIO.observe(el));
 }
 
-// Handle browser back button
-window.addEventListener('popstate', ()=>{
-  if(document.getElementById('project-page').classList.contains('open')){
-    closeProjectPage();
-  }
+window.addEventListener('popstate',()=>{
+  if(document.getElementById('project-page').classList.contains('open')) closeProjectPage();
 });
-// Open project from URL on page load
-window.addEventListener('load', ()=>{
-  const hash = window.location.hash;
+window.addEventListener('load',()=>{
+  const hash=window.location.hash;
   if(hash.startsWith('#project/')){
-    const slug = hash.replace('#project/','');
-    const D_el = document.getElementById('D');
-    if(!D_el) return;
-    try {
-      const D = JSON.parse(D_el.textContent);
-      const idx = (D.projects||[]).findIndex(p=>
-        p.client.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')=== slug
-      );
+    const slug=hash.replace('#project/','');
+    try{
+      const D=JSON.parse(document.getElementById('D').textContent);
+      const idx=(D.projects||[]).findIndex(p=>p.client.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')===slug);
       if(idx>=0) setTimeout(()=>openProjectPage(D.projects[idx],idx),400);
-    } catch(e){}
+    }catch(e){}
   }
 });

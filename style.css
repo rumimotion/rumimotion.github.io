@@ -587,7 +587,20 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 .vid-thumb { position: relative; overflow: hidden; background: #111; }
 .vid-thumb.r169 { aspect-ratio: 16/9; }
 .vid-thumb.r916 { aspect-ratio: 9/16; }
-/* img must fill the aspect-ratio box exactly — override the global reset below */
+/* All thumbnail images — positioned absolutely to fill their aspect-ratio container */
+.vid-thumb-img {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  transition: transform 0.4s var(--ease);
+}
+/* For vertical tiles: crop from center so the subject stays in frame */
+.vid-thumb.r916 .vid-thumb-img {
+  object-position: center top !important;
+}
 .vid-thumb img {
   position: absolute;
   inset: 0;

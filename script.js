@@ -84,19 +84,30 @@ window.openHeroReel=function(){
 
 /* PROJECT GRID */
 
-/* Auto-fetch Vimeo thumbnail via oEmbed */
+/* Auto-fetch best Vimeo thumbnail via oEmbed — requests max resolution */
 async function fetchVimeoThumb(id, elemId){
   try {
-    const res = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}`);
+    // Request the largest possible thumbnail (1920px wide)
+    const res = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/${id}&width=1920`);
     const data = await res.json();
     if(data.thumbnail_url){
+      // Vimeo returns e.g. "...thumbnail_1280" — bump to largest available
+      const hiRes = data.thumbnail_url.replace(/_\d+$/, '_1920');
       if(elemId){
         const img = document.getElementById(elemId);
         const ph  = document.getElementById(elemId+'-ph');
-        if(img){ img.src=data.thumbnail_url; img.style.display='block'; img.style.width='100%'; img.style.height='100%'; img.style.objectFit='cover'; }
-        if(ph)  { ph.style.display='none'; }
+        if(img){
+          img.onload = () => { img.style.display='block'; if(ph) ph.style.display='none'; };
+          img.onerror = () => {
+            // fallback to original url if _1920 doesn't exist
+            img.onerror = () => { img.style.display='block'; if(ph) ph.style.display='none'; };
+            img.src = data.thumbnail_url;
+          };
+          img.src = hiRes;
+          img.style.cssText='width:100%;height:100%;object-fit:cover;object-position:center top;display:none';
+        }
       }
-      return data.thumbnail_url;
+      return hiRes;
     }
   } catch(e){ /* silently fail */ }
   return null;
@@ -195,11 +206,10 @@ function openProjectPage(p,ci){
         const ytThumb = (!v.thumb && v.youtubeId) ? `https://img.youtube.com/vi/${v.youtubeId}/maxresdefault.jpg` : '';
         const vimeoThumbId = `vt-auto-${ci}-${vi}`;
         const thumbSrc = v.thumb || ytThumb;
-        const thumbFit = isV ? 'width:100%;height:100%;object-fit:cover;object-position:center top' : 'width:100%;height:100%;object-fit:cover';
         const tH = thumbSrc
-          ? `<img src="${thumbSrc}" alt="${v.name||''}" loading="lazy" style="${thumbFit}" onerror="if(this.src.includes('maxresdefault')){this.src=this.src.replace('maxresdefault','hqdefault')}else{this.style.display='none'}"/>`
+          ? `<img src="${thumbSrc}" alt="${v.name||''}" loading="lazy" class="vid-thumb-img" onerror="if(this.src.includes('maxresdefault')){this.src=this.src.replace('maxresdefault','hqdefault')}else{this.style.display='none'}"/>`
           : v.vimeoId
-            ? `<img id="${vimeoThumbId}" src="" alt="${v.name||''}" loading="lazy" style="${thumbFit};display:none"/><div class="vid-thumb-ph" id="${vimeoThumbId}-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`
+            ? `<img id="${vimeoThumbId}" src="" alt="${v.name||''}" loading="lazy" class="vid-thumb-img" style="display:none"/><div class="vid-thumb-ph" id="${vimeoThumbId}-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`
             : `<div class="vid-thumb-ph" style="background:${THUMB_SHADES[(ci+vi)%THUMB_SHADES.length]};color:#333">${FILM}</div>`;
         return `<div class="vid-tile${can?' playable':''}"${can?` data-id="${playId}" data-platform="${platform}" data-orient="${orient}" data-name="${(v.name||'').replace(/"/g,'&quot;')}" data-role="${(v.role||'').replace(/"/g,'&quot;')}"`:''}>
           <div class="vid-thumb ${isV?'r916':'r169'}">${tH}${can?`<div class="vid-play-ov"><div class="vid-play-btn">${PLAY}</div></div>`:''}</div>

@@ -730,7 +730,19 @@ async function publishToGitHub(){
     const getJson=await getRes.json();
     if(!getJson.sha){toast('Could not get file SHA — check token & repo','error');btn.disabled=false;btn.innerHTML=`<svg viewBox="0 0 16 16"><path d="M8 1v10M4 7l4-6 4 6M3 14h10"/></svg> Publish`;return;}
     const currentHTML=atob(getJson.content.replace(/\n/g,''));
+    // SAFETY CHECK: abort if the file doesn't contain the data block
+    if(!currentHTML.includes('<script id="D" type="application/json">')){
+      toast('Safety check failed — index.html looks corrupted. Upload a fresh copy via GitHub first.','error');
+      btn.disabled=false;btn.innerHTML=`<svg viewBox="0 0 16 16"><path d="M8 1v10M4 7l4-6 4 6M3 14h10"/></svg> Publish`;
+      return;
+    }
     const updatedHTML=currentHTML.replace(/(<script id="D" type="application\/json">)([\s\S]*?)(<\/script>)/,`$1\n${JSON.stringify(D,null,2)}\n$3`);
+    // SAFETY CHECK: verify the replacement worked
+    if(updatedHTML===currentHTML){
+      toast('Could not inject data — replacement failed. Check index.html structure.','error');
+      btn.disabled=false;btn.innerHTML=`<svg viewBox="0 0 16 16"><path d="M8 1v10M4 7l4-6 4 6M3 14h10"/></svg> Publish`;
+      return;
+    }
     const pushRes=await fetch(`https://api.github.com/repos/${repo}/contents/${path}`,{method:'PUT',headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Update site via Admin Panel',content:btoa(unescape(encodeURIComponent(updatedHTML))),sha:getJson.sha,branch})});
     if(pushRes.ok){toast('Published! Live in ~30 seconds');markSaved();buildDashboard();}
     else{const err=await pushRes.json();toast('Error: '+(err.message||'check console'),'error');console.error(err);}

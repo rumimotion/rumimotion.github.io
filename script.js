@@ -93,8 +93,7 @@ function renderProjects(projects){
         <div class="card-view-overlay"><span class="card-view-pill">View Project</span></div>
       </div>
       <div class="card-meta">
-        <div class="card-client">${p.client||''}</div>
-        <div style="font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:2px">${p.title||p.client||''}</div>
+        <div class="card-title">${p.title||p.client||''}</div>
         <div class="card-role">${p.primaryRole||''}</div>
         <div class="card-tags">${tags}</div>
       </div>`;
@@ -158,9 +157,6 @@ function openProjectPage(p,ci){
         const playId=v.vimeoId||v.youtubeId||'';
         const orient=layout==='mixed'?(v.orientation||'horizontal'):layout;
         const isV=orient==='vertical';
-        // Use YouTube auto-thumbnail if no thumb set and YouTube ID exists
-        // Auto thumbnail: YouTube = instant, Vimeo = fetched via oEmbed
-        // YouTube: try maxresdefault first (1280x720), fallback to hqdefault (480x360)
         const ytThumb = (!v.thumb && v.youtubeId) ? `https://img.youtube.com/vi/${v.youtubeId}/maxresdefault.jpg` : '';
         const vimeoThumbId = `vt-auto-${ci}-${vi}`;
         const thumbSrc = v.thumb || ytThumb;
@@ -214,7 +210,6 @@ function openLightbox(id,name,role,orient,platform){
   const isV=orient==='vertical';
   document.getElementById('lb-wrap').className='lb-wrap'+(isV?' lb-v':'');
   document.getElementById('lb-ratio').className='lb-ratio '+(isV?'r916':'r169');
-  // Support both Vimeo and YouTube
   if(platform==='youtube'){
     mFrame.src=`https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
   } else {

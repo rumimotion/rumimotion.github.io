@@ -441,8 +441,45 @@ function markUnsaved(){unsaved=true;$('pub-dot').className='pub-dot amber';$('pu
 function markSaved(){unsaved=false;$('pub-dot').className='pub-dot';$('pub-label').textContent='All changes saved';}
 function toast(msg,type='success'){const t=$('toast');t.textContent=msg;t.className='on '+type;clearTimeout(t._tm);t._tm=setTimeout(()=>t.className='',3000);}
 
-const DEFAULT_PW=atob('TmV3UG9ydGZvbGlvQDEyMw==');
-function getPassword(){return localStorage.getItem('rumi_admin_pw')||DEFAULT_PW;}
+// No hardcoded default password — owner must set one on first visit.
+function getPassword(){return localStorage.getItem('rumi_admin_pw')||null;}
+
+function checkFirstRun(){
+  if(!getPassword()){
+    $('login-screen').style.display='flex';
+    const box=document.querySelector('.login-box');
+    box.innerHTML=`
+      <div class="login-logo">RUMI<span>.</span></div>
+      <div class="login-sub" style="color:var(--amber)">First-time setup — set your admin password</div>
+      <div class="login-field">
+        <label>Choose a Password</label>
+        <input type="password" id="setup-pw1" placeholder="Choose a strong password" autocomplete="new-password"/>
+      </div>
+      <div class="login-field">
+        <label>Confirm Password</label>
+        <input type="password" id="setup-pw2" placeholder="Repeat password" autocomplete="new-password"/>
+      </div>
+      <button class="login-btn" id="setup-btn">Set Password &amp; Enter</button>
+      <div class="login-err" id="pw-err"></div>
+    `;
+    document.getElementById('setup-btn').addEventListener('click', doSetup);
+    document.getElementById('setup-pw2').addEventListener('keydown', e=>{if(e.key==='Enter')doSetup();});
+  }
+}
+
+function doSetup(){
+  const p1=document.getElementById('setup-pw1').value;
+  const p2=document.getElementById('setup-pw2').value;
+  if(!p1){document.getElementById('pw-err').textContent='Please choose a password.';return;}
+  if(p1.length<6){document.getElementById('pw-err').textContent='Password must be at least 6 characters.';return;}
+  if(p1!==p2){document.getElementById('pw-err').textContent='Passwords do not match.';return;}
+  localStorage.setItem('rumi_admin_pw',p1);
+  sessionStorage.setItem('rumi_admin_auth','1');
+  $('login-screen').style.display='none';
+  $('app').classList.add('on');
+  loadData();
+}
+
 $('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 $('pw-btn').addEventListener('click',doLogin);
 function doLogin(){
@@ -465,11 +502,13 @@ $('logout-btn').addEventListener('click',()=>{
   $('pw-input').value='';
   $('pw-err').textContent='';
 });
-// Auto-login if already authenticated this session
+// Auto-login if already authenticated this session, else check first-run
 if(sessionStorage.getItem('rumi_admin_auth')==='1'){
   $('login-screen').style.display='none';
   $('app').classList.add('on');
   loadData();
+} else {
+  checkFirstRun();
 }
 
 async function loadData(){

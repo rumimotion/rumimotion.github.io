@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>ბესეტკა · დომინო</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; height: 100%; background: #1f1d1b; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+  }
+  #app {
+    width: 100%;
+    max-width: 520px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: radial-gradient(ellipse at 50% 30%, #3f6b47 0%, #2f5237 55%, #22392a 100%);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ---- top bar / score ---- */
+  .topbar {
+    padding: 14px 16px 6px;
+  }
+  .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    color: rgba(255,255,255,.6);
+  }
+  .title-row b { color: #e8c07a; }
+  .score-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: baseline;
+    margin-top: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+  .score-side { display: flex; align-items: baseline; gap: 6px; }
+  .score-side.right { justify-content: flex-end; }
+  .score-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; color: #e8c07a; }
+  .score-num { font-size: 22px; font-weight: 800; }
+  .hand-label { font-size: 11px; font-weight: 700; letter-spacing: .06em; color: rgba(255,255,255,.55); white-space: nowrap; }
+  .pending { text-align: center; font-size: 11px; font-weight: 700; color: #e8c07a; margin-top: 4px; }
+
+  /* ---- opponents strip ---- */
+  .opponents { display: flex; justify-content: space-around; padding: 8px 16px 0; }
+  .opp { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 12px;
+    box-shadow: 0 0 0 2px transparent;
+  }
+  .avatar.turn { box-shadow: 0 0 0 2px #E3AA24; }
+  .opp-name { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.8); }
+  .opp-count { font-size: 10px; color: rgba(255,255,255,.5); }
+  .opp-tiles { display: flex; gap: 2px; }
+  .opp-tile-back {
+    width: 10px; height: 18px; border-radius: 2px;
+    background: linear-gradient(160deg,#3a3532,#221f1c);
+    border: 1px solid rgba(255,255,255,.12);
+  }
+
+  /* ---- board ---- */
+  .board-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 12px;
+    min-height: 0;
+  }
+  .board {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    gap: 3px;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+  .empty-hint { font-size: 14px; color: rgba(255,255,255,.6); text-align: center; padding: 0 24px; }
+
+  .tile {
+    background: linear-gradient(160deg,#f2eadb,#e4d8bf);
+    border-radius: 4px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.7), inset 0 -1px 0 rgba(120,95,60,.35), 0 2px 3px rgba(0,0,0,.45);
+    display: flex;
+    flex-shrink: 0;
+  }
+  .tile.board-tile { width: 42px; height: 21px; }
+  .tile.board-tile.dbl { box-shadow: inset 0 1px 0 rgba(255,255,255,.7), inset 0 -1px 0 rgba(120,95,60,.35), 0 2px 3px rgba(0,0,0,.45), 0 0 0 1.5px rgba(232,192,122,.65); }
+  .tile-half { flex: 1; position: relative; }
+  .tile-divider-v { width: 1px; background: #a89c86; margin: 3px 0; }
+  .tile-divider-h { height: 1px; background: #a89c86; margin: 0 3px; }
+  .pip {
+    position: absolute; width: 3.5px; height: 3.5px; margin: -1.75px 0 0 -1.75px;
+    border-radius: 50%; background: #262421;
+  }
+  .hand .pip { width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; }
+
+  /* ---- end-choice buttons ---- */
+  .end-choice { display: flex; gap: 8px; padding: 0 16px 8px; }
+  .end-btn {
+    flex: 1; height: 40px; border-radius: 8px;
+    background: #E3AA24; color: #1f1d1b; font-weight: 800; font-size: 13px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    cursor: pointer; border: none;
+    animation: pulse 1.1s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:.7} 50%{opacity:1} }
+
+  /* ---- status + hand ---- */
+  .status-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 16px 4px;
+    font-size: 13px; font-weight: 700;
+  }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.3); display: inline-block; margin-right: 8px; }
+  .status-dot.mine { background: #E3AA24; animation: pulse 1.2s infinite; }
+  .ends-text { font-size: 12px; color: rgba(255,255,255,.6); font-variant-numeric: tabular-nums; }
+
+  .hand-row {
+    display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
+    padding: 4px 8px;
+  }
+  .tile.hand-tile {
+    width: 42px; height: 84px; flex-direction: column; cursor: pointer;
+    outline: 2px solid transparent; outline-offset: 2px;
+    transition: transform .15s ease, opacity .15s ease;
+  }
+  .tile.hand-tile.playable { outline-color: rgba(255,255,255,.55); transform: translateY(-4px); }
+  .tile.hand-tile.selected { outline-color: #E3AA24; transform: translateY(-10px); }
+  .tile.hand-tile.dead { opacity: .55; filter: saturate(.6) brightness(.85); }
+
+  .bottom-bar { display: flex; gap: 8px; padding: 8px 16px calc(16px + env(safe-area-inset-bottom)); }
+  .bbtn {
+    flex: 1; height: 42px; border-radius: 6px; background: rgba(255,255,255,.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; cursor: pointer; border: none; color: #fff;
+  }
+  .bbtn.pass-active { color: #e8c07a; }
+  .bbtn.primary { background: #fff; color: #1f1d1b; }
+
+  /* ---- overlays ---- */
+  .overlay {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    padding: 24px; z-index: 20; background: rgba(20,18,16,.55);
+  }
+  .card {
+    background: rgba(38,36,33,.96); border: 1px solid rgba(255,255,255,.12); border-radius: 14px;
+    padding: 22px; display: flex; flex-direction: column; gap: 14px; text-align: center; width: 100%;
+    box-shadow: 0 16px 40px rgba(0,0,0,.6);
+  }
+  .card h2 { margin: 0; font-size: 26px; font-weight: 900; }
+  .card p { margin: 0; font-size: 14px; color: rgba(255,255,255,.7); line-height: 1.4; }
+  .card .cta {
+    height: 48px; border-radius: 10px; background: #fff; color: #1f1d1b;
+    display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; cursor: pointer;
+  }
+  .card .cta.secondary { background: transparent; border: 1.5px solid rgba(255,255,255,.4); color: #fff; }
+  .reveal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; text-align: left; }
+  .reveal-cell { background: rgba(255,255,255,.06); border-radius: 8px; padding: 8px; }
+  .reveal-head { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+  .reveal-head span:last-child { color: #e8c07a; }
+  .reveal-tiles { display: flex; gap: 3px; flex-wrap: wrap; }
+  .reveal-tiles .tile { width: 14px; height: 28px; flex-direction: column; }
+  .reveal-tiles .pip { width: 2.6px; height: 2.6px; margin: -1.3px 0 0 -1.3px; }
+
+  /* ---- chotki abacus ---- */
+  .chotki {
+    margin: 4px 16px 0;
+    background: linear-gradient(180deg,#8a5a2b,#6b4423);
+    border: 4px solid #3d2612; border-radius: 8px; padding: 4px 6px;
+    display: flex; flex-direction: column; gap: 1px;
+  }
+  .ch-row { position: relative; height: 20px; display: grid; grid-template-columns: 1fr 20px 1fr; align-items: center; }
+  .ch-line { position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; background: linear-gradient(180deg,#d9d2c5,#8e857a); border-radius: 2px; }
+  .ch-label {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    width: 20px; height: 20px; background: #3d2612; border-radius: 2px;
+    display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 800; color: #e8c07a; z-index: 2;
+  }
+  .ch-beads { position: relative; height: 20px; }
+  .ch-bead {
+    position: absolute; top: 50%; width: 11px; height: 16px; margin-top: -8px;
+    border-radius: 50%/40%; background: #3b2a1c; border: 1px solid #1e130b;
+  }
+  .ch-bead.on { background: #e8c07a; border-color: #8a5a1e; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ===== domino-engine.js (inlined verbatim) ===== */
+// Georgian pair-domino rule engine — single chain with two open ends (left/right). Doubles do not branch. Pure functions, no rendering.
+(function (root) {
+  const TEAM_OF_SEAT = [0, 1, 0, 1];
+
+  function createDominoSet() { const t = []; let id = 0; for (let a = 0; a <= 6; a++) for (let b = a; b <= 6; b++) t.push({ id: id++, a, b }); return t; }
+  function shuffleTiles(tiles, rng) { const a = tiles.slice(); rng = rng || Math.random; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function dealTiles(rng) { const d = shuffleTiles(createDominoSet(), rng); return [d.slice(0, 7), d.slice(7, 14), d.slice(14, 21), d.slice(21, 28)]; }
+  const pips = t => t.a + t.b, isDouble = t => t.a === t.b;
+  const calculateRemainingPips = hand => hand.reduce((s, t) => s + pips(t), 0);
+  const calculateTeamRemainingPips = (st, team) => st.hands.reduce((s, h, i) => TEAM_OF_SEAT[i] === team ? s + calculateRemainingPips(h) : s, 0);
+
+  // board: a single ordered chain of tiles from the left open end to the right open end.
+  // { tiles: [{id,a,b,seat,leftV,rightV}, ...], originIndex } — originIndex marks the first tile played (for layout only, not a rule).
+  const emptyBoard = () => ({ tiles: [], originIndex: 0 });
+  function findTile(board, id) { return board.tiles.find(t => t.id === id) || null; }
+  function boardTiles(board) { return board.tiles; }
+  // exactly two open ends for the whole hand — left end and right end of the chain. Doubles play normally; they never add extra directions.
+  function getOpenEnds(board) {
+    if (!board.tiles.length) return [];
+    const first = board.tiles[0], last = board.tiles[board.tiles.length - 1];
+    return [{ id: 'left', value: first.leftV }, { id: 'right', value: last.rightV }];
+  }
+  function getValidPlacements(tile, board) {
+    if (!board.tiles.length) return [{ endpointId: 'origin', matchingValue: null }];
+    return getOpenEnds(board).filter(e => tile.a === e.value || tile.b === e.value).map(e => ({ endpointId: e.id, matchingValue: e.value }));
+  }
+  const canPlayTile = (tile, board) => getValidPlacements(tile, board).length > 0;
+  const getPlayableTiles = (hand, board) => hand.filter(t => canPlayTile(t, board));
+
+  function newMatch(opts) {
+    opts = opts || {};
+    return startNextHand({ targetScore: opts.targetScore || 355, scores: [0, 0], pendingFishPoints: 0, matchStatus: 'playing', matchWinner: null, dry: false, handNumber: 0, history: [],
+      hands: null, board: emptyBoard(), current: null, startingPlayer: null, nextStarter: null, consecutivePasses: 0, handStatus: 'idle', handOutcome: null, handWinner: null, handPoints: 0, moves: [], lastEvent: null }, opts.rng);
+  }
+  function startNextHand(state, rng) {
+    if (state.matchStatus !== 'playing') return state;
+    const hands = dealTiles(rng);
+    let starter = state.handNumber === 0 ? hands.findIndex(h => h.some(t => t.a === 6 && t.b === 6)) : (state.nextStarter !== null && state.nextStarter !== undefined ? state.nextStarter : (state.startingPlayer + 1) % 4);
+    return Object.assign({}, state, { hands, board: emptyBoard(), current: starter, startingPlayer: starter, nextStarter: null, consecutivePasses: 0, handStatus: 'playing', handOutcome: null, handWinner: null, handPoints: 0,
+      handNumber: state.handNumber + 1, mustOpenWithDoubleSix: state.handNumber === 0, moves: [], lastEvent: { type: 'deal', starter } });
+  }
+  function getLegalMoves(state, seat) {
+    if (state.handStatus !== 'playing' || state.current !== seat) return [];
+    let hand = state.hands[seat];
+    if (state.mustOpenWithDoubleSix && !state.board.tiles.length) hand = hand.filter(t => t.a === 6 && t.b === 6);
+    return hand.map(t => ({ tile: t, placements: getValidPlacements(t, state.board) })).filter(m => m.placements.length);
+  }
+  const mustPass = (state, seat) => state.handStatus === 'playing' && getLegalMoves(state, seat).length === 0;
+
+  function placeTile(state, seat, tileId, endpointId) {
+    const mv = getLegalMoves(state, seat).find(m => m.tile.id === tileId); if (!mv) return { ok: false, error: 'illegal tile' };
+    let pl = mv.placements.find(p => p.endpointId === endpointId) || mv.placements[0]; const tile = mv.tile;
+    const tiles = state.board.tiles.slice(); let originIndex = state.board.originIndex || 0;
+    if (!tiles.length) {
+      tiles.push({ id: tile.id, a: tile.a, b: tile.b, seat, leftV: tile.a, rightV: tile.b }); originIndex = 0;
+    } else if (pl.endpointId === 'left') {
+      const inV = pl.matchingValue, outV = tile.a === inV ? tile.b : tile.a;
+      tiles.unshift({ id: tile.id, a: tile.a, b: tile.b, seat, leftV: outV, rightV: inV }); originIndex += 1;
+    } else { // 'right'
+      const inV = pl.matchingValue, outV = tile.a === inV ? tile.b : tile.a;
+      tiles.push({ id: tile.id, a: tile.a, b: tile.b, seat, leftV: inV, rightV: outV });
+    }
+    const board = { tiles, originIndex };
+    const hands = state.hands.map((h, i) => i === seat ? h.filter(t => t.id !== tile.id) : h);
+    let next = Object.assign({}, state, { hands, board, consecutivePasses: 0, mustOpenWithDoubleSix: false, moves: state.moves.concat([{ seat, tileId: tile.id, endpointId: pl.endpointId }]), lastEvent: { type: 'play', seat, tile, endpointId: pl.endpointId } });
+    if (hands[seat].length === 0) return { ok: true, state: resolveNormalHand(next, seat) };
+    next.current = (seat + 1) % 4; return { ok: true, state: next };
+  }
+  function pass(state, seat) {
+    if (state.handStatus !== 'playing' || state.current !== seat) return { ok: false, error: 'not your turn' };
+    if (!mustPass(state, seat)) return { ok: false, error: 'legal move exists' };
+    const next = Object.assign({}, state, { consecutivePasses: state.consecutivePasses + 1, current: (seat + 1) % 4, moves: state.moves.concat([{ seat, pass: true }]), lastEvent: { type: 'pass', seat } });
+    if (detectBlockedGame(next)) return { ok: true, state: resolveFish(next) };
+    return { ok: true, state: next };
+  }
+  // blocked: no hand can reach either open end
+  const detectBlockedGame = st => st.board.tiles.length > 0 && st.hands.every(h => getPlayableTiles(h, st.board).length === 0);
+
+  function resolveNormalHand(state, winnerSeat) { const team = TEAM_OF_SEAT[winnerSeat]; const raw = calculateTeamRemainingPips(state, 1 - team);
+    return applyHandScore(state, { outcome: 'normal', winnerTeam: team, points: raw + state.pendingFishPoints, rawPips: raw, nextStarter: winnerSeat }); }
+  function resolveFish(state) { const a = calculateTeamRemainingPips(state, 0), b = calculateTeamRemainingPips(state, 1); if (a === b) return resolveEgg(state, a + b);
+    const team = a < b ? 0 : 1; const seats = [0, 1, 2, 3].filter(s => TEAM_OF_SEAT[s] === team).sort((x, y) => calculateRemainingPips(state.hands[x]) - calculateRemainingPips(state.hands[y]));
+    return applyHandScore(state, { outcome: 'fish', winnerTeam: team, points: (team === 0 ? b : a) + state.pendingFishPoints, rawPips: team === 0 ? b : a, nextStarter: seats[0] }); } // fish: losing pair's remaining pips go to the winning pair
+  function resolveEgg(state, total) { const pending = state.pendingFishPoints + total / 2; // equal totals: one side's pips are remembered for the next decided hand
+    return Object.assign({}, state, { handStatus: 'ended', handOutcome: 'egg', handWinner: null, handPoints: 0, pendingFishPoints: pending, nextStarter: (state.startingPlayer + 1) % 4,
+      history: state.history.concat([{ hand: state.handNumber, outcome: 'egg', winnerTeam: null, points: 0, rawPips: total, pending, scores: state.scores.slice() }]), lastEvent: { type: 'egg', total } }); }
+  function applyHandScore(state, r) { const before = state.scores.slice(); const scores = state.scores.slice(); scores[r.winnerTeam] += r.points;
+    return checkMatchWinner(Object.assign({}, state, { scores, pendingFishPoints: 0, handStatus: 'ended', handOutcome: r.outcome, handWinner: r.winnerTeam, handPoints: r.points, nextStarter: r.nextStarter,
+      history: state.history.concat([{ hand: state.handNumber, outcome: r.outcome, winnerTeam: r.winnerTeam, points: r.points, rawPips: r.rawPips, pendingUsed: state.pendingFishPoints, before, scores: scores.slice() }]) })); }
+  function checkMatchWinner(state) { if (state.handOutcome !== 'normal') return state; const over = [0, 1].filter(t => state.scores[t] >= state.targetScore); if (!over.length) return state;
+    const winner = over.length === 2 ? (state.scores[0] >= state.scores[1] ? 0 : 1) : over[0];
+    return Object.assign({}, state, { matchStatus: 'won', matchWinner: winner, dry: state.scores[1 - winner] < 200, lastEvent: { type: 'match', winner } }); }
+
+  // bot uses the same legal-move engine; sees only its own hand + open ends
+  function botMove(state, seat, rng) { const moves = getLegalMoves(state, seat); if (!moves.length) return null; moves.sort((x, y) => pips(y.tile) - pips(x.tile));
+    const m = moves[0]; const p = m.placements[Math.floor((rng || Math.random)() * m.placements.length)]; return { tileId: m.tile.id, endpointId: p.endpointId }; }
+  function step(state, seat, rng) { if (mustPass(state, seat)) return pass(state, seat).state; const m = botMove(state, seat, rng); return placeTile(state, seat, m.tileId, m.endpointId).state; }
+  // dev helpers
+  function forceFish(state) { return state.handStatus === 'playing' && state.board.tiles.length ? resolveFish(state) : state; }
+  function setScores(state, a, b) { return Object.assign({}, state, { scores: [a, b] }); }
+
+  root.DominoEngine = { TEAM_OF_SEAT, createDominoSet, shuffleTiles, dealTiles, pips, isDouble, emptyBoard, findTile, boardTiles, getOpenEnds, getValidPlacements, canPlayTile, getPlayableTiles,
+    calculateRemainingPips, calculateTeamRemainingPips, newMatch, startNextHand, getLegalMoves, mustPass, placeTile, pass, detectBlockedGame, resolveNormalHand, resolveFish, resolveEgg, applyHandScore, checkMatchWinner, botMove, step, forceFish, setScores };
+})(typeof window !== 'undefined' ? window : globalThis);
+
+/* ===== end domino-engine.js ===== */
+</script>
+<script>
+(function(){
+  const E = window.DominoEngine;
+  const KEY = 'besetka.domino.chain.v1';
+  const NAMES = ['შენ', 'მილორავა', 'თემო', 'იკო'];
+  const AVATAR = ['#8a4b2a', '#8a4b2a', '#5D9948', '#2e6f95'];
+  const INITIALS = ['შ', 'მ', 'თ', 'ი'];
+  const PIPPOS = { 0:[], 1:[[50,50]], 2:[[27,27],[73,73]], 3:[[27,27],[50,50],[73,73]],
+    4:[[27,27],[73,27],[27,73],[73,73]], 5:[[27,27],[73,27],[50,50],[27,73],[73,73]],
+    6:[[27,25],[27,50],[27,75],[73,25],[73,50],[73,75]] };
+
+  function loadMatch(){
+    try {
+      const v = JSON.parse(localStorage.getItem(KEY));
+      if (v && v.board && Array.isArray(v.board.tiles) && Array.isArray(v.hands)) return v;
+    } catch (e) {}
+    return null;
+  }
+  function saveMatch(m){ try { localStorage.setItem(KEY, JSON.stringify(m)); } catch (e) {} }
+
+  let state = {
+    dom: loadMatch(),
+    sel: null,        // selected tile id from my hand
+    passFlash: null,
+    aiTimer: null,
+  };
+  if (!state.dom) state.dom = E.newMatch();
+
+  function setDom(next, extra){
+    state.dom = next;
+    if (extra) Object.assign(state, extra);
+    saveMatch(state.dom);
+    render();
+    scheduleAI();
+  }
+
+  function scheduleAI(){
+    clearTimeout(state.aiTimer);
+    const d = state.dom;
+    if (!d || d.handStatus !== 'playing') return;
+    if (d.current === 0) {
+      if (E.mustPass(d, 0)) {
+        state.aiTimer = setTimeout(() => {
+          const r = E.pass(state.dom, 0);
+          if (r.ok) setDom(r.state, { passFlash: 0 });
+        }, 700);
+      }
+      return;
+    }
+    state.aiTimer = setTimeout(() => {
+      const cur = state.dom;
+      if (!cur || cur.handStatus !== 'playing' || cur.current === 0) return;
+      const passed = E.mustPass(cur, cur.current);
+      setDom(E.step(cur, cur.current), { passFlash: passed ? cur.current : null });
+    }, 650);
+  }
+
+  function tapHandTile(tile){
+    const d = state.dom;
+    if (!d || d.current !== 0 || d.handStatus !== 'playing') return;
+    const mv = E.getLegalMoves(d, 0).find(m => m.tile.id === tile.id);
+    if (!mv) { state.sel = null; render(); return; }
+    const distinctEnds = new Set(mv.placements.map(p => p.endpointId));
+    if (distinctEnds.size === 1) {
+      const r = E.placeTile(d, 0, tile.id, mv.placements[0].endpointId);
+      if (r.ok) setDom(r.state);
+      return;
+    }
+    state.sel = tile;
+    render();
+  }
+  function tapEnd(endpointId){
+    const d = state.dom;
+    if (!d || !state.sel) return;
+    const r = E.placeTile(d, 0, state.sel.id, endpointId);
+    if (r.ok) setDom(r.state, { sel: null });
+  }
+  function tapPass(){
+    const d = state.dom;
+    if (!d || d.current !== 0) return;
+    const r = E.pass(d, 0);
+    if (r.ok) setDom(r.state, { passFlash: 0 });
+  }
+  function nextHand(){
+    const d = state.dom;
+    if (d.matchStatus !== 'playing') { setDom(E.newMatch()); return; }
+    setDom(E.startNextHand(d));
+  }
+  function newMatchConfirm(){
+    if (confirm('ახალი მატჩი? მიმდინარე დაიკარგება.')) setDom(E.newMatch());
+  }
+
+  /* ---------- rendering helpers ---------- */
+  function el(tag, cls, html){
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (html !== undefined) e.innerHTML = html;
+    return e;
+  }
+  function pipDivs(n){
+    return (PIPPOS[n] || []).map(([x,y]) => `<div class="pip" style="left:${x}%;top:${y}%"></div>`).join('');
+  }
+  function tileNode(a, b, cls, vertical){
+    const t = el('div', 'tile ' + cls);
+    t.style.flexDirection = vertical ? 'column' : 'row';
+    const h1 = el('div', 'tile-half', pipDivs(a));
+    const h2 = el('div', 'tile-half', pipDivs(b));
+    const div = el('div', vertical ? 'tile-divider-h' : 'tile-divider-v');
+    t.appendChild(h1); t.appendChild(div); t.appendChild(h2);
+    return t;
+  }
+  function scoreToBeads(score){
+    const hundreds = Math.floor(score/100); let r = score%100;
+    const tens = Math.floor(r/10); r = r%10;
+    const fives = Math.floor(r/5); const rem = r%5;
+    return { hundreds, tens, fives, rem };
+  }
+  function beadRow(unitLabel, countA, countB, maxCount){
+    const row = el('div', 'ch-row');
+    row.appendChild(el('div', 'ch-line'));
+    row.appendChild(el('div', 'ch-label', unitLabel));
+    const left = el('div', 'ch-beads');
+    for (let i = 0; i < maxCount; i++){
+      const b = el('div', 'ch-bead' + (i < countA ? ' on' : ''));
+      b.style.left = (i * 13) + 'px';
+      left.appendChild(b);
+    }
+    const spacer = el('div');
+    const right = el('div', 'ch-beads');
+    for (let i = 0; i < maxCount; i++){
+      const b = el('div', 'ch-bead' + (i < countB ? ' on' : ''));
+      b.style.right = (i * 13) + 'px';
+      right.appendChild(b);
+    }
+    row.appendChild(left); row.appendChild(spacer); row.appendChild(right);
+    return row;
+  }
+
+  function render(){
+    const app = document.getElementById('app');
+    app.innerHTML = '';
+    app.style.position = 'relative';
+    const d = state.dom;
+    const E_ = window.DominoEngine;
+
+    /* top bar */
+    const topbar = el('div', 'topbar');
+    const titleRow = el('div', 'title-row', `<b>ბესეტკა</b><span>დომინო · 355-მდე · ჩოთქით</span>`);
+    topbar.appendChild(titleRow);
+    const scoreRow = el('div', 'score-row');
+    scoreRow.appendChild(el('div', 'score-side', `<span class="score-label">ჩვენ</span><span class="score-num">${d.scores[0]}</span>`));
+    scoreRow.appendChild(el('div', 'hand-label', `ხელი ${d.handNumber}`));
+    scoreRow.appendChild(el('div', 'score-side right', `<span class="score-num">${d.scores[1]}</span><span class="score-label">ისინი</span>`));
+    topbar.appendChild(scoreRow);
+    app.appendChild(topbar);
+
+    const chotki = el('div', 'chotki');
+    const bA = scoreToBeads(d.scores[0]), bB = scoreToBeads(d.scores[1]);
+    chotki.appendChild(beadRow('100', bA.hundreds, bB.hundreds, 4));
+    chotki.appendChild(beadRow('10', bA.tens, bB.tens, 10));
+    chotki.appendChild(beadRow('5', bA.fives, bB.fives, 2));
+    app.appendChild(chotki);
+    if (d.pendingFishPoints > 0) {
+      app.appendChild(el('div', 'pending', `კვერცხი · ${d.pendingFishPoints} ქულა გადადის შემდეგ ხელზე`));
+    }
+
+    /* opponents */
+    const opps = el('div', 'opponents');
+    [1,2,3].forEach(seat => {
+      const o = el('div', 'opp');
+      const av = el('div', 'avatar' + (d.handStatus === 'playing' && d.current === seat ? ' turn' : ''), INITIALS[seat]);
+      av.style.background = AVATAR[seat];
+      o.appendChild(av);
+      o.appendChild(el('div', 'opp-name', NAMES[seat]));
+      const tilesRow = el('div', 'opp-tiles');
+      (d.hands[seat] || []).forEach(() => tilesRow.appendChild(el('div', 'opp-tile-back')));
+      o.appendChild(tilesRow);
+      if (state.passFlash === seat) o.appendChild(el('div', 'opp-count', 'პასი'));
+      opps.appendChild(o);
+    });
+    app.appendChild(opps);
+
+    /* board */
+    const boardWrap = el('div', 'board-wrap');
+    if (!d.board.tiles.length) {
+      const hint = d.handNumber === 1
+        ? (d.current === 0 ? 'შენ გაქვს 6:6 — დადე' : `${NAMES[d.current]} 6:6-ით იწყებს`)
+        : 'ბოლო ხელის შემდეგ';
+      boardWrap.appendChild(el('div', 'empty-hint', d.handStatus === 'playing' ? hint : ''));
+    } else {
+      const board = el('div', 'board');
+      d.board.tiles.forEach(t => {
+        board.appendChild(tileNode(t.a, t.b, 'board-tile' + (t.a === t.b ? ' dbl' : ''), false));
+      });
+      boardWrap.appendChild(board);
+    }
+    app.appendChild(boardWrap);
+
+    /* end-choice buttons (when a tile with two playable ends is selected) */
+    const openEnds = E_.getOpenEnds(d.board);
+    if (state.sel) {
+      const selPl = E_.getValidPlacements(state.sel, d.board);
+      const choices = openEnds.filter(e2 => selPl.some(p => p.endpointId === e2.id));
+      if (choices.length > 1) {
+        const row = el('div', 'end-choice');
+        choices.forEach(c => {
+          const b = el('button', 'end-btn', (c.id === 'left' ? '⬅ ' : '➡ ') + 'ბოლოზე ' + c.value);
+          b.onclick = () => tapEnd(c.id);
+          row.appendChild(b);
+        });
+        app.appendChild(row);
+      }
+    }
+
+    /* status row */
+    const meTurn = d.handStatus === 'playing' && d.current === 0;
+    const mePass = meTurn && E_.mustPass(d, 0);
+    let statusText;
+    if (d.handStatus !== 'playing') statusText = 'ხელი დასრულდა';
+    else if (mePass) statusText = 'სვლა არ გაქვს — პასი';
+    else if (meTurn) statusText = state.sel ? 'აირჩიე ბოლო' : 'შენი სვლაა';
+    else statusText = NAMES[d.current] + ' თამაშობს…';
+    const statusRow = el('div', 'status-row');
+    statusRow.appendChild(el('div', '', `<span class="status-dot${meTurn ? ' mine' : ''}"></span>${statusText}`));
+    statusRow.appendChild(el('div', 'ends-text', openEnds.length ? openEnds.map(e2 => e2.value).join(' · ') : '—'));
+    app.appendChild(statusRow);
+
+    /* my hand */
+    const legal = meTurn ? E_.getLegalMoves(d, 0) : [];
+    const handRow = el('div', 'hand-row');
+    (d.hands[0] || []).forEach(t => {
+      const mv = legal.find(m => m.tile.id === t.id);
+      const playable = !!mv;
+      const isSel = state.sel && state.sel.id === t.id;
+      let cls = 'hand-tile';
+      if (isSel) cls += ' selected';
+      else if (playable) cls += ' playable';
+      else if (meTurn) cls += ' dead';
+      const tn = tileNode(t.a, t.b, cls, true);
+      tn.onclick = () => tapHandTile(t);
+      handRow.appendChild(tn);
+    });
+    app.appendChild(handRow);
+
+    /* bottom bar */
+    const bottomBar = el('div', 'bottom-bar');
+    const passBtn = el('div', 'bbtn' + (mePass || state.passFlash === 0 ? ' pass-active' : ''), 'პასი');
+    passBtn.onclick = mePass ? tapPass : null;
+    bottomBar.appendChild(passBtn);
+    const newBtn = el('div', 'bbtn', 'ახალი მატჩი');
+    newBtn.onclick = newMatchConfirm;
+    bottomBar.appendChild(newBtn);
+    app.appendChild(bottomBar);
+
+    /* hand-ended overlay */
+    if (d.handStatus === 'ended') {
+      const last = d.history[d.history.length - 1] || {};
+      let title = '', sub = '', cta = 'შემდეგი ხელი';
+      if (d.matchStatus === 'won') {
+        title = d.matchWinner === 0 ? (d.dry ? 'მოვიგეთ · მშრალი!' : 'მოვიგეთ!') : (d.dry ? 'წავაგეთ · მშრალი' : 'წავაგეთ');
+        sub = `${d.scores[0]} – ${d.scores[1]} · ${d.handNumber} ხელი`;
+        cta = 'ახალი მატჩი';
+      } else if (d.handOutcome === 'egg') {
+        title = 'კვერცხი';
+        sub = `ორივე მხარეს თანაბარი ქულა დარჩა. ${d.pendingFishPoints} ქულა გადადის შემდეგ ხელზე.`;
+      } else {
+        const we = d.handWinner === 0;
+        title = (d.handOutcome === 'fish' ? 'რიბა · ' : 'დომინო · ') + (we ? 'ჩვენ' : 'ისინი');
+        sub = `${we ? 'ჩვენ' : 'მათ'} +${d.handPoints}${last.pendingUsed ? ` (${last.rawPips} + კვერცხი ${last.pendingUsed})` : ''}`;
+      }
+      const overlay = el('div', 'overlay');
+      const card = el('div', 'card');
+      card.appendChild(el('h2', '', title));
+      card.appendChild(el('p', '', sub));
+      const revealGrid = el('div', 'reveal-grid');
+      [0,1,2,3].forEach(i => {
+        const cell = el('div', 'reveal-cell');
+        cell.appendChild(el('div', 'reveal-head', `<span>${NAMES[i]}</span><span>${E_.calculateRemainingPips(d.hands[i])}</span>`));
+        const tilesRow = el('div', 'reveal-tiles');
+        d.hands[i].forEach(t => tilesRow.appendChild(tileNode(t.a, t.b, '', true)));
+        cell.appendChild(tilesRow);
+        revealGrid.appendChild(cell);
+      });
+      card.appendChild(revealGrid);
+      const ctaBtn = el('div', 'cta', cta);
+      ctaBtn.onclick = nextHand;
+      card.appendChild(ctaBtn);
+      overlay.appendChild(card);
+      app.appendChild(overlay);
+    }
+  }
+
+  render();
+  scheduleAI();
+})();
+</script>
+</body>
+</html>
